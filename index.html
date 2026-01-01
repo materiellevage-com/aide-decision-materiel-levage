@@ -3,8 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Aide au choix — Levage | MATERIEL-LEVAGE</title>
-  <meta name="description" content="Parcours guidé pour qualifier un besoin de levage à travers une conversation simple, et générer un cahier des charges." />
+  <title>Aide au choix — Levage | Spécialiste MATERIEL-LEVAGE</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Aide au choix levage : qualifiez votre besoin comme avec un spécialiste. Responsabilité des choix techniques, règles d'usage, maintenance, conformité réglementaire. Génération d’un cahier des charges." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://materiellevage-com.github.io/aide-decision-materiel-levage/" />
 
   <style>
     :root{
@@ -100,7 +104,7 @@
       border-radius:16px;
       padding:14px;
       background:#fff;
-      scroll-margin-top: 90px; /* compense la topbar sticky */
+      scroll-margin-top: 90px;
       transition: box-shadow .25s, transform .25s;
     }
     .questionBox.flash{
@@ -109,13 +113,7 @@
     }
 
     .askRow{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-    .ask{
-      margin:0;
-      font-size:14px;
-      font-weight:1000;
-      color:#111827;
-      line-height:1.35;
-    }
+    .ask{margin:0;font-size:14px;font-weight:1000;color:#111827;line-height:1.35}
     .askSub{margin:6px 0 0;color:var(--ml-muted);font-size:12px;line-height:1.45}
 
     .tip{
@@ -126,7 +124,7 @@
     }
     .bubble{
       position:absolute;right:0;top:calc(100% + 10px);
-      width:min(440px, calc(100vw - 40px));
+      width:min(460px, calc(100vw - 40px));
       background:#fff;border:1px solid var(--ml-line);
       border-radius:14px;box-shadow:var(--ml-shadow);
       padding:12px;display:none;z-index:60;
@@ -147,10 +145,7 @@
     .opt b{display:block;font-size:14px}
     .opt .small{display:block;color:var(--ml-muted);font-size:12px;margin-top:2px;line-height:1.35}
 
-    .actions{
-      display:flex;gap:10px;flex-wrap:wrap;align-items:center;
-      margin-top:14px;
-    }
+    .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
     .btn{
       appearance:none;border:1px solid var(--ml-line);background:#fff;color:#111827;
       border-radius:12px;padding:10px 12px;font-size:13px;font-weight:900;
@@ -188,8 +183,22 @@
       font-size:12px;background:#fbfbff;border:1px solid var(--ml-line);
       border-radius:14px;padding:12px;white-space:pre-wrap;color:#0f172a;
     }
-    ul{margin:10px 0 0;padding-left:18px;color:var(--ml-muted);font-size:12px;line-height:1.55}
+
+    /* SEO sections */
+    h1{font-size:18px;margin:0;color:var(--ml-blue-dark);font-weight:1000}
+    .seoLead{color:var(--ml-muted);font-size:12px;line-height:1.55;margin:8px 0 0}
+    .seoBlock{
+      background:#fff;border:1px solid var(--ml-line);
+      border-radius:16px;box-shadow:var(--ml-shadow);
+      padding:14px;margin-top:14px;
+    }
+    .seoBlock h2{margin:0 0 8px;font-size:14px;font-weight:1000;color:var(--ml-blue-dark)}
+    .seoBlock p{margin:8px 0;color:var(--ml-muted);font-size:12px;line-height:1.6}
+    details{border:1px solid var(--ml-line);border-radius:14px;padding:10px 12px;background:#fff;margin-top:10px}
+    summary{cursor:pointer;font-weight:1000;color:#111827;font-size:13px}
+    details p{margin:8px 0 0}
     .divider{height:1px;background:var(--ml-line);margin:12px 0}
+    ul{margin:10px 0 0;padding-left:18px;color:var(--ml-muted);font-size:12px;line-height:1.55}
   </style>
 </head>
 
@@ -197,15 +206,13 @@
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <div class="logo">
+        <div class="logo" aria-label="MATERIEL-LEVAGE.com">
           <div class="dot">ML</div>
-          <div class="site">
-            <span>MATERIEL-LEVAGE</span><span class="com">.com</span>
-          </div>
+          <div class="site"><span>MATERIEL-LEVAGE</span><span class="com">.com</span></div>
         </div>
         <div>
-          <div style="font-weight:1000;color:var(--ml-blue-dark)">Aide au choix — discussion guidée</div>
-          <div class="subtitle">Répondez comme à un spécialiste : on qualifie votre besoin, puis on génère votre cahier des charges.</div>
+          <h1>Aide au choix — Levage (approche spécialiste)</h1>
+          <div class="subtitle">Une discussion guidée pour qualifier votre manutention, assumer les choix techniques et cadrer la conformité, l’installation et la maintenance.</div>
         </div>
       </div>
 
@@ -219,6 +226,25 @@
   </div>
 
   <div class="wrap">
+
+    <!-- SEO / Expertise (visible, utile + indexable) -->
+    <section class="seoBlock" aria-label="Expertise levage">
+      <h2>Transformer un site e-commerce en spécialiste du levage</h2>
+      <p>
+        Un achat de matériel de levage ne se résume pas à “choisir un produit” : c’est un <b>choix technique</b> qui engage la <b>sécurité</b>, la <b>responsabilité</b> et la <b>conformité</b> (usage, environnement, installation, maintenance, restrictions).
+        Cette page est conçue pour <b>qualifier votre besoin</b> comme le ferait un spécialiste : on décrit l’action, le mouvement, l’organisation du poste, et la façon de prendre la charge, afin de produire un <b>cahier des charges</b> exploitable par un commercial.
+      </p>
+      <p>
+        Notre objectif : vous aider à <b>prendre la bonne décision</b> en posant les bonnes questions, puis à documenter clairement votre demande (conditions d’utilisation, critères de sécurité, exigences d’exploitation).
+        Si l’une des réponses n’est pas connue, vous pouvez continuer : la demande reste recevable mais la <b>précision baisse</b> et un <b>échange spécialiste</b> devient recommandé.
+      </p>
+      <div class="divider"></div>
+      <p>
+        <b>Cadre réglementaire & bonnes pratiques</b> : le formulaire est structuré pour rappeler les points attendus dans une approche “pro” (définition de l’opération, stabilité, accroche, contraintes d’environnement, exploitation et maintenance).
+        Il ne remplace pas une étude, mais il <b>trace</b> la logique de sélection et facilite la validation interne.
+      </p>
+    </section>
+
     <div class="grid">
 
       <!-- Conversation -->
@@ -296,71 +322,136 @@
       </div>
 
     </div>
+
+    <!-- FAQ visible (SEO) -->
+    <section class="seoBlock" aria-label="FAQ levage">
+      <h2>FAQ — choisir un matériel de levage en sécurité</h2>
+
+      <details>
+        <summary>Pourquoi poser des questions “d’usage” avant de parler produit ?</summary>
+        <p>
+          Parce qu’en levage, la sélection dépend d’abord de l’opération réelle : type de mouvement (vertical, horizontal, basculement),
+          organisation du poste, mode de prise de charge, stabilité et précision attendue. Le produit vient ensuite.
+        </p>
+      </details>
+
+      <details>
+        <summary>Que signifie “centre de gravité décentré” et pourquoi c’est critique ?</summary>
+        <p>
+          Un centre de gravité décentré peut induire une inclinaison et des efforts non prévus. Cela impacte les accessoires,
+          la répartition sur plusieurs points, la stabilité et la maîtrise du ballant : on privilégie une validation technique.
+        </p>
+      </details>
+
+      <details>
+        <summary>Si je ne connais pas toutes les réponses, puis-je quand même avancer ?</summary>
+        <p>
+          Oui. Le bouton “Je ne sais pas” permet de continuer, mais diminue la précision. Dans ce cas, un échange avec un spécialiste est recommandé
+          pour sécuriser la décision et documenter les restrictions d’usage, l’installation et la maintenance.
+        </p>
+      </details>
+
+      <details>
+        <summary>À quoi sert le cahier des charges généré ?</summary>
+        <p>
+          Il structure votre demande commerciale : opération, mouvement, organisation, prise de charge et niveau de précision.
+          C’est une base de dialogue pour qualifier le besoin et accélérer l’arbitrage technique.
+        </p>
+      </details>
+    </section>
+
   </div>
+
+  <!-- JSON-LD FAQPage (SEO) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"Pourquoi poser des questions d’usage avant de parler produit ?",
+        "acceptedAnswer":{"@type":"Answer","text":"En levage, la sélection dépend d’abord de l’opération réelle : type de mouvement, organisation du poste, mode de prise de charge, stabilité et précision attendue. Le produit vient ensuite."}
+      },
+      {
+        "@type":"Question",
+        "name":"Que signifie centre de gravité décentré et pourquoi c’est critique ?",
+        "acceptedAnswer":{"@type":"Answer","text":"Un centre de gravité décentré peut induire une inclinaison et des efforts non prévus. Cela impacte les accessoires, la répartition multipoints, la stabilité et la maîtrise du ballant."}
+      },
+      {
+        "@type":"Question",
+        "name":"Si je ne connais pas toutes les réponses, puis-je avancer ?",
+        "acceptedAnswer":{"@type":"Answer","text":"Oui. Le bouton “Je ne sais pas” permet de continuer, mais diminue la précision. Un échange spécialiste est recommandé pour sécuriser la décision et cadrer restrictions d’usage, installation et maintenance."}
+      },
+      {
+        "@type":"Question",
+        "name":"À quoi sert le cahier des charges généré ?",
+        "acceptedAnswer":{"@type":"Answer","text":"Il structure votre demande commerciale : opération, mouvement, organisation, prise de charge et précision attendue. C’est une base de dialogue pour qualifier le besoin et accélérer l’arbitrage."}
+      }
+    ]
+  }
+  </script>
 
   <script>
     const $ = (id)=>document.getElementById(id);
 
-    // --- util scroll / focus (le point clé demandé) ---
     function focusQuestionBox(){
       const box = $("questionBox");
       if(!box) return;
-
-      // scroll vers le bloc question (compense topbar sticky via scroll-margin-top CSS)
       box.scrollIntoView({behavior:"smooth", block:"start"});
-
-      // petit flash visuel pour repérer la nouvelle question
       box.classList.remove("flash");
-      // force reflow
       void box.offsetWidth;
       box.classList.add("flash");
       setTimeout(()=>box.classList.remove("flash"), 550);
     }
-
     function focusSummary(){
       const el = $("summaryCard");
       if(!el) return;
       el.scrollIntoView({behavior:"smooth", block:"start"});
     }
 
-    // Questions (sans Q1/Q2 visibles)
+    // ---- Flow (conversation) ----
     const flow = [
       {
         id:"action",
         title:"Pour commencer : qu’avez-vous besoin de faire avec la charge ?",
         sub:"Vous pouvez choisir plusieurs actions si besoin.",
         tipTitle:"Aide — Action",
-        tip:"On décrit ce que vous faites réellement : lever, déplacer, accrocher/saisir, ou prévoir une structure.",
+        tip:"On décrit ce que vous faites : lever, déplacer, accrocher/saisir, ou prévoir une structure.",
         type:"multi",
         options:[
           { id:"lift", label:"Lever la charge", help:"Soulever verticalement (montée / descente)." },
-          { id:"move", label:"Déplacer la charge", help:"Déplacer latéralement ou vers plusieurs positions." },
+          { id:"move", label:"Déplacer la charge", help:"Déplacer vers une ou plusieurs positions." },
           { id:"hook", label:"Accrocher / saisir la charge", help:"Mettre la charge en prise pour la lever ou la maintenir." },
-          { id:"support", label:"Supporter l’opération", help:"Prévoir une structure (potence/portique…) pour porter l’appareil." }
+          { id:"support", label:"Prévoir une structure", help:"Structure porteuse (potence, portique, etc.)." }
         ]
       },
+
+      /* ✅ Mouvement = MULTI-CHOIX (ton impératif) */
       {
         id:"movement",
-        title:"Concernant le mouvement : quel type de déplacement est attendu ?",
-        sub:"Si vous ne déplacez pas la charge, vous pouvez passer rapidement.",
-        tipTitle:"Aide — Mouvement",
-        tip:"Plus le mouvement est complexe (inclinaison/retournement), plus la sélection doit être validée.",
-        type:"single",
-        gate:(state)=> state.action?.includes("move") === true,
+        title:"Quel(s) mouvement(s) devez-vous réaliser ?",
+        sub:"Cochez tout ce qui s’applique (même si c’est partiel ou occasionnel).",
+        tipTitle:"Aide — Mouvements",
+        tip:"Plus le mouvement est complexe (inclinaison, basculement, retournement), plus une validation technique est nécessaire.",
+        type:"multi",
+        gate:(state)=> (state.action?.includes("lift") || state.action?.includes("move")) === true,
         options:[
-          { id:"vonly", label:"Verticalement uniquement", help:"Montée/descente sans translation latérale." },
-          { id:"h1", label:"Horizontal — une direction", help:"Translation sur un axe." },
-          { id:"hmulti", label:"Horizontal — plusieurs directions", help:"Plusieurs positions dans la zone." },
-          { id:"tilt", label:"Incliner / basculer", help:"Positionnement par inclinaison." },
-          { id:"flip", label:"Retourner la charge", help:"Retournement complet (180°)." }
+          { id:"v_updown", label:"Lever / descendre (vertical)", help:"Montée/descente : levage vertical." },
+          { id:"h_onesense", label:"Déplacer horizontalement — un sens", help:"Translation sur un axe (avant/arrière, gauche/droite…)." },
+          { id:"h_multisense", label:"Déplacer horizontalement — plusieurs sens", help:"Plusieurs directions/positions dans une zone." },
+          { id:"tilt", label:"Incliner la charge", help:"Modifier l’angle (positionnement, mise à niveau)." },
+          { id:"tip", label:"Basculer la charge", help:"Passage contrôlé d’une position à une autre." },
+          { id:"flip", label:"Retourner la charge (180°)", help:"Retournement complet." }
         ]
       },
+
       {
         id:"location",
         title:"Où se déroule l’opération ?",
         sub:"Choisissez ce qui correspond le mieux, puis indiquez si c’est multi-sites.",
         tipTitle:"Aide — Localisation",
-        tip:"La localisation influence souvent l’installation et le type de support ou de mobilité.",
+        tip:"La localisation influence l’installation, la mobilité, et la notion de support (fixe / mobile).",
         type:"mixed",
         optionsRadio:[
           { id:"station", label:"Un poste de travail dédié", help:"Toujours au même endroit." },
@@ -370,6 +461,7 @@
         optionCheck:{ id:"multisite", label:"Option : multi-sites", help:"Ateliers / bâtiments / sites différents." },
         gate:(state)=> (state.action?.includes("lift") || state.action?.includes("move")) === true
       },
+
       {
         id:"hooking",
         title:"Comment la charge peut-elle être prise (accrochage / saisie) ?",
@@ -410,18 +502,19 @@
           ]
         }
       },
+
       {
         id:"quality",
         title:"Quel niveau de précision attendez-vous pendant la manutention ?",
-        sub:"Cela aide à définir la maîtrise de vitesse, le ballant, et la stabilité.",
+        sub:"Cela aide à définir vitesse, maîtrise du ballant, stabilité et inclinaison.",
         tipTitle:"Aide — Précision",
-        tip:"Plus c’est précis, plus la solution devra maîtriser les à-coups et le ballant.",
+        tip:"Plus c’est précis, plus la solution doit maîtriser les à-coups, le ballant et le positionnement.",
         type:"single",
         gate:(state)=> (state.action?.includes("lift") || state.action?.includes("move") || state.action?.includes("hook")) === true,
         options:[
           { id:"simple", label:"Simple", help:"Positionnement approximatif acceptable." },
           { id:"precise", label:"Précise", help:"Sans à-coups, ballant limité." },
-          { id:"very", label:"Très précise", help:"Contrôle permanent, ballant quasi nul." }
+          { id:"very", label:"Très précise", help:"Contrôle fin, ballant quasi nul." }
         ]
       }
     ];
@@ -453,10 +546,14 @@
       let score = 100;
       score -= dontKnowCount.total * 10;
       if(!state.action || state.action.length===0) score -= 40;
-      if(state.action?.includes("move") && !state.movement) score -= 10;
+
+      // Mouvement : si levage/déplacement demandés mais rien coché
+      if((state.action?.includes("lift") || state.action?.includes("move")) && (!state.movement || state.movement.length===0)) score -= 12;
+
       if((state.action?.includes("lift") || state.action?.includes("move")) && !state.location) score -= 10;
       if(state.action?.includes("hook") && !state.hooking) score -= 18;
       if((state.action?.includes("lift") || state.action?.includes("move") || state.action?.includes("hook")) && !state.quality) score -= 8;
+
       score = Math.max(0, Math.min(100, Math.round(score)));
       return score;
     }
@@ -468,9 +565,9 @@
     }
 
     function complexity(){
-      if(state.movement === "flip") return "Complexité : Hors standard";
-      if(state.movement === "tilt") return "Complexité : Complexe";
-      if(state.quality === "very") return "Complexité : Complexe";
+      const mv = state.movement || [];
+      if(mv.includes("flip")) return "Complexité : Hors standard";
+      if(mv.includes("tip") || mv.includes("tilt") || (state.quality === "very")) return "Complexité : Complexe";
       return "Complexité : Modérée";
     }
 
@@ -498,7 +595,6 @@
       $("msg").textContent = "";
 
       const q = flow[ visibleSteps[stepIndex] ];
-
       $("ask").textContent = q.title;
       $("askSub").textContent = q.sub || "";
       $("tipTitle").textContent = q.tipTitle || "Aide";
@@ -743,6 +839,7 @@
       if(isDontKnow){
         dontKnowCount.total += 1;
         dontKnowCount.byId[q.id] = (dontKnowCount.byId[q.id] || 0) + 1;
+
         if(state[q.id] === undefined) state[q.id] = null;
         if(q.type==="mixed"){
           if(state[q.id] === undefined) state[q.id] = null;
@@ -767,11 +864,11 @@
         stepIndex += 1;
         renderCurrent();
         renderSummary();
-        focusQuestionBox(); // ✅ défilement vers la nouvelle question
+        focusQuestionBox();
       } else {
         renderSummary(true);
         $("msg").textContent = "Fin des questions — la synthèse est à droite ✅";
-        focusSummary(); // sur mobile c’est plus logique de montrer la synthèse
+        focusSummary();
       }
       setHeader();
       setStepPills();
@@ -782,7 +879,7 @@
         stepIndex -= 1;
         renderCurrent();
         renderSummary();
-        focusQuestionBox(); // ✅ défilement aussi en retour
+        focusQuestionBox();
       }
       setHeader();
       setStepPills();
@@ -814,7 +911,6 @@
 
       $("msg").textContent = "Réponse enregistrée ✅";
       $("msg").style.color = "var(--good)";
-
       next();
     }
 
@@ -824,7 +920,6 @@
 
       $("msg").textContent = "D’accord — on continue. (La précision de la demande baisse)";
       $("msg").style.color = "var(--warn)";
-
       next();
     }
 
@@ -836,13 +931,22 @@
       $("complexity").textContent = complexity();
 
       const rows = [];
+
       const actMap = { lift:"Lever", move:"Déplacer", hook:"Accrocher/saisir", support:"Prévoir une structure" };
       const act = state.action?.length ? state.action.map(x=>actMap[x]||x).join(", ") : "—";
       rows.push(["Action sur la charge", act]);
 
-      if(state.action?.includes("move")){
-        const mvMap = { vonly:"Vertical uniquement", h1:"Horizontal — une direction", hmulti:"Horizontal — plusieurs directions", tilt:"Incliner / basculer", flip:"Retourner (180°)" };
-        rows.push(["Mouvement", state.movement ? (mvMap[state.movement]||state.movement) : "—"]);
+      if(state.action?.includes("lift") || state.action?.includes("move")){
+        const mvMap = {
+          v_updown:"Lever/descendre (vertical)",
+          h_onesense:"Horizontal — un sens",
+          h_multisense:"Horizontal — plusieurs sens",
+          tilt:"Incliner",
+          tip:"Basculer",
+          flip:"Retourner (180°)"
+        };
+        const mv = (state.movement && state.movement.length) ? state.movement.map(x=>mvMap[x]||x).join(", ") : "—";
+        rows.push(["Mouvements", mv]);
       }
 
       if(state.action?.includes("lift") || state.action?.includes("move")){
@@ -886,14 +990,16 @@
         tb.appendChild(tr);
       });
 
+      // Alerts
       const alerts = [];
-      if(state.movement === "flip") alerts.push("Retourner une charge : prévoir une validation technique sur la solution retenue.");
-      if(state.movement === "tilt") alerts.push("Incliner/basculer : préciser l’angle attendu et la stabilité de la charge.");
+      const mv = state.movement || [];
+      if(mv.includes("flip")) alerts.push("Retourner une charge : prévoir une validation technique (scénario, stabilité, efforts, mode de prise).");
+      if(mv.includes("tip") || mv.includes("tilt")) alerts.push("Incliner/basculer : préciser l’angle attendu et la stabilité de la charge.");
       if(state.action?.includes("hook") && state.hooking?.mode === "has" && (state.hooking.points === "p3" || state.hooking.points === "p4")){
         alerts.push("Accrochage multipoints : préciser la répartition et les angles de levage.");
       }
       if(state.action?.includes("hook") && state.hooking?.mode === "has" && state.hooking.cg === "below"){
-        alerts.push("Centre de gravité sous les ancrages : risque de basculement, préciser le scénario.");
+        alerts.push("Centre de gravité sous les ancrages : risque de basculement/retournement, préciser le scénario.");
       }
       if(state["location_multisite"]) alerts.push("Multi-sites : préciser la mobilité attendue (transport, montage/démontage).");
       if(dontKnowCount.total>0) alerts.push("Certaines réponses ne sont pas connues : la précision du cahier des charges est réduite.");
@@ -912,21 +1018,29 @@
         });
       }
 
+      // CDC
       const cdcLines = [];
       cdcLines.push("CAHIER DES CHARGES — PRÉ-QUALIFICATION (LEVAGE)");
       cdcLines.push("");
       cdcLines.push(`Précision : ${score}%`);
       cdcLines.push(complexity());
       cdcLines.push("");
-
       cdcLines.push("1) Ce que je dois faire");
       cdcLines.push(`- ${act}`);
 
-      if(state.action?.includes("move")){
-        const mvMap = { vonly:"Vertical uniquement", h1:"Horizontal — une direction", hmulti:"Horizontal — plusieurs directions", tilt:"Incliner / basculer", flip:"Retourner (180°)" };
+      if(state.action?.includes("lift") || state.action?.includes("move")){
+        const mvMap = {
+          v_updown:"Lever/descendre (vertical)",
+          h_onesense:"Horizontal — un sens",
+          h_multisense:"Horizontal — plusieurs sens",
+          tilt:"Incliner",
+          tip:"Basculer",
+          flip:"Retourner (180°)"
+        };
+        const mvTxt = (state.movement && state.movement.length) ? state.movement.map(x=>mvMap[x]||x).join(", ") : "Non renseigné";
         cdcLines.push("");
-        cdcLines.push("2) Mouvement attendu");
-        cdcLines.push(`- ${state.movement ? (mvMap[state.movement]||state.movement) : "Non renseigné"}`);
+        cdcLines.push("2) Mouvements attendus");
+        cdcLines.push(`- ${mvTxt}`);
       }
 
       if(state.action?.includes("lift") || state.action?.includes("move")){
@@ -965,20 +1079,14 @@
 
       cdcLines.push("");
       cdcLines.push("Remarques");
-      if(alerts.length){
-        alerts.forEach(a=>cdcLines.push(`- ${a}`));
-      } else {
-        cdcLines.push("- Aucune remarque à ce stade.");
-      }
+      if(alerts.length) alerts.forEach(a=>cdcLines.push(`- ${a}`));
+      else cdcLines.push("- Aucune remarque à ce stade.");
 
       $("cdc").textContent = cdcLines.join("\n");
 
       setHeader();
       setStepPills();
-
-      if(forceFocus && window.innerWidth < 980){
-        focusSummary(); // ✅ sur mobile, on amène la synthèse
-      }
+      if(forceFocus && window.innerWidth < 980) focusSummary();
     }
 
     function resetAll(){
@@ -989,13 +1097,13 @@
       buildVisibleSteps();
       renderCurrent();
       renderSummary();
-      focusQuestionBox(); // ✅ retour au début
+      focusQuestionBox();
     }
 
     function fillDemo(){
       resetAll();
       state.action = ["lift","move","hook","support"];
-      state.movement = "hmulti";
+      state.movement = ["v_updown","h_multisense","tilt"]; // ✅ multi
       state.location = "multi";
       state["location_multisite"] = true;
       state.hooking = { mode:"has", points:"p4", dedicated:true, cg:"above_off" };
@@ -1003,7 +1111,7 @@
       buildVisibleSteps();
       renderCurrent();
       renderSummary();
-      focusQuestionBox(); // ✅ montre la question en cours
+      focusQuestionBox();
     }
 
     async function copyCDC(){
@@ -1047,8 +1155,8 @@
       $("downloadBtn").addEventListener("click", downloadCDC);
       $("callBtn").addEventListener("click", ()=> alert("👉 Contact spécialiste : copiez le cahier des charges et envoyez-le au commercial."));
 
-      // Rendu live si changement de branche (accrochage)
-      document.addEventListener("change", (e)=>{
+      // Re-render live si changement de branche (accrochage)
+      document.addEventListener("change", ()=>{
         const current = flow[ visibleSteps[stepIndex] ];
         if(current?.type === "branch"){
           const q = current;
@@ -1064,19 +1172,16 @@
               state[q.id].points = null; state[q.id].cg = null; state[q.id].dedicated = false;
             }
             renderCurrent();
-            // pas de scroll ici, juste re-render
           }
         }
       });
     }
 
-    // init
+    // Init
     buildVisibleSteps();
     bind();
     renderCurrent();
     renderSummary();
-
-    // ✅ au chargement, placer l'utilisateur sur la question (utile mobile)
     window.addEventListener("load", ()=> setTimeout(focusQuestionBox, 50));
   </script>
 </body>
