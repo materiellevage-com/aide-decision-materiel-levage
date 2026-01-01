@@ -848,3 +848,467 @@
         if($("mv_h_multi")?.checked) horizontal = "multi";
         const tilt = $("mv_tilt")?.checked || false;
         const tip  = $("mv_tip")?.checked || false;
+        const flip = $("mv_flip")?.checked || false;
+        return { vertical, horizontal, tilt, tip, flip };
+      }
+
+      if(q.type === "single"){
+        let picked = null;
+        (q.options||[]).forEach(o=>{
+          const el = $(`opt_${q.id}_${o.id}`);
+          if(el && el.checked) picked = o.id;
+        });
+        return picked;
+      }
+
+      if(q.type === "mixed"){
+        let picked = null;
+        (q.optionsRadio||[]).forEach(o=>{
+          const el = $(`opt_${q.id}_${o.id}`);
+          if(el && el.checked) picked = o.id;
+        });
+        const oc = q.optionCheck;
+        const ck = oc ? ($(`opt_${q.id}_${oc.id}`)?.checked || false) : false;
+        return { radio:picked, check:ck };
+      }
+
+      if(q.type === "mixed_yesno"){
+        const yes = $(`opt_${q.id}_yes`)?.checked || false;
+        const no  = $(`opt_${q.id}_no`)?.checked  || false;
+        let picked = null;
+        if(yes) picked = true;
+        if(no) picked = false;
+        const ex = q.extraCheck;
+        const ck = ex ? ($(`opt_${q.id}_${ex.id}`)?.checked || false) : false;
+        return { yn:picked, extra:ck };
+      }
+
+      if(q.type === "conditional_single"){
+        const cond = q.when(state);
+        const payload = cond ? q.ifTrue : q.ifFalse;
+        let picked = null;
+        (payload.options||[]).forEach(o=>{
+          const el = $(`opt_${q.id}_${payload.key}_${o.id}`);
+          if(el && el.checked) picked = o.id;
+        });
+        return { key: payload.key, value: picked };
+      }
+
+      return null;
+    }
+
+    function saveAnswer(answer, isDontKnow=false){
+      const q = flow[ visibleSteps[stepIndex] ];
+
+      if(isDontKnow){
+        dontKnowCount.total += 1;
+        dontKnowCount.byId[q.id] = (dontKnowCount.byId[q.id] || 0) + 1;
+        if(state[q.id] === undefined) state[q.id] = null;
+        return true;
+      }
+
+      if(q.type === "mixed"){
+        state[q.id] = answer.radio;
+        state[`${q.id}_${q.optionCheck.id}`] = !!answer.check;
+        return true;
+      }
+
+      if(q.type === "movement_combo"){
+        state.movementCombo = answer;
+        return true;
+      }
+
+      if(q.type === "mixed_yesno"){
+        state[q.id] = answer.yn;
+        if(q.extraCheck){
+          state[`${q.id}_${q.extraCheck.id}`] = !!answer.extra;
+        }
+        if(answer.yn === true){
+          delete state.gripMethod;
+        }
+        if(answer.yn === false){
+          delete state.anchorPoints;
+          state[`${q.id}_dedicated`] = false;
+        }
+        return true;
+      }
+
+      if(q.type === "conditional_single"){
+        state[answer.key] = answer.value;
+        return true;
+      }
+
+      state[q.id] = answer;
+      return true;
+    }
+
+    function next(){
+      buildVisibleSteps();
+      if(stepIndex < visibleSteps.length - 1){
+        stepIndex += 1;
+        renderCurrent();
+        renderSummary();
+        focusQuestionBox();
+      } else {
+        renderSummary(true);
+        $("msg").textContent = "Fin des questions — la synthèse est à droite ✅";
+        focusSummary();
+      }
+      setHeader();
+      setStepPills();
+    }
+
+    function back(){
+      if(stepIndex > 0){
+        stepIndex -= 1;
+        renderCurrent();
+        renderSummary();
+        focusQuestionBox();
+      }
+      setHeader();
+      setStepPills();
+    }
+
+    function validate(){
+      $("msg").textContent = "";
+      const q = flow[ visibleSteps[stepIndex] ];
+      const ans = collectCurrentAnswer();
+
+      let ok = true;
+      if(q.type === "multi") ok = ans.length > 0;
+      if(q.type === "single") ok = !!ans;
+      if(q.type === "mixed") ok = !!ans.radio;
+      if(q.type === "mixed_yesno") ok = (ans.yn === true || ans.yn === false);
+      if(q.type === "conditional_single") ok = !!ans.value;
+
+      if(q.type === "movement_combo"){
+        ok = (ans.vertical || ans.horizontal !== "none" || ans.tilt || ans.tip || ans.flip);
+      }
+
+      if(!ok){
+        $("msg").textContent = "Veuillez sélectionner une réponse, ou utilisez « Je ne sais pas ».";
+        $("msg").style.color = "var(--bad)";
+        return;
+      }
+
+      saveAnswer(ans, false);
+      buildVisibleSteps();
+
+      $("msg").textContent = "Réponse enregistrée ✅";
+      $("msg").style.color = "var(--good)";
+      next();
+    }
+
+    function dontKnow(){
+      $("msg").textContent = "";
+      saveAnswer(null, true);
+
+      $("msg").textContent = "D’accord — on continue. (La précision de la demande baisse)";
+      $("msg").style.color = "var(--warn)";
+      next();
+    }
+
+    function renderSummary(forceFocus=false){
+      const tb = $("summary");
+      tb.innerHTML = "";
+
+      const score = precisionScore();
+      $("complexity").textContent = complexity();
+
+      const rows = [];
+
+      const actMap = { lift:"Lever", move:"Déplacer", hook:"Accrocher/saisir", support:"Prévoir une structure" };
+      const act = state.action?.length ? state.action.map(x=>actMap[x]||x).join(", ") : "—";
+      rows.push(["Action sur la charge", act]);
+
+      if(state.action?.includes("lift") || state.action?.includes("move")){
+        const m = state.movementCombo || {};
+        const parts = [];
+        if(m.vertical) parts.push("Lever/descendre (vertical)");
+        if(m.horizontal === "one") parts.push("Horizontal — une direction");
+        if(m.horizontal === "multi") parts.push("Horizontal — plusieurs directions");
+        if(m.tilt) parts.push("Incliner");
+        if(m.tip) parts.push("Basculer");
+        if(m.flip) parts.push("Retourner (180°)");
+        rows.push(["Mouvements", parts.length ? parts.join(", ") : "—"]);
+      }
+
+      if(state.action?.includes("lift") || state.action?.includes("move")){
+        const locMap = { station:"Un poste dédié", zone:"Une zone définie", multi:"Plusieurs postes/zones" };
+        const loc = state.location ? (locMap[state.location]||state.location) : "—";
+        const ms = state["location_multisite"] ? " + multi-sites" : "";
+        rows.push(["Localisation", loc + ms]);
+      }
+
+      if(state.action?.includes("hook")){
+        const ap = state.anchorsPresence;
+        if(ap === true){
+          rows.push(["Points d’ancrage", "Oui"]);
+          rows.push(["Points dédiés au levage", state["anchorsPresence_dedicated"] ? "Oui" : "Non / inconnu"]);
+          const ptsMap = { p1:"1 point", p2:"2 points", p3:"3 points", p4:"4 points" };
+          rows.push(["Nombre de points", state.anchorPoints ? (ptsMap[state.anchorPoints]||state.anchorPoints) : "—"]);
+        } else if(ap === false){
+          rows.push(["Points d’ancrage", "Non"]);
+          const gripMap = { positive:"Prise positive", clamp:"Serrage (pince)", suction:"Ventouses", mag:"Aimants" };
+          rows.push(["Méthode de prise", state.gripMethod ? (gripMap[state.gripMethod]||state.gripMethod) : "—"]);
+        } else {
+          rows.push(["Points d’ancrage", "—"]);
+        }
+      }
+
+      const cgMap = { center:"Centré", above:"Au-dessus des points / de la prise", below:"En dessous" };
+      rows.push(["Centre de gravité", state.cog ? (cgMap[state.cog]||state.cog) : "—"]);
+
+      const varMap = { unique:"Unique / proche", variation:"Variations maîtrisées", diverse:"Grande diversité" };
+      rows.push(["Variabilité des charges", state.loadVariability ? (varMap[state.loadVariability]||state.loadVariability) : "—"]);
+
+      const hmMap = { safe:"Sécuritaire", precise:"Précise de positionnement", hold_horizontal_cg:"Maintien horizontal par maîtrise du CG" };
+      rows.push(["Mode de manutention", state.handlingMode ? (hmMap[state.handlingMode]||state.handlingMode) : "—"]);
+
+      rows.forEach(([a,b])=>{
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${esc(a)}</td><td>${esc(b)}</td>`;
+        tb.appendChild(tr);
+      });
+
+      const alerts = [];
+      const m = state.movementCombo || {};
+      if(m.flip) alerts.push("Retourner une charge : validation technique recommandée (stabilité, efforts, mode de prise).");
+      if(m.tip || m.tilt) alerts.push("Incliner/basculer : préciser l’angle et la stabilité attendus.");
+      if(state.anchorPoints === "p3" || state.anchorPoints === "p4") alerts.push("Accrochage multipoints : préciser les angles et la répartition.");
+      if(state.cog === "above") alerts.push("Centre de gravité au-dessus des points/prise : risque de basculement/rotation non désirée.");
+      if(state.loadVariability === "diverse") alerts.push("Grande diversité : solution polyvalente + procédure d’exploitation recommandée.");
+      if(state.handlingMode === "precise") alerts.push("Précision : privilégier maîtrise du ballant/à-coups et contrôle fin.");
+      if(state.handlingMode === "hold_horizontal_cg") alerts.push("Maintien horizontal : préciser tolérance de planéité, mise à niveau et contrôle du CG.");
+      if(state["location_multisite"]) alerts.push("Multi-sites : préciser mobilité, montage/démontage, transport.");
+      if(dontKnowCount.total>0) alerts.push("Certaines réponses sont inconnues : la précision du cahier des charges est réduite.");
+
+      const ul = $("alerts");
+      ul.innerHTML = "";
+      if(alerts.length===0){
+        const li = document.createElement("li");
+        li.textContent = "Aucune alerte à ce stade.";
+        ul.appendChild(li);
+      } else {
+        alerts.forEach(a=>{
+          const li = document.createElement("li");
+          li.textContent = a;
+          ul.appendChild(li);
+        });
+      }
+
+      const cdcLines = [];
+      cdcLines.push("CAHIER DES CHARGES — PRÉ-QUALIFICATION (LEVAGE)");
+      cdcLines.push("");
+      cdcLines.push(`Précision : ${score}%`);
+      cdcLines.push(complexity());
+      cdcLines.push("");
+      cdcLines.push("1) Opération");
+      cdcLines.push(`- Actions : ${act}`);
+
+      if(state.action?.includes("lift") || state.action?.includes("move")){
+        const parts = [];
+        if(m.vertical) parts.push("Lever/descendre (vertical)");
+        if(m.horizontal === "one") parts.push("Horizontal — une direction");
+        if(m.horizontal === "multi") parts.push("Horizontal — plusieurs directions");
+        if(m.tilt) parts.push("Incliner");
+        if(m.tip) parts.push("Basculer");
+        if(m.flip) parts.push("Retourner (180°)");
+        cdcLines.push("");
+        cdcLines.push("2) Mouvements");
+        cdcLines.push(`- ${parts.length ? parts.join(", ") : "Non renseigné"}`);
+      }
+
+      if(state.action?.includes("lift") || state.action?.includes("move")){
+        const locMap = { station:"Un poste dédié", zone:"Une zone définie", multi:"Plusieurs postes/zones" };
+        cdcLines.push("");
+        cdcLines.push("3) Organisation / lieu");
+        cdcLines.push(`- ${state.location ? (locMap[state.location]||state.location) : "Non renseigné"}${state["location_multisite"] ? " (+ multi-sites)" : ""}`);
+      }
+
+      if(state.action?.includes("hook")){
+        cdcLines.push("");
+        cdcLines.push("4) Prise de charge");
+        if(state.anchorsPresence === true){
+          const ptsMap = { p1:"1", p2:"2", p3:"3", p4:"4" };
+          cdcLines.push("- Points d’ancrage : Oui");
+          cdcLines.push(`- Points dédiés au levage : ${state["anchorsPresence_dedicated"] ? "Oui" : "Non / inconnu"}`);
+          cdcLines.push(`- Nombre de points utilisés : ${state.anchorPoints ? (ptsMap[state.anchorPoints]||"?") : "Non renseigné"}`);
+        } else if(state.anchorsPresence === false){
+          const gripMap = { positive:"Prise positive", clamp:"Serrage (pince)", suction:"Ventouses", mag:"Aimants" };
+          cdcLines.push("- Points d’ancrage : Non");
+          cdcLines.push(`- Méthode de prise : ${state.gripMethod ? (gripMap[state.gripMethod]||state.gripMethod) : "Non renseigné"}`);
+        } else {
+          cdcLines.push("- Non renseigné");
+        }
+      }
+
+      const cgMap2 = { center:"Centré", above:"Au-dessus des points / de la prise (risque basculement)", below:"En dessous" };
+      cdcLines.push("");
+      cdcLines.push("5) Centre de gravité");
+      cdcLines.push(`- ${state.cog ? (cgMap2[state.cog]||state.cog) : "Non renseigné"}`);
+
+      const varMap2 = { unique:"Unique / proche", variation:"Variations maîtrisées", diverse:"Grande diversité" };
+      cdcLines.push("");
+      cdcLines.push("6) Variabilité des charges");
+      cdcLines.push(`- ${state.loadVariability ? (varMap2[state.loadVariability]||state.loadVariability) : "Non renseigné"}`);
+
+      const hmMap2 = { safe:"Sécuritaire (inclinaison acceptable si sûr)", precise:"Précise de positionnement", hold_horizontal_cg:"Maintien horizontal par maîtrise du CG" };
+      cdcLines.push("");
+      cdcLines.push("7) Mode de manutention attendu");
+      cdcLines.push(`- ${state.handlingMode ? (hmMap2[state.handlingMode]||state.handlingMode) : "Non renseigné"}`);
+
+      cdcLines.push("");
+      cdcLines.push("Remarques / points à valider");
+      if(alerts.length) alerts.forEach(a=>cdcLines.push(`- ${a}`));
+      else cdcLines.push("- Aucun point bloquant détecté à ce stade.");
+
+      $("cdc").textContent = cdcLines.join("\n");
+
+      setHeader();
+      setStepPills();
+      if(forceFocus && window.innerWidth < 980) focusSummary();
+    }
+
+    async function copyCDC(){
+      const txt = $("cdc").textContent || "";
+      $("msg").textContent = "";
+      try{
+        if(navigator.clipboard && window.isSecureContext){
+          await navigator.clipboard.writeText(txt);
+        } else {
+          const ta=document.createElement("textarea");
+          ta.value=txt; ta.style.position="fixed"; ta.style.left="-9999px";
+          document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove();
+        }
+        $("msg").textContent = "Cahier des charges copié ✅";
+        $("msg").style.color = "var(--good)";
+        focusQuestionBox();
+      }catch(e){
+        $("msg").textContent = "Copie impossible : sélectionnez manuellement le texte.";
+        $("msg").style.color = "var(--bad)";
+      }
+    }
+
+    function downloadCDC(){
+      const txt = $("cdc").textContent || "";
+      const blob = new Blob([txt], {type:"text/plain;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href=url; a.download="cahier-des-charges-levage.txt";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 1500);
+    }
+
+    function resetAll(){
+      for(const k of Object.keys(state)) delete state[k];
+      dontKnowCount.total = 0;
+      dontKnowCount.byId = {};
+      stepIndex = 0;
+      buildVisibleSteps();
+      renderCurrent();
+      renderSummary();
+      focusQuestionBox();
+    }
+
+    function fillDemo(){
+      resetAll();
+      state.action = ["lift","move","hook","support"];
+      state.movementCombo = { vertical:true, horizontal:"multi", tilt:true, tip:false, flip:false };
+      state.location = "multi";
+      state["location_multisite"] = true;
+      state.anchorsPresence = true;
+      state["anchorsPresence_dedicated"] = true;
+      state.anchorPoints = "p4";
+      state.cog = "above";
+      state.loadVariability = "variation";
+      state.handlingMode = "safe";
+      buildVisibleSteps();
+      renderCurrent();
+      renderSummary();
+      focusQuestionBox();
+    }
+
+    function next(){
+      buildVisibleSteps();
+      if(stepIndex < visibleSteps.length - 1){
+        stepIndex += 1;
+        renderCurrent();
+        renderSummary();
+        focusQuestionBox();
+      } else {
+        renderSummary(true);
+        $("msg").textContent = "Fin des questions — la synthèse est à droite ✅";
+        focusSummary();
+      }
+      setHeader();
+      setStepPills();
+    }
+
+    function back(){
+      if(stepIndex > 0){
+        stepIndex -= 1;
+        renderCurrent();
+        renderSummary();
+        focusQuestionBox();
+      }
+      setHeader();
+      setStepPills();
+    }
+
+    function validate(){
+      $("msg").textContent = "";
+      const q = flow[ visibleSteps[stepIndex] ];
+      const ans = collectCurrentAnswer();
+
+      let ok = true;
+      if(q.type === "multi") ok = ans.length > 0;
+      if(q.type === "single") ok = !!ans;
+      if(q.type === "mixed") ok = !!ans.radio;
+      if(q.type === "mixed_yesno") ok = (ans.yn === true || ans.yn === false);
+      if(q.type === "conditional_single") ok = !!ans.value;
+      if(q.type === "movement_combo"){
+        ok = (ans.vertical || ans.horizontal !== "none" || ans.tilt || ans.tip || ans.flip);
+      }
+
+      if(!ok){
+        $("msg").textContent = "Veuillez sélectionner une réponse, ou utilisez « Je ne sais pas ».";
+        $("msg").style.color = "var(--bad)";
+        return;
+      }
+
+      saveAnswer(ans, false);
+      buildVisibleSteps();
+      $("msg").textContent = "Réponse enregistrée ✅";
+      $("msg").style.color = "var(--good)";
+      next();
+    }
+
+    function dontKnow(){
+      $("msg").textContent = "";
+      saveAnswer(null, true);
+      $("msg").textContent = "D’accord — on continue. (La précision de la demande baisse)";
+      $("msg").style.color = "var(--warn)";
+      next();
+    }
+
+    function bind(){
+      $("validateBtn").addEventListener("click", validate);
+      $("dontKnowBtn").addEventListener("click", dontKnow);
+      $("backBtn").addEventListener("click", back);
+      $("skipToSummaryBtn").addEventListener("click", ()=>{ renderSummary(true); focusSummary(); });
+      $("resetBtn").addEventListener("click", resetAll);
+      $("demoBtn").addEventListener("click", fillDemo);
+      $("copyBtn").addEventListener("click", copyCDC);
+      $("downloadBtn").addEventListener("click", downloadCDC);
+      $("callBtn").addEventListener("click", ()=> alert("👉 Contact spécialiste : copiez le cahier des charges et envoyez-le au commercial."));
+    }
+
+    buildVisibleSteps();
+    bind();
+    renderCurrent();
+    renderSummary();
+    window.addEventListener("load", ()=> setTimeout(focusQuestionBox, 50));
+  </script>
+</body>
+</html>
