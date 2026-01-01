@@ -417,20 +417,20 @@
           ]
         }
       },
-      {
-        id:"cog",
-        title:"Comment est positionné le centre de gravité de la charge ?",
-        sub:"Même approximatif : cela détermine la stabilité et le risque de basculement.",
-        tipTitle:"Aide — Centre de gravité",
-        tip:"Quand le centre de gravité se situe au-dessus des points d’ancrage / de la zone de prise, la charge peut chercher à basculer.",
-        type:"single",
-        gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move") || s.action?.includes("hook")),
-        options:[
-          { id:"center", label:"Centre de gravité centré", help:"Stabilité plus naturelle." },
-          { id:"above", label:"Centre de gravité au-dessus des points d’ancrage / de prise", help:"Risque de basculement/rotation non désirée." },
-          { id:"below", label:"Centre de gravité en dessous", help:"Tendance plus stable (effet pendulaire), selon la prise." }
-        ]
-      },
+ {
+  id:"cog",
+  title:"Comment est positionné le centre de gravité de la charge ?",
+  sub:"Même approximatif : cela détermine la stabilité, le ballant et le risque de basculement.",
+  tipTitle:"Aide — Centre de gravité",
+  tip:"Un centre de gravité excentré induit une tendance à pivoter/pencher. S’il est au-dessus des points d’ancrage/de prise, le risque de basculement augmente.",
+  type:"single",
+  gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move") || s.action?.includes("hook")),
+  options:[
+    { id:"center", label:"Centre de gravité centré", help:"La charge reste globalement stable si la prise est correcte." },
+    { id:"offset", label:"Centre de gravité excentré (décalé)", help:"Tendance à pivoter/pencher : équilibrage souvent nécessaire." },
+    { id:"above", label:"Centre de gravité au-dessus des points d’ancrage / de la zone de prise", help:"Risque de basculement/rotation non désirée : validation recommandée." }
+  ]
+},
       {
         id:"loadVariability",
         title:"Les charges à manutentionner sont-elles toujours similaires ?",
