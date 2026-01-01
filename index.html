@@ -6,7 +6,7 @@
   <title>Aide au choix — Levage | Spécialiste MATERIEL-LEVAGE</title>
 
   <!-- SEO -->
-  <meta name="description" content="Aide au choix levage : qualifiez votre besoin comme avec un spécialiste. Responsabilité des choix techniques, règles d'usage, maintenance, conformité réglementaire. Génération d’un cahier des charges." />
+  <meta name="description" content="Aide au choix levage : qualifiez votre besoin comme avec un spécialiste. Conditions d’exploitation, responsabilité des choix, restrictions d’usage, maintenance et conformité. Génération d’un cahier des charges." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://materiellevage-com.github.io/aide-decision-materiel-levage/" />
 
@@ -215,7 +215,7 @@
           <div style="font-weight:1000;color:var(--ml-blue-dark);font-size:18px;line-height:1.15">
             Aide au choix — Levage (approche spécialiste)
           </div>
-          <div class="subtitle">Un échange guidé pour qualifier l’opération, le comportement de la charge et le niveau d’exigence (sécurité, positionnement, maintien horizontal par maîtrise du CG).</div>
+          <div class="subtitle">Un échange guidé pour qualifier l’opération, la prise, la stabilité, l’environnement et la fréquence d’exploitation.</div>
         </div>
       </div>
 
@@ -232,8 +232,8 @@
     <section class="seoBlock" aria-label="Expertise levage">
       <h2>Une méthode de spécialiste, pas un simple choix produit</h2>
       <p>
-        Le levage engage des <b>choix techniques</b> et des <b>responsabilités</b> : type de mouvement, mode de prise, centre de gravité, variabilité des charges et exigence d’exploitation.
-        Cette page transforme votre demande en <b>cahier des charges</b> clair pour l’arbitrage, l’installation, l’usage et la maintenance.
+        Le levage engage des <b>choix techniques</b> et des <b>responsabilités</b> : type de mouvement, mode de prise, stabilité, variabilité, conditions d’exploitation.
+        Cette page transforme votre demande en <b>cahier des charges</b> clair pour l’arbitrage, l’usage, les restrictions, et l’orientation vers la bonne solution.
       </p>
     </section>
 
@@ -253,7 +253,7 @@
                 <p class="ask" id="ask">—</p>
                 <p class="askSub" id="askSub">—</p>
                 <div class="progressRow">
-                  <span class="pill" id="stepPill"><b id="stepTxt">1</b> / 8</span>
+                  <span class="pill" id="stepPill"><b id="stepTxt">1</b> / 10</span>
                   <span class="pill">Réponses données : <b id="answeredTxt">0</b></span>
                 </div>
               </div>
@@ -417,31 +417,31 @@
           ]
         }
       },
- {
-  id:"cog",
-  title:"Comment est positionné le centre de gravité de la charge ?",
-  sub:"Même approximatif : cela détermine la stabilité, le ballant et le risque de basculement.",
-  tipTitle:"Aide — Centre de gravité",
-  tip:"Un centre de gravité excentré induit une tendance à pivoter/pencher. S’il est au-dessus des points d’ancrage/de prise, le risque de basculement augmente.",
-  type:"single",
-  gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move") || s.action?.includes("hook")),
-  options:[
-    { id:"center", label:"Centre de gravité centré", help:"La charge reste globalement stable si la prise est correcte." },
-    { id:"offset", label:"Centre de gravité excentré (décalé)", help:"Tendance à pivoter/pencher : équilibrage souvent nécessaire." },
-    { id:"above", label:"Centre de gravité au-dessus des points d’ancrage / de la zone de prise", help:"Risque de basculement/rotation non désirée : validation recommandée." }
-  ]
-},
+      {
+        id:"cog",
+        title:"Comment est positionné le centre de gravité de la charge ?",
+        sub:"Même approximatif : cela détermine la stabilité, le ballant et le risque de basculement.",
+        tipTitle:"Aide — Centre de gravité",
+        tip:"Un centre de gravité excentré induit une tendance à pivoter/pencher. S’il est au-dessus des points d’ancrage/de prise, le risque de basculement augmente.",
+        type:"single",
+        gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move") || s.action?.includes("hook")),
+        options:[
+          { id:"center", label:"Centre de gravité centré", help:"La charge reste globalement stable si la prise est correcte." },
+          { id:"offset", label:"Centre de gravité excentré (décalé)", help:"Tendance à pivoter/pencher : équilibrage souvent nécessaire." },
+          { id:"above", label:"Centre de gravité au-dessus des points d’ancrage / de la zone de prise", help:"Risque de basculement/rotation non désirée : validation recommandée." }
+        ]
+      },
       {
         id:"loadVariability",
         title:"Les charges à manutentionner sont-elles toujours similaires ?",
-        sub:"On parle de géométrie, poids et centre de gravité.",
+        sub:"On parle de géométrie, poids et centre de gravité (sans les chiffrer ici).",
         tipTitle:"Aide — Variabilité",
         tip:"Plus la diversité est grande, plus la solution doit être polyvalente et l’exploitation doit être encadrée (procédure, réglages, contrôles).",
         type:"single",
         gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move") || s.action?.includes("hook")),
         options:[
-          { id:"unique", label:"Charge unique ou très proche", help:"Poids/géométrie/CG très similaires." },
-          { id:"variation", label:"Variations maîtrisées", help:"Quelques variations de poids/CG/forme." },
+          { id:"unique", label:"Charge unique ou très proche", help:"Caractéristiques très similaires d’un cas à l’autre." },
+          { id:"variation", label:"Variations maîtrisées", help:"Quelques variations, dans un cadre prévisible." },
           { id:"diverse", label:"Grande diversité", help:"Charges très différentes selon les cas." }
         ]
       },
@@ -450,13 +450,45 @@
         title:"Quel est le mode de manutention attendu ?",
         sub:"Sécuritaire = une inclinaison peut être acceptable si l’opération reste sûre.",
         tipTitle:"Aide — Mode de manutention",
-        tip:"On traduit l’exigence en contraintes d’usage : vitesse, maîtrise du ballant, stabilité/inclinaison et maintien horizontal par maîtrise du CG.",
+        tip:"On traduit l’exigence en contraintes d’usage : maîtrise du ballant, stabilité/inclinaison et maintien horizontal par maîtrise du CG.",
         type:"single",
         gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move") || s.action?.includes("hook")),
         options:[
           { id:"safe", label:"Sécuritaire", help:"Inclinaison possible si la manutention reste sûre." },
           { id:"precise", label:"Précise de positionnement", help:"Contrôle fin, peu d’à-coups, ballant limité." },
           { id:"hold_horizontal_cg", label:"Maintien horizontal par maîtrise du centre de gravité", help:"Garder la charge horizontale (niveau/planéité) en maîtrisant le CG." }
+        ]
+      },
+      {
+        id:"environment",
+        title:"Dans quel environnement cette manutention sera-t-elle réalisée ?",
+        sub:"Plusieurs réponses possibles si nécessaire.",
+        tipTitle:"Aide — Environnement",
+        tip:"L’environnement influence les matériaux, protections, restrictions d’usage et exigences de maintenance, indépendamment du poids ou de la hauteur.",
+        type:"multi",
+        options:[
+          { id:"indoor", label:"Intérieur (atelier, entrepôt)", help:"Environnement contrôlé." },
+          { id:"outdoor", label:"Extérieur", help:"Exposition aux intempéries." },
+          { id:"humid", label:"Milieu humide / exposé à l’eau", help:"Risque de corrosion, glissance." },
+          { id:"saline", label:"Milieu salin (bord de mer)", help:"Corrosion accélérée." },
+          { id:"dust", label:"Chantier / environnement poussiéreux", help:"Encrassement, abrasion." },
+          { id:"atex", label:"Zone à risque (ATEX / atmosphère explosive)", help:"Contraintes réglementaires spécifiques." },
+          { id:"hot", label:"Températures élevées / charge chaude", help:"Contraintes thermiques." }
+        ]
+      },
+      {
+        id:"frequency",
+        title:"À quelle fréquence cette manutention sera-t-elle réalisée ?",
+        sub:"Cela permet d’évaluer le niveau d’engagement et d’exploitation dans le temps.",
+        tipTitle:"Aide — Fréquence",
+        tip:"Une manutention répétée impose souvent plus de rigueur dans le choix de la solution, son exploitation et son suivi.",
+        type:"single",
+        options:[
+          { id:"occasional", label:"Occasionnelle (ponctuelle)", help:"Utilisation rare." },
+          { id:"regular", label:"Régulière (quelques fois par mois)", help:"Usage récurrent mais non quotidien." },
+          { id:"frequent", label:"Fréquente (chaque semaine)", help:"Usage installé." },
+          { id:"daily", label:"Quotidienne", help:"Usage structurant." },
+          { id:"continuous", label:"En continu / production", help:"Usage critique et permanent." }
         ]
       }
     ];
@@ -469,59 +501,73 @@
     const faqByQuestion = {
       action: [
         { q:"Pourquoi me demande-t-on l’action plutôt que le produit ?", a:"Parce qu’en levage, le produit découle de l’opération : lever, déplacer, saisir, supporter. Une bonne définition d’usage évite les erreurs de sélection."},
-        { q:"Puis-je choisir plusieurs actions ?", a:"Oui. Par exemple : lever + déplacer + saisir. Cela permet ensuite d’assembler support / appareil / accessoire de manière cohérente."},
-        { q:"Que signifie « prévoir une structure » ?", a:"Cela concerne un support de type potence, portique, structure mobile, etc. La structure conditionne la course, l’installation et l’exploitation."},
-        { q:"Si je ne sais pas encore, je fais comment ?", a:"Utilisez « Je ne sais pas ». On avance, mais la précision baisse et un échange spécialiste sera recommandé."},
-        { q:"À quoi sert le cahier des charges final ?", a:"À formuler une demande commerciale exploitable : contexte, mouvements, prise de charge, stabilité, variabilité et niveau d’exigence."}
+        { q:"Puis-je choisir plusieurs actions ?", a:"Oui. Par exemple : lever + déplacer + saisir. Cela permet ensuite d’assembler une solution cohérente."},
+        { q:"Que signifie « prévoir une structure » ?", a:"Cela concerne un support de type potence, portique, structure mobile. La structure conditionne l’installation et l’exploitation."},
+        { q:"Si je ne sais pas encore, je fais comment ?", a:"Utilisez « Je ne sais pas ». On avance, mais la précision baisse et un échange spécialiste peut être recommandé."},
+        { q:"À quoi sert le cahier des charges final ?", a:"À formuler une demande exploitable : contexte, mouvements, prise de charge, stabilité, variabilité et conditions d’exploitation."}
       ],
       movement: [
-        { q:"Pourquoi le déplacement horizontal est-il exclusif (une OU plusieurs directions) ?", a:"Parce que l’exigence technique n’est pas la même : un axe simple (aller/retour) n’implique pas les mêmes contraintes qu’une zone multi-directionnelle."},
-        { q:"Dois-je cocher « lever/descendre » si je veux juste déplacer ?", a:"Ici on traite le levage : si la charge quitte le sol, cochez vertical. Sinon, ce n’est pas du levage."},
-        { q:"Incliner/basculer/retourner : pourquoi c’est critique ?", a:"Ces mouvements créent des efforts et instabilités supplémentaires : la prise de charge, la répartition et la procédure deviennent déterminantes."},
-        { q:"Que veut dire « plusieurs directions » ?", a:"La charge doit être déplacée vers différentes positions dans une zone (pas seulement le long d’un axe unique)."},
-        { q:"Et si c’est occasionnel ?", a:"Cochez quand même : une contrainte occasionnelle peut imposer une marge de sécurité et une validation technique."}
+        { q:"Pourquoi le déplacement horizontal est-il exclusif (une OU plusieurs directions) ?", a:"Parce que l’exigence n’est pas la même : un axe simple n’implique pas les mêmes contraintes qu’une zone multi-directionnelle."},
+        { q:"Incliner/basculer/retourner : pourquoi c’est sensible ?", a:"Ces mouvements augmentent l’instabilité et les efforts : la prise de charge et la procédure deviennent déterminantes."},
+        { q:"Que veut dire « plusieurs directions » ?", a:"La charge doit être déplacée vers différentes positions dans une zone, pas seulement le long d’un axe."},
+        { q:"Et si c’est occasionnel ?", a:"Cochez quand même : une contrainte occasionnelle peut imposer une validation et des limites d’usage."},
+        { q:"Je ne sais pas décrire le mouvement", a:"Choisissez “Je ne sais pas” et continuez : la synthèse mettra en avant ce point à confirmer."}
       ],
       location: [
-        { q:"Pourquoi la localisation compte ?", a:"Elle conditionne l’installation (fixe/mobile), la longueur de course, et la façon d’exploiter le matériel en sécurité."},
+        { q:"Pourquoi la localisation compte ?", a:"Elle conditionne l’installation (fixe/mobile), la mobilité et le cadre d’exploitation."},
         { q:"C’est quoi une « zone définie » ?", a:"Une zone de quelques mètres où la charge doit être déplacée, sans changer d’atelier."},
-        { q:"Multi-sites : qu’est-ce que ça change ?", a:"On doit considérer transport, montage/démontage, réglages et contrôles à chaque déplacement."},
-        { q:"Poste dédié vs plusieurs postes ?", a:"Plusieurs postes augmentent les scénarios d’usage : on vise souvent plus de polyvalence et plus d’encadrement d’exploitation."},
-        { q:"Je ne sais pas encore où ce sera installé ?", a:"Choisissez l’option la plus probable et continuez ; la synthèse indiquera les points à valider."}
+        { q:"Multi-sites : qu’est-ce que ça change ?", a:"Transport, montage/démontage, contrôles et réglages à chaque déplacement."},
+        { q:"Poste dédié vs plusieurs postes ?", a:"Plusieurs postes augmentent les scénarios d’usage : on vise souvent plus de polyvalence et d’encadrement."},
+        { q:"Je ne suis pas sûr", a:"Choisissez l’option la plus probable et continuez ; la synthèse indiquera les points à valider."}
       ],
       anchorsPresence: [
-        { q:"Que sont des « points d’ancrage » ?", a:"Des points conçus pour accrocher la charge : anneaux, anses, insertions, oreilles de levage, etc."},
-        { q:"Points dédiés au levage : pourquoi c’est important ?", a:"Parce qu’un point dédié est conçu/validé pour lever. Sinon, il peut s’agir d’un point non prévu pour le levage."},
+        { q:"Que sont des « points d’ancrage » ?", a:"Des points conçus pour accrocher la charge : anneaux, anses, oreilles de levage, etc."},
+        { q:"Points dédiés au levage : pourquoi c’est important ?", a:"Parce qu’un point dédié est prévu/validé pour lever. Sinon, il peut ne pas être adapté."},
         { q:"Si je n’ai aucun point d’ancrage, c’est bloquant ?", a:"Non, mais la prise dépendra du principe (pince/ventouse/aimant/prise positive) et des caractéristiques de la charge."},
         { q:"Puis-je ajouter des points d’ancrage ?", a:"Parfois oui, mais cela relève souvent d’une validation technique et d’un cadre d’exploitation."},
         { q:"Pourquoi cette question arrive tôt ?", a:"Le mode de prise est un discriminant majeur : sécurité, compatibilité matière/surface, stabilité et procédure."}
       ],
       anchorOrGrip: [
-        { q:"Multipoints : qu’est-ce qu’on veut vérifier ?", a:"La répartition de charge et les angles. Plus il y a de points, plus l’équilibrage et la symétrie deviennent sensibles."},
+        { q:"Multipoints : qu’est-ce qu’on veut vérifier ?", a:"La répartition et les angles. Plus il y a de points, plus l’équilibrage devient sensible."},
         { q:"Prise positive : c’est quoi ?", a:"Une prise par forme/épaulement (accrochage mécanique) sans dépendre d’un serrage ou d’une dépression."},
-        { q:"Ventouse : de quoi dépend la compatibilité ?", a:"De la surface (planéité, porosité), de l’étanchéité, de l’état de surface et du niveau de sécurité attendu."},
-        { q:"Aimant : quel est le point clé ?", a:"La matière doit être ferromagnétique, et il faut considérer l’état de surface, l’épaisseur et les exigences de sécurité."},
-        { q:"Pince/serrage : quel est le risque typique ?", a:"La perte de prise si la géométrie/surface change, ou si l’inclinaison et les à-coups dépassent ce que la prise peut tolérer."}
+        { q:"Ventouse : de quoi dépend la compatibilité ?", a:"De la surface (planéité, porosité), de l’étanchéité et de l’état de surface."},
+        { q:"Aimant : quel est le point clé ?", a:"La matière doit être ferromagnétique ; l’état de surface et l’épaisseur influencent la tenue."},
+        { q:"Pince/serrage : risque typique ?", a:"Perte de prise si la géométrie/surface change, ou si les à-coups dépassent ce que la prise peut tolérer."}
       ],
       cog: [
-        { q:"Pourquoi le centre de gravité est critique ?", a:"Parce qu’il dicte la stabilité. Un centre de gravité mal positionné peut provoquer rotation, inclinaison et basculement."},
-        { q:"Pourquoi le risque de basculement est « au-dessus des points d’ancrage » ?", a:"Quand le CG est au-dessus de la zone de prise, la charge peut chercher une position d’équilibre en basculant/rotant."},
-        { q:"Et si le CG est en dessous ?", a:"La charge tend à se stabiliser (effet pendulaire), mais cela dépend aussi du mode de prise et du mouvement demandé."},
-        { q:"Je ne connais pas le CG : comment estimer ?", a:"Repérez la zone la plus lourde et observez où la charge bascule naturellement quand on la soulève légèrement."},
-        { q:"Que faire si le CG est au-dessus ?", a:"Prévoir réglage d’équilibrage et validation technique (angles, répartition, maintien d’horizontalité si requis)."}
+        { q:"Pourquoi le centre de gravité est critique ?", a:"Parce qu’il dicte la stabilité : il peut provoquer rotation, inclinaison ou basculement."},
+        { q:"Excentré : que se passe-t-il ?", a:"La charge a tendance à pivoter/pencher. Un réglage d’équilibrage peut être nécessaire."},
+        { q:"Pourquoi “au-dessus des points d’ancrage / de prise” ?", a:"Quand le CG est au-dessus, la charge peut chercher une position d’équilibre en basculant/rotant."},
+        { q:"Je ne connais pas le CG : comment estimer ?", a:"Repérez la zone la plus lourde et observez où la charge penche naturellement."},
+        { q:"Que faire si c’est “au-dessus” ?", a:"Prévoir validation et limites d’usage (répartition, stabilité, procédure)." }
       ],
       loadVariability: [
-        { q:"Pourquoi la variabilité change la solution ?", a:"Plus il y a de diversité, plus il faut de polyvalence, de réglages, et une procédure d’exploitation fiable."},
-        { q:"Charge unique : quel avantage ?", a:"On peut optimiser précisément la solution (prise, équilibrage, réglage) et simplifier l’usage."},
-        { q:"Variations maîtrisées : ça veut dire quoi ?", a:"Quelques écarts connus (poids/CG/forme) qui restent dans un cadre prévisible."},
-        { q:"Grande diversité : quel risque typique ?", a:"Inadéquation ponctuelle (prise, stabilité) si l’opérateur applique la même méthode à des charges trop différentes."},
-        { q:"Comment sécuriser une grande diversité ?", a:"Par des limites d’usage, des réglages repérés, des contrôles et souvent un accompagnement spécialiste."}
+        { q:"Pourquoi la variabilité change la solution ?", a:"Plus il y a de diversité, plus il faut de polyvalence, de réglages, et une procédure fiable."},
+        { q:"Charge unique : quel avantage ?", a:"On peut optimiser la solution et simplifier l’usage."},
+        { q:"Variations maîtrisées : ça veut dire quoi ?", a:"Quelques écarts connus qui restent dans un cadre prévisible."},
+        { q:"Grande diversité : risque typique ?", a:"Inadéquation ponctuelle si l’on applique la même méthode à des charges trop différentes."},
+        { q:"Comment sécuriser une grande diversité ?", a:"Par des limites d’usage, des réglages repérés, des contrôles, et souvent un accompagnement."}
       ],
       handlingMode: [
-        { q:"Sécuritaire : ça veut dire quoi exactement ?", a:"Que l’opération reste sûre même si une inclinaison est acceptable (sans situation dangereuse)." },
-        { q:"Précise de positionnement : qu’est-ce qu’on vise ?", a:"Limiter à-coups/ballant et contrôler finement la mise en place (alignement, approche, arrêt)." },
-        { q:"Maintien horizontal par maîtrise du CG : c’est quoi ?", a:"Garder la charge horizontale (niveau/planéité) en contrôlant le centre de gravité pendant l’opération." },
-        { q:"Pourquoi ce choix influence les produits ?", a:"Parce qu’il change les contraintes d’usage : stabilisation, réglages, contrôles, parfois accessoires spécifiques." },
-        { q:"Et si je veux “sécuritaire” + “horizontal” ?", a:"Choisissez l’exigence la plus forte (maintien horizontal). La synthèse mettra en avant les validations nécessaires." }
+        { q:"Sécuritaire : ça veut dire quoi ?", a:"L’opération reste sûre, même si une inclinaison est acceptable." },
+        { q:"Précise de positionnement : qu’est-ce qu’on vise ?", a:"Contrôle fin, limitation des à-coups et du ballant." },
+        { q:"Maintien horizontal par maîtrise du CG : c’est quoi ?", a:"Garder la charge horizontale en maîtrisant le centre de gravité pendant l’opération." },
+        { q:"Pourquoi ce choix influence la solution ?", a:"Parce qu’il change les contraintes d’exploitation : stabilité, réglages, contrôles, procédure." },
+        { q:"Et si je veux “sécuritaire” + “horizontal” ?", a:"Choisissez l’exigence la plus forte (maintien horizontal)." }
+      ],
+      environment: [
+        { q:"Pourquoi l’environnement est-il important ?", a:"Parce qu’il conditionne les matériaux, protections, restrictions d’usage et exigences de maintenance." },
+        { q:"Puis-je sélectionner plusieurs environnements ?", a:"Oui, si la manutention est réalisée dans des contextes différents ou évolutifs." },
+        { q:"Qu’est-ce qu’un environnement salin ?", a:"Un milieu exposé à l’air marin ou aux embruns, accélérant fortement la corrosion." },
+        { q:"Pourquoi parler d’ATEX ici ?", a:"Parce qu’une zone ATEX impose des choix spécifiques et des restrictions d’usage." },
+        { q:"Et si je ne suis pas sûr ?", a:"Choisissez l’environnement le plus contraignant, ou utilisez « Je ne sais pas »." }
+      ],
+      frequency: [
+        { q:"Pourquoi la fréquence est-elle importante ?", a:"Parce qu’un usage répété impose plus de fiabilité, de rigueur et de suivi." },
+        { q:"Occasionnelle : est-ce moins exigeant ?", a:"Elle peut tolérer plus de souplesse, mais reste soumise aux règles de sécurité." },
+        { q:"Quotidienne : qu’est-ce que cela implique ?", a:"Une solution simple à exploiter, avec des procédures claires." },
+        { q:"Production continue : qu’est-ce que ça change ?", a:"La manutention devient critique : arrêt, panne ou erreur ont un impact immédiat." },
+        { q:"Si la fréquence évolue ?", a:"Anticipez le scénario le plus engageant." }
       ]
     };
 
@@ -593,6 +639,9 @@
       if(!state.loadVariability) score -= 6;
       if(!state.handlingMode) score -= 8;
 
+      if(!state.environment || state.environment.length===0) score -= 6;
+      if(!state.frequency) score -= 6;
+
       score = Math.max(0, Math.min(100, Math.round(score)));
       return score;
     }
@@ -640,7 +689,6 @@
       $("tipText").textContent = q.tip || "";
 
       $("opts").innerHTML = "";
-
       renderFAQ(q.id);
 
       const opts = $("opts");
@@ -980,7 +1028,6 @@
       if(q.type === "mixed") ok = !!ans.radio;
       if(q.type === "mixed_yesno") ok = (ans.yn === true || ans.yn === false);
       if(q.type === "conditional_single") ok = !!ans.value;
-
       if(q.type === "movement_combo"){
         ok = (ans.vertical || ans.horizontal !== "none" || ans.tilt || ans.tip || ans.flip);
       }
@@ -1056,7 +1103,7 @@
         }
       }
 
-      const cgMap = { center:"Centré", above:"Au-dessus des points / de la prise", below:"En dessous" };
+      const cgMap = { center:"Centré", offset:"Excentré", above:"Au-dessus des points / de la prise" };
       rows.push(["Centre de gravité", state.cog ? (cgMap[state.cog]||state.cog) : "—"]);
 
       const varMap = { unique:"Unique / proche", variation:"Variations maîtrisées", diverse:"Grande diversité" };
@@ -1064,6 +1111,26 @@
 
       const hmMap = { safe:"Sécuritaire", precise:"Précise de positionnement", hold_horizontal_cg:"Maintien horizontal par maîtrise du CG" };
       rows.push(["Mode de manutention", state.handlingMode ? (hmMap[state.handlingMode]||state.handlingMode) : "—"]);
+
+      const envMap = {
+        indoor:"Intérieur",
+        outdoor:"Extérieur",
+        humid:"Milieu humide",
+        saline:"Milieu salin",
+        dust:"Chantier / poussiéreux",
+        atex:"Zone ATEX",
+        hot:"Températures élevées / charge chaude"
+      };
+      rows.push(["Environnement", state.environment?.length ? state.environment.map(e=>envMap[e]||e).join(", ") : "—"]);
+
+      const freqMap = {
+        occasional:"Occasionnelle",
+        regular:"Régulière",
+        frequent:"Fréquente",
+        daily:"Quotidienne",
+        continuous:"En continu / production"
+      };
+      rows.push(["Fréquence d’utilisation", state.frequency ? (freqMap[state.frequency]||state.frequency) : "—"]);
 
       rows.forEach(([a,b])=>{
         const tr = document.createElement("tr");
@@ -1077,10 +1144,14 @@
       if(m.tip || m.tilt) alerts.push("Incliner/basculer : préciser l’angle et la stabilité attendus.");
       if(state.anchorPoints === "p3" || state.anchorPoints === "p4") alerts.push("Accrochage multipoints : préciser les angles et la répartition.");
       if(state.cog === "above") alerts.push("Centre de gravité au-dessus des points/prise : risque de basculement/rotation non désirée.");
+      if(state.cog === "offset") alerts.push("Centre de gravité excentré : prévoir équilibrage/réglage et vérifier la stabilité pendant la manutention.");
       if(state.loadVariability === "diverse") alerts.push("Grande diversité : solution polyvalente + procédure d’exploitation recommandée.");
       if(state.handlingMode === "precise") alerts.push("Précision : privilégier maîtrise du ballant/à-coups et contrôle fin.");
       if(state.handlingMode === "hold_horizontal_cg") alerts.push("Maintien horizontal : préciser tolérance de planéité, mise à niveau et contrôle du CG.");
       if(state["location_multisite"]) alerts.push("Multi-sites : préciser mobilité, montage/démontage, transport.");
+      if(state.environment?.includes("saline")) alerts.push("Environnement salin : vigilance sur les matériaux, protections et maintenance.");
+      if(state.environment?.includes("atex")) alerts.push("Zone ATEX : solution soumise à des exigences réglementaires spécifiques.");
+      if(state.frequency === "daily" || state.frequency === "continuous") alerts.push("Usage fréquent ou continu : solution structurante, procédures et suivi recommandés.");
       if(dontKnowCount.total>0) alerts.push("Certaines réponses sont inconnues : la précision du cahier des charges est réduite.");
 
       const ul = $("alerts");
@@ -1143,7 +1214,7 @@
         }
       }
 
-      const cgMap2 = { center:"Centré", above:"Au-dessus des points / de la prise (risque basculement)", below:"En dessous" };
+      const cgMap2 = { center:"Centré", offset:"Excentré", above:"Au-dessus des points / de la prise (risque basculement)" };
       cdcLines.push("");
       cdcLines.push("5) Centre de gravité");
       cdcLines.push(`- ${state.cog ? (cgMap2[state.cog]||state.cog) : "Non renseigné"}`);
@@ -1157,6 +1228,30 @@
       cdcLines.push("");
       cdcLines.push("7) Mode de manutention attendu");
       cdcLines.push(`- ${state.handlingMode ? (hmMap2[state.handlingMode]||state.handlingMode) : "Non renseigné"}`);
+
+      const envMap2 = {
+        indoor:"Intérieur",
+        outdoor:"Extérieur",
+        humid:"Milieu humide / eau",
+        saline:"Milieu salin (air marin)",
+        dust:"Chantier / poussières",
+        atex:"Zone à risque (ATEX)",
+        hot:"Températures élevées / charge chaude"
+      };
+      cdcLines.push("");
+      cdcLines.push("8) Environnement d’utilisation");
+      cdcLines.push(`- ${state.environment?.length ? state.environment.map(e=>envMap2[e]||e).join(", ") : "Non renseigné"}`);
+
+      const freqMap2 = {
+        occasional:"Occasionnelle (ponctuelle)",
+        regular:"Régulière (mois)",
+        frequent:"Fréquente (semaine)",
+        daily:"Quotidienne",
+        continuous:"En continu / production"
+      };
+      cdcLines.push("");
+      cdcLines.push("9) Fréquence d’exploitation");
+      cdcLines.push(`- ${state.frequency ? (freqMap2[state.frequency]||state.frequency) : "Non renseigné"}`);
 
       cdcLines.push("");
       cdcLines.push("Remarques / points à valider");
@@ -1223,73 +1318,12 @@
       state.cog = "above";
       state.loadVariability = "variation";
       state.handlingMode = "safe";
+      state.environment = ["outdoor","saline"];
+      state.frequency = "daily";
       buildVisibleSteps();
       renderCurrent();
       renderSummary();
       focusQuestionBox();
-    }
-
-    function next(){
-      buildVisibleSteps();
-      if(stepIndex < visibleSteps.length - 1){
-        stepIndex += 1;
-        renderCurrent();
-        renderSummary();
-        focusQuestionBox();
-      } else {
-        renderSummary(true);
-        $("msg").textContent = "Fin des questions — la synthèse est à droite ✅";
-        focusSummary();
-      }
-      setHeader();
-      setStepPills();
-    }
-
-    function back(){
-      if(stepIndex > 0){
-        stepIndex -= 1;
-        renderCurrent();
-        renderSummary();
-        focusQuestionBox();
-      }
-      setHeader();
-      setStepPills();
-    }
-
-    function validate(){
-      $("msg").textContent = "";
-      const q = flow[ visibleSteps[stepIndex] ];
-      const ans = collectCurrentAnswer();
-
-      let ok = true;
-      if(q.type === "multi") ok = ans.length > 0;
-      if(q.type === "single") ok = !!ans;
-      if(q.type === "mixed") ok = !!ans.radio;
-      if(q.type === "mixed_yesno") ok = (ans.yn === true || ans.yn === false);
-      if(q.type === "conditional_single") ok = !!ans.value;
-      if(q.type === "movement_combo"){
-        ok = (ans.vertical || ans.horizontal !== "none" || ans.tilt || ans.tip || ans.flip);
-      }
-
-      if(!ok){
-        $("msg").textContent = "Veuillez sélectionner une réponse, ou utilisez « Je ne sais pas ».";
-        $("msg").style.color = "var(--bad)";
-        return;
-      }
-
-      saveAnswer(ans, false);
-      buildVisibleSteps();
-      $("msg").textContent = "Réponse enregistrée ✅";
-      $("msg").style.color = "var(--good)";
-      next();
-    }
-
-    function dontKnow(){
-      $("msg").textContent = "";
-      saveAnswer(null, true);
-      $("msg").textContent = "D’accord — on continue. (La précision de la demande baisse)";
-      $("msg").style.color = "var(--warn)";
-      next();
     }
 
     function bind(){
@@ -1312,3 +1346,4 @@
   </script>
 </body>
 </html>
+```0
