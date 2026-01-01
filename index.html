@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Arbre de décision — Levage (Q1→Q5)</title>
-  <meta name="description" content="Arbre de décision simple pour utilisateurs non experts : comprendre la manutention (lever, déplacer, accrocher, supporter) et orienter vers les grandes familles de produits (supports, appareils, accessoires) avec aides et infobulles." />
+  <title>Arbre de décision — Levage (Q1→Q5) | Matériel Levage</title>
+  <meta name="description" content="Arbre de décision simple pour utilisateurs non experts : décrire la manutention (lever, déplacer, accrocher, supporter) et orienter vers les grandes familles de produits (supports, appareils, accessoires) avec aides et infobulles." />
   <style>
     :root{
       --bg:#0b1220;
@@ -84,9 +84,15 @@
     .btn:active{transform: translateY(1px)}
     .btn.primary{border-color: rgba(122,162,255,.35); background: rgba(122,162,255,.12)}
     .btn.primary:hover{background: rgba(122,162,255,.18)}
-    .btn.danger{border-color: rgba(255,107,107,.35); background: rgba(255,107,107,.10)}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
-    .section{border:1px dashed rgba(255,255,255,.12);border-radius:14px;padding:12px;margin-bottom:12px;background:rgba(0,0,0,.08)}
+    .section{
+      border:1px dashed rgba(255,255,255,.12);
+      border-radius:14px;
+      padding:12px;
+      margin-bottom:12px;
+      background:rgba(0,0,0,.08)
+    }
     .qtitle{
       display:flex;gap:10px;align-items:flex-start;justify-content:space-between;
       margin-bottom:8px;
@@ -145,6 +151,7 @@
     .family h3{margin:0 0 6px;font-size:13px}
     .family p{margin:0;color:var(--muted);font-size:12px;line-height:1.45}
     .footerNote{color:var(--muted);font-size:12px;margin-top:10px}
+    .hidden{display:none !important;}
 
     /* Tooltip */
     .tip{
@@ -180,26 +187,21 @@
     .bubble .bchips{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
     .bubble .bchips .chip{background:#0f2145}
 
-    /* Tables (right panel) */
+    /* Right panel tables */
     table{width:100%;border-collapse:collapse}
     th,td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
     th{font-size:12px;color:var(--muted);text-align:left}
     td{font-size:13px}
     .mini{color:var(--muted);font-size:12px;margin-top:2px}
-    .badge{
-      display:inline-flex;align-items:center;
-      padding:4px 8px;border-radius:999px;font-size:12px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.10);
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size:12px;
       color: var(--muted);
+      white-space:pre-wrap
     }
-    .badge.good{border-color: rgba(56,211,159,.35); color:#bff3e2}
-    .badge.warn{border-color: rgba(255,204,102,.35); color:#ffe4b2}
-    .badge.bad{border-color: rgba(255,107,107,.35); color:#ffd0d0}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:12px; color: var(--muted); white-space:pre-wrap}
-    .hidden{display:none !important;}
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="card">
@@ -207,7 +209,7 @@
         <div>
           <h1>Arbre de décision — Levage (Q1 → Q5)</h1>
           <p class="sub">
-            Parcours destiné à un utilisateur sans compétence de levage : on décrit <b>ce qu’on fait</b> et <b>comment la charge se comporte</b>,
+            Parcours destiné à un utilisateur sans compétence de levage : on décrit <b>l’action</b> et <b>le comportement de la charge</b>,
             puis on oriente vers les <b>grandes familles de produits</b> (supports, appareils, accessoires).
           </p>
         </div>
@@ -222,7 +224,7 @@
         <!-- LEFT: Questions -->
         <div class="card2 card" style="box-shadow:none">
           <div class="hd">
-            <div class="pill">Questions (avec aides & infobulles)</div>
+            <div class="pill">Parcours (1 question à la fois)</div>
             <div class="pill" id="clarityPill">Clarté : 100%</div>
           </div>
           <div class="bd">
@@ -238,8 +240,8 @@
                   <div class="bubble">
                     <p class="btitle">Aide — Q1</p>
                     <p class="btxt">
-                      Cochez ce que vous faites réellement : <b>lever</b> (vertical), <b>déplacer</b> (latéral), <b>accrocher</b> (prendre la charge),
-                      <b>supporter</b> (structure pour porter l’appareil).
+                      Cochez ce que vous faites réellement : <b>lever</b> (vertical), <b>déplacer</b> (latéral/vers un autre poste),
+                      <b>accrocher</b> (prendre la charge), <b>supporter</b> (structure pour porter l’appareil).
                     </p>
                     <div class="bchips">
                       <span class="chip">Ex : lever un moteur</span>
@@ -265,7 +267,7 @@
                   <div class="tip" tabindex="0" aria-label="Aide lever">i
                     <div class="bubble">
                       <p class="btitle">Lever</p>
-                      <p class="btxt">Exemples : sortir une machine d’une fosse, monter une pièce sur un établi. En général : besoin d’un appareil de levage.</p>
+                      <p class="btxt">Exemples : sortir une machine d’une fosse, monter une pièce sur un établi.</p>
                     </div>
                   </div>
                 </div>
@@ -273,7 +275,8 @@
                 <div class="opt">
                   <input id="q1_move" type="checkbox" />
                   <label for="q1_move">
-                    <b>Déplacer la charge</b> <span class="small">Déplacer la charge (souvent latéralement), sur un ou plusieurs emplacements.</span>
+                    <b>Déplacer la charge</b>
+                    <span class="small">Déplacer la charge (souvent latéralement), sur un ou plusieurs emplacements.</span>
                     <div class="meta">
                       <span class="chip">Oriente : manutention</span>
                       <span class="chip">Ex : translation / roulage</span>
@@ -282,7 +285,7 @@
                   <div class="tip" tabindex="0" aria-label="Aide déplacer">i
                     <div class="bubble">
                       <p class="btitle">Déplacer</p>
-                      <p class="btxt">Exemples : amener une charge vers un autre poste, la déplacer sur plusieurs mètres dans un atelier.</p>
+                      <p class="btxt">Exemples : amener une charge vers un autre poste, la déplacer sur plusieurs mètres.</p>
                     </div>
                   </div>
                 </div>
@@ -300,7 +303,7 @@
                   <div class="tip" tabindex="0" aria-label="Aide accrocher">i
                     <div class="bubble">
                       <p class="btitle">Accrocher / saisir</p>
-                      <p class="btxt">Si la charge a des anneaux → élingage. Si elle n’en a pas → pince, ventouse, aimant…</p>
+                      <p class="btxt">Avec anneaux → élingage. Sans anneau → pince/ventouse/aimant.</p>
                     </div>
                   </div>
                 </div>
@@ -318,7 +321,7 @@
                   <div class="tip" tabindex="0" aria-label="Aide supporter">i
                     <div class="bubble">
                       <p class="btitle">Supporter</p>
-                      <p class="btxt">Exemples : potence murale/sur fût, portique mobile. Utile si vous n’avez pas déjà une structure de levage.</p>
+                      <p class="btxt">Exemples : potence murale/sur fût, portique mobile. Utile si vous n’avez pas déjà une structure.</p>
                     </div>
                   </div>
                 </div>
@@ -336,14 +339,8 @@
                   <div class="bubble">
                     <p class="btitle">Aide — Q2</p>
                     <p class="btxt">
-                      Choisissez ce qui ressemble le plus à votre geste : vertical seul (monter/descendre),
-                      horizontal (translation), ou mouvement complexe (incliner/retourner).
+                      Choisissez ce qui ressemble le plus à votre geste : vertical seul, horizontal (translation), ou mouvement complexe (incliner/retourner).
                     </p>
-                    <div class="bchips">
-                      <span class="chip">1 direction = simple</span>
-                      <span class="chip">plusieurs directions = mobilité</span>
-                      <span class="chip">basculement/retournement = spécifique</span>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -413,7 +410,7 @@
                   <input name="q2_mode" id="q2_unknown" type="radio" />
                   <label for="q2_unknown">
                     <b>Je ne sais pas</b>
-                    <span class="small">Pas grave : on continue, mais une validation technique sera souvent nécessaire.</span>
+                    <span class="small">On continue, mais une validation technique sera souvent nécessaire.</span>
                     <div class="meta">
                       <span class="chip">Impact : clarté ↓</span>
                       <span class="chip">Risque : à vérifier</span>
@@ -433,7 +430,7 @@
                 <div class="tip" tabindex="0" aria-label="Aide Q3">i
                   <div class="bubble">
                     <p class="btitle">Aide — Q3</p>
-                    <p class="btxt">Poste = même endroit. Zone = même espace sur plusieurs mètres. Plusieurs postes = emplacements distincts. Multi-sites = sites différents.</p>
+                    <p class="btxt">Poste = même endroit. Zone = même espace. Plusieurs postes = emplacements distincts. Multi-sites = sites différents.</p>
                   </div>
                 </div>
               </div>
@@ -461,4 +458,22 @@
                       <span class="chip">Ex : portique roulant</span>
                     </div>
                   </label>
-                <
+                </div>
+
+                <div class="opt">
+                  <input name="q3_loc" id="q3_multi" type="radio" />
+                  <label for="q3_multi">
+                    <b>Sur plusieurs postes / zones de travail</b>
+                    <span class="small">Déplacements entre plusieurs emplacements distincts.</span>
+                    <div class="meta">
+                      <span class="chip">Oriente : mobile</span>
+                      <span class="chip">Ex : portique mobile</span>
+                    </div>
+                  </label>
+                </div>
+
+                <div class="opt">
+                  <input id="q3_multisite" type="checkbox" />
+                  <label for="q3_multisite">
+                    <b>Option : sur plusieurs sites</b>
+                    <span class="small">Ateliers/bâtiments/sit
