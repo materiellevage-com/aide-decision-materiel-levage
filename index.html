@@ -197,6 +197,9 @@
     details p{margin:8px 0 0}
     .divider{height:1px;background:var(--ml-line);margin:12px 0}
     ul{margin:10px 0 0;padding-left:18px;color:var(--ml-muted);font-size:12px;line-height:1.55}
+
+    .faqTitle{font-weight:1000;color:var(--ml-blue-dark);font-size:13px;margin-top:14px;}
+    .faqNote{color:var(--ml-muted);font-size:12px;line-height:1.45;margin-top:4px;}
   </style>
 </head>
 
@@ -212,7 +215,7 @@
           <div style="font-weight:1000;color:var(--ml-blue-dark);font-size:18px;line-height:1.15">
             Aide au choix — Levage (approche spécialiste)
           </div>
-          <div class="subtitle">Un échange guidé pour qualifier l’opération, le comportement de la charge et le niveau d’exigence (sécurité, positionnement, maîtrise du centre de gravité).</div>
+          <div class="subtitle">Un échange guidé pour qualifier l’opération, le comportement de la charge et le niveau d’exigence (sécurité, positionnement, maintien horizontal par maîtrise du CG).</div>
         </div>
       </div>
 
@@ -226,18 +229,15 @@
   </div>
 
   <div class="wrap">
-
-    <!-- SEO -->
     <section class="seoBlock" aria-label="Expertise levage">
       <h2>Une méthode de spécialiste, pas un simple choix produit</h2>
       <p>
-        Le levage engage des <b>choix techniques</b> et des <b>responsabilités</b> : nature de l’opération, stabilité, mode de prise, centre de gravité, variabilité des charges, niveau d’exigence (sécurité/positionnement).
-        Cette page transforme votre demande en <b>cahier des charges</b> clair pour l’arbitrage, l’installation, l’exploitation et la maintenance.
+        Le levage engage des <b>choix techniques</b> et des <b>responsabilités</b> : type de mouvement, mode de prise, centre de gravité, variabilité des charges et exigence d’exploitation.
+        Cette page transforme votre demande en <b>cahier des charges</b> clair pour l’arbitrage, l’installation, l’usage et la maintenance.
       </p>
     </section>
 
     <div class="grid">
-      <!-- Questions -->
       <div class="card">
         <div class="hd">
           <div>
@@ -275,11 +275,14 @@
             </div>
 
             <div class="mini" id="msg"></div>
+
+            <div class="faqTitle">Aide rapide — 5 questions que l’on se pose souvent</div>
+            <div class="faqNote">Ces réponses s’adaptent à la question affichée, comme un échange avec un spécialiste.</div>
+            <div id="faqDynamic"></div>
           </div>
         </div>
       </div>
 
-      <!-- Synthèse -->
       <div class="card" id="summaryCard">
         <div class="hd">
           <div>
@@ -311,28 +314,9 @@
         </div>
       </div>
     </div>
-
-    <!-- FAQ (SEO) -->
-    <section class="seoBlock" aria-label="FAQ levage">
-      <h2>FAQ — cadrer une demande de levage</h2>
-
-      <details>
-        <summary>Pourquoi demander le mode de prise et le centre de gravité ?</summary>
-        <p>Parce que la stabilité, le ballant, l’inclinaison et la sécurité dépendent directement de la prise de charge et du centre de gravité. C’est un point discriminant de sélection.</p>
-      </details>
-
-      <details>
-        <summary>Pourquoi la variabilité des charges est importante ?</summary>
-        <p>Une charge unique n’impose pas les mêmes contraintes qu’une diversité de géométries/poids/centres de gravité : cela influence la solution (réglages, polyvalence, sécurité d’exploitation).</p>
-      </details>
-
-      <details>
-        <summary>Que faire si je ne sais pas répondre ?</summary>
-        <p>Utilisez “Je ne sais pas” : vous avancez quand même, mais la précision du cahier des charges baisse et un échange spécialiste devient recommandé.</p>
-      </details>
-    </section>
-
   </div>
+
+  <script id="faqJsonLd" type="application/ld+json">{}</script>
 
   <script>
     const $ = (id)=>document.getElementById(id);
@@ -352,9 +336,6 @@
       el.scrollIntoView({behavior:"smooth", block:"start"});
     }
 
-    // -----------------------------
-    // FLOW (8 questions effectives)
-    // -----------------------------
     const flow = [
       {
         id:"action",
@@ -370,25 +351,15 @@
           { id:"support", label:"Prévoir une structure", help:"Structure porteuse (potence, portique, etc.)." }
         ]
       },
-
       {
         id:"movement",
         title:"Quel(s) mouvement(s) devez-vous réaliser ?",
-        sub:"Cochez tout ce qui s’applique (même si c’est partiel ou occasionnel).",
+        sub:"Le déplacement horizontal est exclusif : une direction OU plusieurs directions.",
         tipTitle:"Aide — Mouvements",
         tip:"Inclinaison/basculement/retournement = complexité plus élevée → souvent besoin de validation technique.",
-        type:"multi",
-        gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move")),
-        options:[
-          { id:"v_updown", label:"Lever / descendre (vertical)", help:"Montée/descente." },
-          { id:"h_onesense", label:"Déplacer horizontalement — un sens", help:"Translation sur un axe." },
-          { id:"h_multisense", label:"Déplacer horizontalement — plusieurs sens", help:"Plusieurs directions/positions." },
-          { id:"tilt", label:"Incliner la charge", help:"Modifier l’angle (mise à niveau/positionnement)." },
-          { id:"tip", label:"Basculer la charge", help:"Passage contrôlé d’une position à une autre." },
-          { id:"flip", label:"Retourner la charge (180°)", help:"Retournement complet." }
-        ]
+        type:"movement_combo",
+        gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move"))
       },
-
       {
         id:"location",
         title:"Où se déroule l’opération ?",
@@ -404,8 +375,6 @@
         ],
         optionCheck:{ id:"multisite", label:"Option : multi-sites", help:"Ateliers / bâtiments / sites différents." }
       },
-
-      // (Q4) La charge a-t-elle des ancrages ?
       {
         id:"anchorsPresence",
         title:"La charge dispose-t-elle de points d’ancrage (anneaux, anses, points prévus) ?",
@@ -418,8 +387,6 @@
         noLabel:"Non, il n’y a pas de points d’ancrage",
         extraCheck:{ id:"dedicated", label:"Option : points dédiés au levage", help:"Points prévus/validés par le fabricant ou la conception." }
       },
-
-      // (Q5) Détail ancrages (nombre) OU mode de prise (si pas d’ancrage)
       {
         id:"anchorOrGrip",
         title:"Pour être sûr : comment la charge est-elle prise ?",
@@ -428,7 +395,7 @@
         tip:"Multipoints = répartition/angles. Sans ancrage = principe physique (serrage, dépression, magnétisme).",
         type:"conditional_single",
         gate:(s)=> s.action?.includes("hook"),
-        when:(s)=> s.anchorsPresence, // true/false
+        when:(s)=> s.anchorsPresence,
         ifTrue:{
           key:"anchorPoints",
           title:"Combien de points d’ancrage utilisez-vous ?",
@@ -450,30 +417,26 @@
           ]
         }
       },
-
-      // (Q6) Centre de gravité
       {
         id:"cog",
         title:"Comment est positionné le centre de gravité de la charge ?",
-        sub:"Même approximatif : cela détermine la stabilité et le risque d’inclinaison/basculement.",
+        sub:"Même approximatif : cela détermine la stabilité et le risque de basculement.",
         tipTitle:"Aide — Centre de gravité",
-        tip:"Un CG décentré ou sous les points d’accroche peut créer une rotation non désirée et imposer une solution plus encadrée.",
+        tip:"Quand le centre de gravité se situe au-dessus des points d’ancrage / de la zone de prise, la charge peut chercher à basculer.",
         type:"single",
         gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move") || s.action?.includes("hook")),
         options:[
           { id:"center", label:"Centre de gravité centré", help:"Stabilité plus naturelle." },
-          { id:"decenter", label:"Centre de gravité décentré", help:"Inclinaison possible." },
-          { id:"below", label:"Centre de gravité sous les points / instable", help:"Risque de basculement/retournement." }
+          { id:"above", label:"Centre de gravité au-dessus des points d’ancrage / de prise", help:"Risque de basculement/rotation non désirée." },
+          { id:"below", label:"Centre de gravité en dessous", help:"Tendance plus stable (effet pendulaire), selon la prise." }
         ]
       },
-
-      // (Q7) Variabilité des charges
       {
         id:"loadVariability",
         title:"Les charges à manutentionner sont-elles toujours similaires ?",
         sub:"On parle de géométrie, poids et centre de gravité.",
         tipTitle:"Aide — Variabilité",
-        tip:"Plus la diversité est grande, plus la solution doit être polyvalente et l’exploitation doit être encadrée (procédure, réglages, contrôle).",
+        tip:"Plus la diversité est grande, plus la solution doit être polyvalente et l’exploitation doit être encadrée (procédure, réglages, contrôles).",
         type:"single",
         gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move") || s.action?.includes("hook")),
         options:[
@@ -482,20 +445,18 @@
           { id:"diverse", label:"Grande diversité", help:"Charges très différentes selon les cas." }
         ]
       },
-
-      // (Q8) Mode de manutention attendu (sécurité / précision / horizontale CG)
       {
         id:"handlingMode",
         title:"Quel est le mode de manutention attendu ?",
-        sub:"Choisissez ce qui décrit le mieux l’exigence d’exploitation.",
-        tipTitle:"Aide — Exigence",
-        tip:"On traduit l’exigence en contraintes : vitesse, maîtrise du ballant, stabilité/inclinaison, contrôle horizontal du centre de gravité.",
+        sub:"Sécuritaire = une inclinaison peut être acceptable si l’opération reste sûre.",
+        tipTitle:"Aide — Mode de manutention",
+        tip:"On traduit l’exigence en contraintes d’usage : vitesse, maîtrise du ballant, stabilité/inclinaison et maintien horizontal par maîtrise du CG.",
         type:"single",
         gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move") || s.action?.includes("hook")),
         options:[
-          { id:"safe", label:"Sécuritaire / robuste", help:"Priorité à la maîtrise et à la sécurité d’exploitation." },
+          { id:"safe", label:"Sécuritaire", help:"Inclinaison possible si la manutention reste sûre." },
           { id:"precise", label:"Précise de positionnement", help:"Contrôle fin, peu d’à-coups, ballant limité." },
-          { id:"h_cg", label:"Déplacement horizontal maîtrisant le centre de gravité", help:"Maintien du CG, stabilité et orientation." }
+          { id:"hold_horizontal_cg", label:"Maintien horizontal par maîtrise du centre de gravité", help:"Garder la charge horizontale (niveau/planéité) en maîtrisant le CG." }
         ]
       }
     ];
@@ -504,6 +465,92 @@
     const dontKnowCount = { total:0, byId:{} };
     let stepIndex = 0;
     const visibleSteps = [];
+
+    const faqByQuestion = {
+      action: [
+        { q:"Pourquoi me demande-t-on l’action plutôt que le produit ?", a:"Parce qu’en levage, le produit découle de l’opération : lever, déplacer, saisir, supporter. Une bonne définition d’usage évite les erreurs de sélection."},
+        { q:"Puis-je choisir plusieurs actions ?", a:"Oui. Par exemple : lever + déplacer + saisir. Cela permet ensuite d’assembler support / appareil / accessoire de manière cohérente."},
+        { q:"Que signifie « prévoir une structure » ?", a:"Cela concerne un support de type potence, portique, structure mobile, etc. La structure conditionne la course, l’installation et l’exploitation."},
+        { q:"Si je ne sais pas encore, je fais comment ?", a:"Utilisez « Je ne sais pas ». On avance, mais la précision baisse et un échange spécialiste sera recommandé."},
+        { q:"À quoi sert le cahier des charges final ?", a:"À formuler une demande commerciale exploitable : contexte, mouvements, prise de charge, stabilité, variabilité et niveau d’exigence."}
+      ],
+      movement: [
+        { q:"Pourquoi le déplacement horizontal est-il exclusif (une OU plusieurs directions) ?", a:"Parce que l’exigence technique n’est pas la même : un axe simple (aller/retour) n’implique pas les mêmes contraintes qu’une zone multi-directionnelle."},
+        { q:"Dois-je cocher « lever/descendre » si je veux juste déplacer ?", a:"Ici on traite le levage : si la charge quitte le sol, cochez vertical. Sinon, ce n’est pas du levage."},
+        { q:"Incliner/basculer/retourner : pourquoi c’est critique ?", a:"Ces mouvements créent des efforts et instabilités supplémentaires : la prise de charge, la répartition et la procédure deviennent déterminantes."},
+        { q:"Que veut dire « plusieurs directions » ?", a:"La charge doit être déplacée vers différentes positions dans une zone (pas seulement le long d’un axe unique)."},
+        { q:"Et si c’est occasionnel ?", a:"Cochez quand même : une contrainte occasionnelle peut imposer une marge de sécurité et une validation technique."}
+      ],
+      location: [
+        { q:"Pourquoi la localisation compte ?", a:"Elle conditionne l’installation (fixe/mobile), la longueur de course, et la façon d’exploiter le matériel en sécurité."},
+        { q:"C’est quoi une « zone définie » ?", a:"Une zone de quelques mètres où la charge doit être déplacée, sans changer d’atelier."},
+        { q:"Multi-sites : qu’est-ce que ça change ?", a:"On doit considérer transport, montage/démontage, réglages et contrôles à chaque déplacement."},
+        { q:"Poste dédié vs plusieurs postes ?", a:"Plusieurs postes augmentent les scénarios d’usage : on vise souvent plus de polyvalence et plus d’encadrement d’exploitation."},
+        { q:"Je ne sais pas encore où ce sera installé ?", a:"Choisissez l’option la plus probable et continuez ; la synthèse indiquera les points à valider."}
+      ],
+      anchorsPresence: [
+        { q:"Que sont des « points d’ancrage » ?", a:"Des points conçus pour accrocher la charge : anneaux, anses, insertions, oreilles de levage, etc."},
+        { q:"Points dédiés au levage : pourquoi c’est important ?", a:"Parce qu’un point dédié est conçu/validé pour lever. Sinon, il peut s’agir d’un point non prévu pour le levage."},
+        { q:"Si je n’ai aucun point d’ancrage, c’est bloquant ?", a:"Non, mais la prise dépendra du principe (pince/ventouse/aimant/prise positive) et des caractéristiques de la charge."},
+        { q:"Puis-je ajouter des points d’ancrage ?", a:"Parfois oui, mais cela relève souvent d’une validation technique et d’un cadre d’exploitation."},
+        { q:"Pourquoi cette question arrive tôt ?", a:"Le mode de prise est un discriminant majeur : sécurité, compatibilité matière/surface, stabilité et procédure."}
+      ],
+      anchorOrGrip: [
+        { q:"Multipoints : qu’est-ce qu’on veut vérifier ?", a:"La répartition de charge et les angles. Plus il y a de points, plus l’équilibrage et la symétrie deviennent sensibles."},
+        { q:"Prise positive : c’est quoi ?", a:"Une prise par forme/épaulement (accrochage mécanique) sans dépendre d’un serrage ou d’une dépression."},
+        { q:"Ventouse : de quoi dépend la compatibilité ?", a:"De la surface (planéité, porosité), de l’étanchéité, de l’état de surface et du niveau de sécurité attendu."},
+        { q:"Aimant : quel est le point clé ?", a:"La matière doit être ferromagnétique, et il faut considérer l’état de surface, l’épaisseur et les exigences de sécurité."},
+        { q:"Pince/serrage : quel est le risque typique ?", a:"La perte de prise si la géométrie/surface change, ou si l’inclinaison et les à-coups dépassent ce que la prise peut tolérer."}
+      ],
+      cog: [
+        { q:"Pourquoi le centre de gravité est critique ?", a:"Parce qu’il dicte la stabilité. Un centre de gravité mal positionné peut provoquer rotation, inclinaison et basculement."},
+        { q:"Pourquoi le risque de basculement est « au-dessus des points d’ancrage » ?", a:"Quand le CG est au-dessus de la zone de prise, la charge peut chercher une position d’équilibre en basculant/rotant."},
+        { q:"Et si le CG est en dessous ?", a:"La charge tend à se stabiliser (effet pendulaire), mais cela dépend aussi du mode de prise et du mouvement demandé."},
+        { q:"Je ne connais pas le CG : comment estimer ?", a:"Repérez la zone la plus lourde et observez où la charge bascule naturellement quand on la soulève légèrement."},
+        { q:"Que faire si le CG est au-dessus ?", a:"Prévoir réglage d’équilibrage et validation technique (angles, répartition, maintien d’horizontalité si requis)."}
+      ],
+      loadVariability: [
+        { q:"Pourquoi la variabilité change la solution ?", a:"Plus il y a de diversité, plus il faut de polyvalence, de réglages, et une procédure d’exploitation fiable."},
+        { q:"Charge unique : quel avantage ?", a:"On peut optimiser précisément la solution (prise, équilibrage, réglage) et simplifier l’usage."},
+        { q:"Variations maîtrisées : ça veut dire quoi ?", a:"Quelques écarts connus (poids/CG/forme) qui restent dans un cadre prévisible."},
+        { q:"Grande diversité : quel risque typique ?", a:"Inadéquation ponctuelle (prise, stabilité) si l’opérateur applique la même méthode à des charges trop différentes."},
+        { q:"Comment sécuriser une grande diversité ?", a:"Par des limites d’usage, des réglages repérés, des contrôles et souvent un accompagnement spécialiste."}
+      ],
+      handlingMode: [
+        { q:"Sécuritaire : ça veut dire quoi exactement ?", a:"Que l’opération reste sûre même si une inclinaison est acceptable (sans situation dangereuse)." },
+        { q:"Précise de positionnement : qu’est-ce qu’on vise ?", a:"Limiter à-coups/ballant et contrôler finement la mise en place (alignement, approche, arrêt)." },
+        { q:"Maintien horizontal par maîtrise du CG : c’est quoi ?", a:"Garder la charge horizontale (niveau/planéité) en contrôlant le centre de gravité pendant l’opération." },
+        { q:"Pourquoi ce choix influence les produits ?", a:"Parce qu’il change les contraintes d’usage : stabilisation, réglages, contrôles, parfois accessoires spécifiques." },
+        { q:"Et si je veux “sécuritaire” + “horizontal” ?", a:"Choisissez l’exigence la plus forte (maintien horizontal). La synthèse mettra en avant les validations nécessaires." }
+      ]
+    };
+
+    function renderFAQ(qid){
+      const list = faqByQuestion[qid] || [];
+      const root = $("faqDynamic");
+      root.innerHTML = "";
+      list.slice(0,5).forEach((item)=>{
+        const d = document.createElement("details");
+        const s = document.createElement("summary");
+        s.textContent = item.q;
+        const p = document.createElement("p");
+        p.textContent = item.a;
+        d.appendChild(s);
+        d.appendChild(p);
+        root.appendChild(d);
+      });
+
+      const json = {
+        "@context":"https://schema.org",
+        "@type":"FAQPage",
+        "mainEntity": list.slice(0,5).map(x=>({
+          "@type":"Question",
+          "name": x.q,
+          "acceptedAnswer": { "@type":"Answer", "text": x.a }
+        }))
+      };
+      $("faqJsonLd").textContent = JSON.stringify(json);
+    }
 
     function buildVisibleSteps(){
       visibleSteps.length = 0;
@@ -529,8 +576,12 @@
 
       if(!state.action || state.action.length===0) score -= 40;
 
-      if((state.action?.includes("lift") || state.action?.includes("move")) && (!state.movement || state.movement.length===0)) score -= 12;
-      if((state.action?.includes("lift") || state.action?.includes("move")) && !state.location) score -= 10;
+      if((state.action?.includes("lift") || state.action?.includes("move"))){
+        const mc = state.movementCombo || {};
+        const anyMove = !!(mc.vertical || (mc.horizontal && mc.horizontal !== "none") || mc.tilt || mc.tip || mc.flip);
+        if(!anyMove) score -= 12;
+        if(!state.location) score -= 10;
+      }
 
       if(state.action?.includes("hook")){
         if(state.anchorsPresence === undefined || state.anchorsPresence === null) score -= 10;
@@ -553,9 +604,9 @@
     }
 
     function complexity(){
-      const mv = state.movement || [];
-      if(mv.includes("flip")) return "Complexité : Hors standard";
-      if(mv.includes("tip") || mv.includes("tilt") || state.handlingMode === "h_cg" || state.handlingMode === "precise") return "Complexité : Élevée";
+      const m = state.movementCombo || {};
+      if(m.flip) return "Complexité : Hors standard";
+      if(m.tip || m.tilt || state.handlingMode === "hold_horizontal_cg" || state.handlingMode === "precise") return "Complexité : Élevée";
       return "Complexité : Modérée";
     }
 
@@ -588,8 +639,11 @@
       $("tipTitle").textContent = q.tipTitle || "Aide";
       $("tipText").textContent = q.tip || "";
 
+      $("opts").innerHTML = "";
+
+      renderFAQ(q.id);
+
       const opts = $("opts");
-      opts.innerHTML = "";
 
       if(q.type === "multi"){
         (q.options||[]).forEach(o=>{
@@ -607,16 +661,56 @@
         });
       }
 
-      if(q.type === "single"){
-        (q.options||[]).forEach(o=>{
-          const id = `opt_${q.id}_${o.id}`;
-          const checked = (state[q.id] === o.id);
+      if(q.type === "movement_combo"){
+        const m = state.movementCombo || { vertical:false, horizontal:"none", tilt:false, tip:false, flip:false };
+
+        opts.insertAdjacentHTML("beforeend", `
+          <div class="opt">
+            <input type="checkbox" id="mv_vertical" ${m.vertical ? "checked":""}>
+            <label for="mv_vertical">
+              <b>Lever / descendre (vertical)</b>
+              <span class="small">Montée/descente.</span>
+            </label>
+          </div>
+        `);
+
+        opts.insertAdjacentHTML("beforeend", `
+          <div class="opt" style="border-style:dashed;background:#fbfbff">
+            <div style="font-weight:1000">Déplacement horizontal (choix exclusif)</div>
+            <div class="small" style="margin-top:4px;color:var(--ml-muted)">Une direction OU plusieurs directions. Si aucun déplacement horizontal, laissez sur “Aucun”.</div>
+          </div>
+        `);
+
+        const radios = [
+          { id:"none", label:"Aucun", help:"Pas de déplacement horizontal requis." },
+          { id:"one", label:"Une direction", help:"Translation sur un axe (aller/retour)." },
+          { id:"multi", label:"Plusieurs directions", help:"Plusieurs directions/positions dans une zone." }
+        ];
+        radios.forEach(r=>{
+          const rid = `mv_h_${r.id}`;
           opts.insertAdjacentHTML("beforeend", `
             <div class="opt">
-              <input type="radio" name="radio_${q.id}" id="${id}" ${checked ? "checked":""}>
-              <label for="${id}">
-                <b>${esc(o.label)}</b>
-                <span class="small">${esc(o.help || "")}</span>
+              <input type="radio" name="mv_horizontal" id="${rid}" ${m.horizontal === r.id ? "checked":""}>
+              <label for="${rid}">
+                <b>${esc(r.label)}</b>
+                <span class="small">${esc(r.help)}</span>
+              </label>
+            </div>
+          `);
+        });
+
+        const extras = [
+          { key:"tilt", id:"mv_tilt", label:"Incliner la charge", help:"Modifier l’angle (mise à niveau/positionnement)." },
+          { key:"tip",  id:"mv_tip",  label:"Basculer la charge", help:"Passage contrôlé d’une position à une autre." },
+          { key:"flip", id:"mv_flip", label:"Retourner la charge (180°)", help:"Retournement complet." }
+        ];
+        extras.forEach(e=>{
+          opts.insertAdjacentHTML("beforeend", `
+            <div class="opt">
+              <input type="checkbox" id="${e.id}" ${m[e.key] ? "checked":""}>
+              <label for="${e.id}">
+                <b>${esc(e.label)}</b>
+                <span class="small">${esc(e.help)}</span>
               </label>
             </div>
           `);
@@ -691,10 +785,9 @@
       }
 
       if(q.type === "conditional_single"){
-        const cond = q.when(state); // true/false
+        const cond = q.when(state);
         const payload = cond ? q.ifTrue : q.ifFalse;
 
-        // on affiche le titre spécifique (sans casser l'en-tête global)
         opts.insertAdjacentHTML("beforeend", `
           <div class="opt" style="border-style:dashed;background:#fbfbff">
             <div style="font-weight:1000">${esc(payload.title)}</div>
@@ -707,6 +800,22 @@
           opts.insertAdjacentHTML("beforeend", `
             <div class="opt">
               <input type="radio" name="radio_${q.id}_${payload.key}" id="${id}" ${checked ? "checked":""}>
+              <label for="${id}">
+                <b>${esc(o.label)}</b>
+                <span class="small">${esc(o.help || "")}</span>
+              </label>
+            </div>
+          `);
+        });
+      }
+
+      if(q.type === "single"){
+        (q.options||[]).forEach(o=>{
+          const id = `opt_${q.id}_${o.id}`;
+          const checked = (state[q.id] === o.id);
+          opts.insertAdjacentHTML("beforeend", `
+            <div class="opt">
+              <input type="radio" name="radio_${q.id}" id="${id}" ${checked ? "checked":""}>
               <label for="${id}">
                 <b>${esc(o.label)}</b>
                 <span class="small">${esc(o.help || "")}</span>
@@ -731,400 +840,11 @@
         return selected;
       }
 
-      if(q.type === "single"){
-        let picked = null;
-        (q.options||[]).forEach(o=>{
-          const el = $(`opt_${q.id}_${o.id}`);
-          if(el && el.checked) picked = o.id;
-        });
-        return picked;
-      }
-
-      if(q.type === "mixed"){
-        let picked = null;
-        (q.optionsRadio||[]).forEach(o=>{
-          const el = $(`opt_${q.id}_${o.id}`);
-          if(el && el.checked) picked = o.id;
-        });
-        const oc = q.optionCheck;
-        const ck = oc ? ($(`opt_${q.id}_${oc.id}`)?.checked || false) : false;
-        return { radio:picked, check:ck };
-      }
-
-      if(q.type === "mixed_yesno"){
-        const yes = $(`opt_${q.id}_yes`)?.checked || false;
-        const no  = $(`opt_${q.id}_no`)?.checked  || false;
-        let picked = null;
-        if(yes) picked = true;
-        if(no) picked = false;
-        const ex = q.extraCheck;
-        const ck = ex ? ($(`opt_${q.id}_${ex.id}`)?.checked || false) : false;
-        return { yn:picked, extra:ck };
-      }
-
-      if(q.type === "conditional_single"){
-        const cond = q.when(state);
-        const payload = cond ? q.ifTrue : q.ifFalse;
-        let picked = null;
-        (payload.options||[]).forEach(o=>{
-          const el = $(`opt_${q.id}_${payload.key}_${o.id}`);
-          if(el && el.checked) picked = o.id;
-        });
-        return { key: payload.key, value: picked };
-      }
-
-      return null;
-    }
-
-    function saveAnswer(answer, isDontKnow=false){
-      const q = flow[ visibleSteps[stepIndex] ];
-
-      if(isDontKnow){
-        dontKnowCount.total += 1;
-        dontKnowCount.byId[q.id] = (dontKnowCount.byId[q.id] || 0) + 1;
-
-        // on marque la question comme "connue inconnue"
-        if(state[q.id] === undefined) state[q.id] = null;
-        return true;
-      }
-
-      if(q.type === "mixed"){
-        state[q.id] = answer.radio;
-        state[`${q.id}_${q.optionCheck.id}`] = !!answer.check;
-        return true;
-      }
-
-      if(q.type === "mixed_yesno"){
-        state[q.id] = answer.yn;
-        if(q.extraCheck){
-          state[`${q.id}_${q.extraCheck.id}`] = !!answer.extra;
-        }
-        // nettoyage cohérent si on change d'avis
-        if(answer.yn === true){
-          delete state.gripMethod;
-        }
-        if(answer.yn === false){
-          delete state.anchorPoints;
-          state[`${q.id}_dedicated`] = false;
-        }
-        return true;
-      }
-
-      if(q.type === "conditional_single"){
-        state[answer.key] = answer.value;
-        return true;
-      }
-
-      state[q.id] = answer;
-      return true;
-    }
-
-    function next(){
-      buildVisibleSteps();
-      if(stepIndex < visibleSteps.length - 1){
-        stepIndex += 1;
-        renderCurrent();
-        renderSummary();
-        focusQuestionBox();
-      } else {
-        renderSummary(true);
-        $("msg").textContent = "Fin des questions — la synthèse est à droite ✅";
-        focusSummary();
-      }
-      setHeader();
-      setStepPills();
-    }
-
-    function back(){
-      if(stepIndex > 0){
-        stepIndex -= 1;
-        renderCurrent();
-        renderSummary();
-        focusQuestionBox();
-      }
-      setHeader();
-      setStepPills();
-    }
-
-    function validate(){
-      $("msg").textContent = "";
-      const q = flow[ visibleSteps[stepIndex] ];
-      const ans = collectCurrentAnswer();
-
-      let ok = true;
-      if(q.type === "multi") ok = ans.length > 0;
-      if(q.type === "single") ok = !!ans;
-      if(q.type === "mixed") ok = !!ans.radio;
-      if(q.type === "mixed_yesno") ok = (ans.yn === true || ans.yn === false);
-      if(q.type === "conditional_single") ok = !!ans.value;
-
-      if(!ok){
-        $("msg").textContent = "Veuillez sélectionner une réponse, ou utilisez « Je ne sais pas ».";
-        $("msg").style.color = "var(--bad)";
-        return;
-      }
-
-      saveAnswer(ans, false);
-      buildVisibleSteps();
-
-      $("msg").textContent = "Réponse enregistrée ✅";
-      $("msg").style.color = "var(--good)";
-      next();
-    }
-
-    function dontKnow(){
-      $("msg").textContent = "";
-      saveAnswer(null, true);
-
-      $("msg").textContent = "D’accord — on continue. (La précision de la demande baisse)";
-      $("msg").style.color = "var(--warn)";
-      next();
-    }
-
-    function renderSummary(forceFocus=false){
-      const tb = $("summary");
-      tb.innerHTML = "";
-
-      const score = precisionScore();
-      $("complexity").textContent = complexity();
-
-      const rows = [];
-
-      const actMap = { lift:"Lever", move:"Déplacer", hook:"Accrocher/saisir", support:"Prévoir une structure" };
-      const act = state.action?.length ? state.action.map(x=>actMap[x]||x).join(", ") : "—";
-      rows.push(["Action sur la charge", act]);
-
-      if(state.action?.includes("lift") || state.action?.includes("move")){
-        const mvMap = {
-          v_updown:"Lever/descendre (vertical)",
-          h_onesense:"Horizontal — un sens",
-          h_multisense:"Horizontal — plusieurs sens",
-          tilt:"Incliner",
-          tip:"Basculer",
-          flip:"Retourner (180°)"
-        };
-        const mv = (state.movement && state.movement.length) ? state.movement.map(x=>mvMap[x]||x).join(", ") : "—";
-        rows.push(["Mouvements", mv]);
-      }
-
-      if(state.action?.includes("lift") || state.action?.includes("move")){
-        const locMap = { station:"Un poste dédié", zone:"Une zone définie", multi:"Plusieurs postes/zones" };
-        const loc = state.location ? (locMap[state.location]||state.location) : "—";
-        const ms = state["location_multisite"] ? " + multi-sites" : "";
-        rows.push(["Localisation", loc + ms]);
-      }
-
-      if(state.action?.includes("hook")){
-        const ap = state.anchorsPresence;
-        if(ap === true){
-          rows.push(["Points d’ancrage", "Oui"]);
-          rows.push(["Points dédiés au levage", state["anchorsPresence_dedicated"] ? "Oui" : "Non / inconnu"]);
-          const ptsMap = { p1:"1 point", p2:"2 points", p3:"3 points", p4:"4 points" };
-          rows.push(["Nombre de points", state.anchorPoints ? (ptsMap[state.anchorPoints]||state.anchorPoints) : "—"]);
-        } else if(ap === false){
-          rows.push(["Points d’ancrage", "Non"]);
-          const gripMap = { positive:"Prise positive", clamp:"Serrage (pince)", suction:"Ventouses", mag:"Aimants" };
-          rows.push(["Méthode de prise", state.gripMethod ? (gripMap[state.gripMethod]||state.gripMethod) : "—"]);
-        } else {
-          rows.push(["Points d’ancrage", "—"]);
-        }
-      }
-
-      const cgMap = { center:"Centré", decenter:"Décentré", below:"Sous les points / instable" };
-      rows.push(["Centre de gravité", state.cog ? (cgMap[state.cog]||state.cog) : "—"]);
-
-      const varMap = { unique:"Unique / proche", variation:"Variations maîtrisées", diverse:"Grande diversité" };
-      rows.push(["Variabilité des charges", state.loadVariability ? (varMap[state.loadVariability]||state.loadVariability) : "—"]);
-
-      const hmMap = { safe:"Sécuritaire / robuste", precise:"Précise de positionnement", h_cg:"Horizontale maîtrisant le CG" };
-      rows.push(["Mode de manutention", state.handlingMode ? (hmMap[state.handlingMode]||state.handlingMode) : "—"]);
-
-      rows.forEach(([a,b])=>{
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${esc(a)}</td><td>${esc(b)}</td>`;
-        tb.appendChild(tr);
-      });
-
-      // Alerts
-      const alerts = [];
-      const mv = state.movement || [];
-      if(mv.includes("flip")) alerts.push("Retourner une charge : validation technique recommandée (stabilité, efforts, mode de prise).");
-      if(mv.includes("tip") || mv.includes("tilt")) alerts.push("Incliner/basculer : préciser l’angle et la stabilité attendus.");
-      if(state.anchorPoints === "p3" || state.anchorPoints === "p4") alerts.push("Accrochage multipoints : préciser les angles et la répartition.");
-      if(state.cog === "below") alerts.push("Centre de gravité instable : risque de basculement/retournement.");
-      if(state.loadVariability === "diverse") alerts.push("Grande diversité : solution polyvalente + procédure d’exploitation recommandée.");
-      if(state.handlingMode === "precise") alerts.push("Précision élevée : privilégier maîtrise du ballant/à-coups et contrôle fin.");
-      if(state.handlingMode === "h_cg") alerts.push("Exigence “horizontale maîtrisant le CG” : préciser trajectoire/contrôle et stabilité.");
-      if(state["location_multisite"]) alerts.push("Multi-sites : préciser mobilité, montage/démontage, transport.");
-      if(dontKnowCount.total>0) alerts.push("Certaines réponses sont inconnues : la précision du cahier des charges est réduite.");
-
-      const ul = $("alerts");
-      ul.innerHTML = "";
-      if(alerts.length===0){
-        const li = document.createElement("li");
-        li.textContent = "Aucune alerte à ce stade.";
-        ul.appendChild(li);
-      } else {
-        alerts.forEach(a=>{
-          const li = document.createElement("li");
-          li.textContent = a;
-          ul.appendChild(li);
-        });
-      }
-
-      // CDC
-      const cdcLines = [];
-      cdcLines.push("CAHIER DES CHARGES — PRÉ-QUALIFICATION (LEVAGE)");
-      cdcLines.push("");
-      cdcLines.push(`Précision : ${score}%`);
-      cdcLines.push(complexity());
-      cdcLines.push("");
-      cdcLines.push("1) Opération");
-      cdcLines.push(`- Actions : ${act}`);
-
-      if(state.action?.includes("lift") || state.action?.includes("move")){
-        const mvMap = {
-          v_updown:"Lever/descendre (vertical)",
-          h_onesense:"Horizontal — un sens",
-          h_multisense:"Horizontal — plusieurs sens",
-          tilt:"Incliner",
-          tip:"Basculer",
-          flip:"Retourner (180°)"
-        };
-        const mvTxt = (state.movement && state.movement.length) ? state.movement.map(x=>mvMap[x]||x).join(", ") : "Non renseigné";
-        cdcLines.push("");
-        cdcLines.push("2) Mouvements");
-        cdcLines.push(`- ${mvTxt}`);
-      }
-
-      if(state.action?.includes("lift") || state.action?.includes("move")){
-        const locMap = { station:"Un poste dédié", zone:"Une zone définie", multi:"Plusieurs postes/zones" };
-        cdcLines.push("");
-        cdcLines.push("3) Organisation / lieu");
-        cdcLines.push(`- ${state.location ? (locMap[state.location]||state.location) : "Non renseigné"}${state["location_multisite"] ? " (+ multi-sites)" : ""}`);
-      }
-
-      if(state.action?.includes("hook")){
-        cdcLines.push("");
-        cdcLines.push("4) Prise de charge");
-        if(state.anchorsPresence === true){
-          const ptsMap = { p1:"1", p2:"2", p3:"3", p4:"4" };
-          cdcLines.push("- Points d’ancrage : Oui");
-          cdcLines.push(`- Points dédiés au levage : ${state["anchorsPresence_dedicated"] ? "Oui" : "Non / inconnu"}`);
-          cdcLines.push(`- Nombre de points utilisés : ${state.anchorPoints ? (ptsMap[state.anchorPoints]||"?") : "Non renseigné"}`);
-        } else if(state.anchorsPresence === false){
-          const gripMap = { positive:"Prise positive", clamp:"Serrage (pince)", suction:"Ventouses", mag:"Aimants" };
-          cdcLines.push("- Points d’ancrage : Non");
-          cdcLines.push(`- Méthode de prise : ${state.gripMethod ? (gripMap[state.gripMethod]||state.gripMethod) : "Non renseigné"}`);
-        } else {
-          cdcLines.push("- Non renseigné");
-        }
-      }
-
-      const cgMap2 = { center:"Centré", decenter:"Décentré", below:"Sous les points / instable" };
-      cdcLines.push("");
-      cdcLines.push("5) Centre de gravité");
-      cdcLines.push(`- ${state.cog ? (cgMap2[state.cog]||state.cog) : "Non renseigné"}`);
-
-      const varMap2 = { unique:"Unique / proche", variation:"Variations maîtrisées", diverse:"Grande diversité" };
-      cdcLines.push("");
-      cdcLines.push("6) Variabilité des charges");
-      cdcLines.push(`- ${state.loadVariability ? (varMap2[state.loadVariability]||state.loadVariability) : "Non renseigné"}`);
-
-      const hmMap2 = { safe:"Sécuritaire / robuste", precise:"Précise de positionnement", h_cg:"Horizontale maîtrisant le CG" };
-      cdcLines.push("");
-      cdcLines.push("7) Mode de manutention attendu");
-      cdcLines.push(`- ${state.handlingMode ? (hmMap2[state.handlingMode]||state.handlingMode) : "Non renseigné"}`);
-
-      cdcLines.push("");
-      cdcLines.push("Remarques / points à valider");
-      if(alerts.length) alerts.forEach(a=>cdcLines.push(`- ${a}`));
-      else cdcLines.push("- Aucun point bloquant détecté à ce stade.");
-
-      $("cdc").textContent = cdcLines.join("\n");
-
-      setHeader();
-      setStepPills();
-      if(forceFocus && window.innerWidth < 980) focusSummary();
-    }
-
-    function resetAll(){
-      for(const k of Object.keys(state)) delete state[k];
-      dontKnowCount.total = 0;
-      dontKnowCount.byId = {};
-      stepIndex = 0;
-      buildVisibleSteps();
-      renderCurrent();
-      renderSummary();
-      focusQuestionBox();
-    }
-
-    function fillDemo(){
-      resetAll();
-      state.action = ["lift","move","hook","support"];
-      state.movement = ["v_updown","h_multisense","tilt"];
-      state.location = "multi";
-      state["location_multisite"] = true;
-      state.anchorsPresence = true;
-      state["anchorsPresence_dedicated"] = true;
-      state.anchorPoints = "p4";
-      state.cog = "decenter";
-      state.loadVariability = "variation";
-      state.handlingMode = "precise";
-      buildVisibleSteps();
-      renderCurrent();
-      renderSummary();
-      focusQuestionBox();
-    }
-
-    async function copyCDC(){
-      const txt = $("cdc").textContent || "";
-      $("msg").textContent = "";
-      try{
-        if(navigator.clipboard && window.isSecureContext){
-          await navigator.clipboard.writeText(txt);
-        } else {
-          const ta=document.createElement("textarea");
-          ta.value=txt; ta.style.position="fixed"; ta.style.left="-9999px";
-          document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove();
-        }
-        $("msg").textContent = "Cahier des charges copié ✅";
-        $("msg").style.color = "var(--good)";
-        focusQuestionBox();
-      }catch(e){
-        $("msg").textContent = "Copie impossible : sélectionnez manuellement le texte.";
-        $("msg").style.color = "var(--bad)";
-      }
-    }
-
-    function downloadCDC(){
-      const txt = $("cdc").textContent || "";
-      const blob = new Blob([txt], {type:"text/plain;charset=utf-8"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href=url; a.download="cahier-des-charges-levage.txt";
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(()=>URL.revokeObjectURL(url), 1500);
-    }
-
-    function bind(){
-      $("validateBtn").addEventListener("click", validate);
-      $("dontKnowBtn").addEventListener("click", dontKnow);
-      $("backBtn").addEventListener("click", back);
-      $("skipToSummaryBtn").addEventListener("click", ()=>{ renderSummary(true); focusSummary(); });
-      $("resetBtn").addEventListener("click", resetAll);
-      $("demoBtn").addEventListener("click", fillDemo);
-      $("copyBtn").addEventListener("click", copyCDC);
-      $("downloadBtn").addEventListener("click", downloadCDC);
-      $("callBtn").addEventListener("click", ()=> alert("👉 Contact spécialiste : copiez le cahier des charges et envoyez-le au commercial."));
-    }
-
-    // Init
-    buildVisibleSteps();
-    bind();
-    renderCurrent();
-    renderSummary();
-    window.addEventListener("load", ()=> setTimeout(focusQuestionBox, 50));
-  </script>
-</body>
-</html>
+      if(q.type === "movement_combo"){
+        const vertical = $("mv_vertical")?.checked || false;
+        let horizontal = "none";
+        if($("mv_h_none")?.checked) horizontal = "none";
+        if($("mv_h_one")?.checked) horizontal = "one";
+        if($("mv_h_multi")?.checked) horizontal = "multi";
+        const tilt = $("mv_tilt")?.checked || false;
+        const tip  = $("mv_tip")?.checked || false;
