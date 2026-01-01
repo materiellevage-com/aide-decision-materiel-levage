@@ -4,52 +4,48 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Aide au choix — Arbre de décision Levage | MATERIEL-LEVAGE</title>
-  <meta name="description" content="Arbre de décision levage (Q1→Q5) pour qualifier un besoin utilisateur et orienter vers supports, appareils et accessoires, avec synthèse et cahier des charges." />
+  <meta name="description" content="Arbre de décision levage (Q1→Q5) : qualifier un besoin utilisateur et orienter vers familles de produits (supports, appareils, accessoires) avec synthèse et cahier des charges." />
 
   <style>
-    /* ====== CHARTE (proche visuels Materiel-Levage) ====== */
+    /* =========================
+       CHARTE "CATALOGUE" (prioritaire)
+       ⚠ Ajuste ici les HEX EXACTS si besoin
+       ========================= */
     :root{
-      --ml-blue:#2a2e86;          /* bleu marque (proche visuel) */
+      /* Couleurs structure (proche visuel) */
+      --ml-blue:#2a2e86;          /* bleu marque */
       --ml-blue-dark:#1f2268;
       --ml-yellow:#f2c200;        /* jaune accent */
-      --ml-red:#b10f1b;           /* ACCESSOIRES = ROUGE (impératif) */
-      --ml-red-dark:#8f0b14;
+      --ml-bg:#f5f6fb;
+      --ml-card:#ffffff;
+      --ml-text:#111827;
+      --ml-muted:#6b7280;
+      --ml-line:#e5e7eb;
+      --ml-shadow:0 10px 25px rgba(17,24,39,.10);
+      --ml-radius:16px;
 
-      --bg:#f5f6fb;
-      --card:#ffffff;
-      --text:#111827;
-      --muted:#6b7280;
-      --line:#e5e7eb;
-      --shadow:0 10px 25px rgba(17,24,39,.10);
-      --radius:16px;
-      --radius-sm:12px;
+      /* Catégories catalogue (priorité) */
+      --cat-accessories:#b10f1b;  /* ROUGE = Accessoires (ONLY) */
+      --cat-magnets:#22a35a;      /* VERT = Aimants */
+      --cat-site:#2b77d9;         /* BLEU CLAIR = Levage chantier */
+      --cat-hoists:#f28c00;       /* ORANGE = Palans */
 
+      /* Labels génériques (hors "catalogue") */
       --good:#16a34a;
       --warn:#f59e0b;
       --bad:#dc2626;
-
       --font: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-
-      /* Catégories (à ajuster si tu veux coller EXACTEMENT au catalogue) */
-      --cat-support: var(--ml-yellow);
-      --cat-device:  var(--ml-blue);
-      --cat-access:  var(--ml-red);
     }
 
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:var(--font);
-      color:var(--text);
-      background:var(--bg);
-    }
+    body{margin:0;font-family:var(--font);color:var(--ml-text);background:var(--ml-bg)}
     a{color:inherit;text-decoration:none}
     .wrap{max-width:1200px;margin:0 auto;padding:14px}
 
-    /* ====== HEADER proche site ====== */
+    /* ===== Header proche site ===== */
     .topbar{
       background:#fff;
-      border-bottom:4px solid var(--ml-red);
+      border-bottom:4px solid var(--cat-accessories); /* rouge en liseré (OK car branding global, pas une catégorie) */
       box-shadow: 0 6px 20px rgba(17,24,39,.08);
       position:sticky;top:0;z-index:50;
     }
@@ -57,15 +53,10 @@
       max-width:1200px;margin:0 auto;padding:10px 14px;
       display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
     }
-    .brand{
-      display:flex;align-items:center;gap:12px;
-    }
+    .brand{display:flex;align-items:center;gap:12px}
     .logo{
       display:flex;align-items:center;gap:8px;
-      font-weight:900;
-      letter-spacing:.2px;
-      font-size:18px;
-      color:var(--ml-blue);
+      font-weight:900;letter-spacing:.2px;font-size:18px;color:var(--ml-blue);
       white-space:nowrap;
     }
     .logo .dot{
@@ -73,28 +64,16 @@
       background: radial-gradient(circle at 30% 30%, var(--ml-yellow), #ffd84a);
       border:1px solid rgba(0,0,0,.08);
       display:grid;place-items:center;
-      color:var(--ml-blue-dark);
-      font-weight:1000;
+      color:var(--ml-blue-dark);font-weight:1000;
     }
-    .logo .site{
-      display:flex;align-items:baseline;gap:2px
-    }
+    .logo .site{display:flex;align-items:baseline;gap:2px}
     .logo .com{color:var(--ml-yellow);font-weight:1000}
-    .subtitle{
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.3;
-    }
-
+    .subtitle{color:var(--ml-muted);font-size:12px;line-height:1.3}
     .top-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
     .pill{
       display:inline-flex;align-items:center;gap:8px;
-      padding:7px 10px;border-radius:999px;
-      background:#fff;
-      border:1px solid var(--line);
-      font-size:12px;
-      font-weight:800;
-      color:#111827;
+      padding:7px 10px;border-radius:999px;background:#fff;border:1px solid var(--ml-line);
+      font-size:12px;font-weight:800;color:#111827;
     }
     .pill b{color:var(--ml-blue)}
     .statusDot{width:10px;height:10px;border-radius:999px;background:var(--warn)}
@@ -102,234 +81,193 @@
     .statusDot.warn{background:var(--warn)}
     .statusDot.bad{background:var(--bad)}
 
-    /* ====== LAYOUT ====== */
-    .grid{
-      display:grid;
-      grid-template-columns: 280px 1.15fr .85fr;
-      gap:14px;
-      margin-top:14px;
-    }
-    @media (max-width:1100px){
-      .grid{grid-template-columns: 280px 1fr}
-      .rightCol{grid-column: 1 / -1}
-    }
-    @media (max-width:860px){
-      .grid{grid-template-columns:1fr}
-      .leftNav{display:none}
-    }
+    /* ===== Layout ===== */
+    .grid{display:grid;grid-template-columns:280px 1.15fr .85fr;gap:14px;margin-top:14px}
+    @media (max-width:1100px){.grid{grid-template-columns:280px 1fr}.rightCol{grid-column:1/-1}}
+    @media (max-width:860px){.grid{grid-template-columns:1fr}.leftNav{display:none}}
 
     .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
+      background:var(--ml-card);
+      border:1px solid var(--ml-line);
+      border-radius:var(--ml-radius);
+      box-shadow:var(--ml-shadow);
       overflow:hidden;
     }
     .card .hd{
-      padding:12px 14px;
-      border-bottom:1px solid var(--line);
+      padding:12px 14px;border-bottom:1px solid var(--ml-line);
       display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;
       background:#fff;
     }
-    .card .hd h2{
-      margin:0;
-      font-size:14px;
-      font-weight:1000;
-      color:var(--ml-blue-dark);
-    }
-    .card .hd p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.4}
+    .card .hd h2{margin:0;font-size:14px;font-weight:1000;color:var(--ml-blue-dark)}
+    .card .hd p{margin:6px 0 0;color:var(--ml-muted);font-size:12px;line-height:1.4}
     .card .bd{padding:14px}
 
-    /* ====== NAV questions (desktop) ====== */
+    /* ===== Nav ===== */
     .navBox{padding:12px}
-    .navTitle{
-      font-weight:1000;
-      color:var(--ml-blue-dark);
-      margin:0 0 10px;
-      font-size:13px;
-    }
+    .navTitle{font-weight:1000;color:var(--ml-blue-dark);margin:0 0 10px;font-size:13px}
     .navList{display:grid;gap:8px}
     .navItem{
       display:flex;align-items:center;justify-content:space-between;gap:10px;
-      padding:10px 10px;border-radius:14px;
-      border:1px solid var(--line);
-      background:#fff;
-      cursor:pointer;
-      transition:.15s;
+      padding:10px 10px;border-radius:14px;border:1px solid var(--ml-line);
+      background:#fff;cursor:pointer;transition:.15s;
     }
     .navItem:hover{border-color:#d1d5db;transform:translateY(-1px)}
     .navItem .q{font-weight:1000;color:#111827;font-size:13px}
-    .navItem .tag{font-size:11px;color:var(--muted);font-weight:800}
+    .navItem .tag{font-size:11px;color:var(--ml-muted);font-weight:800}
     .navItem.active{
       border-color: rgba(42,46,134,.35);
       box-shadow: 0 8px 18px rgba(42,46,134,.10);
     }
-    .navFoot{
-      margin-top:12px;
-      font-size:12px;color:var(--muted);line-height:1.45;
-    }
 
-    /* ====== Mobile sticky questions bar ====== */
+    /* ===== Mobile sticky Q bar ===== */
     .mobileQBar{
-      display:none;
-      position:sticky;top:62px;z-index:45;
-      background: #fff;
-      border-bottom:1px solid var(--line);
-      padding:8px 10px;
+      display:none;position:sticky;top:62px;z-index:45;background:#fff;
+      border-bottom:1px solid var(--ml-line);padding:8px 10px;
     }
-    .mobileQBar .row{
-      display:flex;gap:8px;overflow:auto;padding-bottom:6px
-    }
+    .mobileQBar .row{display:flex;gap:8px;overflow:auto;padding-bottom:6px}
     .mBtn{
-      border:1px solid var(--line);
-      background:#fff;
-      padding:8px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:900;
-      white-space:nowrap;
-      cursor:pointer;
+      border:1px solid var(--ml-line);background:#fff;padding:8px 10px;border-radius:999px;
+      font-size:12px;font-weight:900;white-space:nowrap;cursor:pointer;
     }
-    .mBtn.active{
-      border-color: rgba(42,46,134,.35);
-      color:var(--ml-blue-dark);
-    }
-    @media (max-width:860px){
-      .mobileQBar{display:block}
-    }
+    .mBtn.active{border-color: rgba(42,46,134,.35);color:var(--ml-blue-dark)}
+    @media (max-width:860px){.mobileQBar{display:block}}
 
-    /* ====== Questions ====== */
+    /* ===== Questions ===== */
     .section{
-      border:1px solid var(--line);
-      border-radius:var(--radius);
+      border:1px solid var(--ml-line);
+      border-radius:var(--ml-radius);
       background:#fff;
       padding:12px;
       margin-bottom:12px;
     }
-    .qhead{
-      display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
-      margin-bottom:10px;
-    }
-    .qhead h3{
-      margin:0;
-      font-size:13px;
-      font-weight:1000;
-      color:#111827;
-      line-height:1.3;
-    }
-    .qhead .hint{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.4}
+    .qhead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .qhead h3{margin:0;font-size:13px;font-weight:1000;color:#111827;line-height:1.3}
+    .qhead .hint{margin-top:4px;color:var(--ml-muted);font-size:12px;line-height:1.4}
+
     .opts{display:grid;gap:10px}
     .opt{
       display:flex;gap:10px;align-items:flex-start;
-      padding:12px;border-radius:14px;
-      border:1px solid var(--line);
-      background:#fff;
-      transition:.12s;
+      padding:12px;border-radius:14px;border:1px solid var(--ml-line);
+      background:#fff;transition:.12s;
     }
     .opt:hover{border-color:#d1d5db;background:#fcfcff}
     .opt input{margin-top:2px;transform:scale(1.1)}
     .opt label{cursor:pointer;flex:1}
     .opt b{display:block;font-size:14px}
-    .opt .small{display:block;color:var(--muted);font-size:12px;margin-top:2px;line-height:1.35}
+    .opt .small{display:block;color:var(--ml-muted);font-size:12px;margin-top:2px;line-height:1.35}
     .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 
-    /* Chips catégories */
+    /* ===== Chips CATEGORIES (catalogue) ===== */
     .chip{
       display:inline-flex;align-items:center;
       padding:5px 9px;border-radius:999px;
       font-size:12px;font-weight:1000;
-      border:1px solid var(--line);
+      border:1px solid var(--ml-line);
       background:#f8fafc;color:#0f172a;
     }
-    .chip.support{border-color: rgba(242,194,0,.35); background: rgba(242,194,0,.12); color:#6b4f00}
-    .chip.device{border-color: rgba(42,46,134,.25); background: rgba(42,46,134,.09); color:var(--ml-blue-dark)}
-    .chip.access{border-color: rgba(177,15,27,.30); background: rgba(177,15,27,.10); color:var(--ml-red-dark)}
-    .chip.risk{border-color: rgba(245,158,11,.35); background: rgba(245,158,11,.12); color:#7a4a00}
 
-    /* Tooltip i */
+    /* IMPORTANT : rouge UNIQUEMENT accessoires */
+    .chip.accessories{
+      border-color: rgba(177,15,27,.35);
+      background: rgba(177,15,27,.12);
+      color: #7a0b12;
+    }
+
+    .chip.magnets{
+      border-color: rgba(34,163,90,.35);
+      background: rgba(34,163,90,.12);
+      color: #0f5a33;
+    }
+    .chip.site{
+      border-color: rgba(43,119,217,.35);
+      background: rgba(43,119,217,.12);
+      color: #124b93;
+    }
+    .chip.hoists{
+      border-color: rgba(242,140,0,.35);
+      background: rgba(242,140,0,.12);
+      color: #7a4300;
+    }
+
+    /* Chips neutres */
+    .chip.core{
+      border-color: rgba(42,46,134,.25);
+      background: rgba(42,46,134,.09);
+      color: var(--ml-blue-dark);
+    }
+    .chip.risk{
+      border-color: rgba(245,158,11,.35);
+      background: rgba(245,158,11,.12);
+      color: #7a4a00;
+    }
+
+    /* Tooltip */
     .tip{
-      position:relative;
-      width:28px;height:28px;border-radius:999px;
-      border:1px solid var(--line);
-      background:#fff;
-      display:grid;place-items:center;
-      font-weight:1000;
-      color:var(--ml-blue-dark);
-      cursor:help;
-      flex:0 0 auto;
+      position:relative;width:28px;height:28px;border-radius:999px;
+      border:1px solid var(--ml-line);background:#fff;
+      display:grid;place-items:center;font-weight:1000;color:var(--ml-blue-dark);
+      cursor:help;flex:0 0 auto;
     }
     .bubble{
-      position:absolute;
-      right:0; top: calc(100% + 10px);
+      position:absolute;right:0;top:calc(100% + 10px);
       width:min(440px, calc(100vw - 40px));
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:14px;
-      box-shadow:var(--shadow);
-      padding:12px;
-      display:none;
-      z-index:60;
+      background:#fff;border:1px solid var(--ml-line);
+      border-radius:14px;box-shadow:var(--ml-shadow);
+      padding:12px;display:none;z-index:60;
     }
     .tip:hover .bubble{display:block}
     .bubble .t{margin:0 0 6px;font-size:12px;font-weight:1000;color:#111827}
-    .bubble .p{margin:0;color:var(--muted);font-size:12px;line-height:1.45}
+    .bubble .p{margin:0;color:var(--ml-muted);font-size:12px;line-height:1.45}
 
-    /* Buttons */
     .btn{
-      appearance:none;
-      border:1px solid var(--line);
-      background:#fff;
-      color:#111827;
-      border-radius:12px;
-      padding:10px 12px;
-      font-size:13px;
-      font-weight:900;
-      cursor:pointer;
-      transition:.12s;
+      appearance:none;border:1px solid var(--ml-line);background:#fff;color:#111827;
+      border-radius:12px;padding:10px 12px;font-size:13px;font-weight:900;
+      cursor:pointer;transition:.12s;
     }
     .btn:hover{background:#f9fafb}
-    .btn.primary{
-      border-color: rgba(177,15,27,.30);
-      background: linear-gradient(180deg, rgba(177,15,27,.10), rgba(177,15,27,.05));
-      color: var(--ml-red-dark);
+
+    /* Bouton "important" -> ORANGE Palans (catalogue) */
+    .btn.hoists{
+      border-color: rgba(242,140,0,.45);
+      background: rgba(242,140,0,.12);
+      color: #7a4300;
     }
-    .btn.primary:hover{border-color: rgba(177,15,27,.50)}
-    .btn.blue{
+    .btn.hoists:hover{background: rgba(242,140,0,.16)}
+
+    /* Bouton "spécialiste" -> ROUGE Accessoires (cat) */
+    .btn.accessories{
+      border-color: rgba(177,15,27,.40);
+      background: rgba(177,15,27,.10);
+      color: #7a0b12;
+    }
+    .btn.accessories:hover{background: rgba(177,15,27,.14)}
+
+    .btn.core{
       border-color: rgba(42,46,134,.25);
       background: rgba(42,46,134,.08);
       color: var(--ml-blue-dark);
     }
-    .btn.blue:hover{background: rgba(42,46,134,.11)}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .divider{height:1px;background:var(--line);margin:12px 0}
+    .btn.core:hover{background: rgba(42,46,134,.11)}
 
-    /* Right side content */
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .divider{height:1px;background:var(--ml-line);margin:12px 0}
+
     table{width:100%;border-collapse:collapse}
-    th,td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
-    th{font-size:12px;color:var(--muted);text-align:left}
+    th,td{padding:10px;border-bottom:1px solid var(--ml-line);vertical-align:top}
+    th{font-size:12px;color:var(--ml-muted);text-align:left}
     td{font-size:13px}
     .mono{
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size:12px;
-      background:#fbfbff;
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px;
-      white-space:pre-wrap;
-      color:#0f172a;
+      font-size:12px;background:#fbfbff;border:1px solid var(--ml-line);
+      border-radius:14px;padding:12px;white-space:pre-wrap;color:#0f172a;
     }
-    .mini{color:var(--muted);font-size:12px;line-height:1.45;margin-top:8px}
-    ul{margin:10px 0 0;padding-left:18px;color:var(--muted);font-size:12px;line-height:1.55}
+    .mini{color:var(--ml-muted);font-size:12px;line-height:1.45;margin-top:8px}
+    ul{margin:10px 0 0;padding-left:18px;color:var(--ml-muted);font-size:12px;line-height:1.55}
 
-    /* Sticky action bar bottom */
     .stickyBottom{
-      position:sticky;
-      bottom:10px;
-      z-index:40;
-      padding:10px;
+      position:sticky;bottom:10px;z-index:40;padding:10px;
       background: rgba(255,255,255,.92);
-      border:1px solid var(--line);
-      border-radius:16px;
+      border:1px solid var(--ml-line);border-radius:16px;
       box-shadow: 0 10px 25px rgba(17,24,39,.10);
       backdrop-filter: blur(8px);
     }
@@ -337,7 +275,6 @@
 </head>
 
 <body>
-  <!-- Header -->
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
@@ -357,12 +294,11 @@
         <span class="pill"><span class="statusDot warn" id="dot"></span><span id="statusTxt">À compléter</span></span>
         <span class="pill">Clarté : <b id="clarityTxt">100%</b></span>
         <button class="btn" id="resetBtn" type="button">Réinitialiser</button>
-        <button class="btn blue" id="demoBtn" type="button">Préremplir démo</button>
+        <button class="btn core" id="demoBtn" type="button">Préremplir démo</button>
       </div>
     </div>
   </div>
 
-  <!-- Mobile bar questions -->
   <div class="mobileQBar">
     <div class="row" id="mQRow"></div>
   </div>
@@ -370,7 +306,6 @@
   <div class="wrap">
     <div class="grid">
 
-      <!-- LEFT NAV (desktop) -->
       <div class="card leftNav">
         <div class="hd">
           <div>
@@ -380,19 +315,20 @@
         </div>
         <div class="bd navBox">
           <div class="navList" id="navList"></div>
-          <div class="navFoot">
-            Astuce : même si une question n’est pas “remplie”, vous pouvez continuer.
-            La synthèse indiquera si une validation spécialiste est recommandée.
+          <div class="mini">
+            Les couleurs suivent le catalogue : <b style="color:var(--cat-accessories)">rouge accessoires</b>,
+            <b style="color:var(--cat-magnets)">vert aimants</b>,
+            <b style="color:var(--cat-site)">bleu chantier</b>,
+            <b style="color:var(--cat-hoists)">orange palans</b>.
           </div>
         </div>
       </div>
 
-      <!-- CENTER: Questions (ALL accessible) -->
       <div class="card">
         <div class="hd">
           <div>
             <h2>Décrivez votre besoin</h2>
-            <p>Répondez avec vos mots. L’outil calcule automatiquement une orientation + un cahier des charges.</p>
+            <p>Toutes les questions sont accessibles (pas de blocage “suivant”).</p>
           </div>
         </div>
 
@@ -420,8 +356,8 @@
                   <b>Lever la charge</b>
                   <span class="small">Soulever verticalement (montée / descente).</span>
                   <div class="meta">
-                    <span class="chip device">Oriente : appareils</span>
-                    <span class="chip device">Ex : palan, treuil</span>
+                    <span class="chip hoists">Oriente : palans (orange)</span>
+                    <span class="chip core">Ex : palan, treuil</span>
                   </div>
                 </label>
               </div>
@@ -432,8 +368,8 @@
                   <b>Déplacer la charge</b>
                   <span class="small">Déplacer (souvent latéralement), sur un ou plusieurs emplacements.</span>
                   <div class="meta">
-                    <span class="chip device">Oriente : translation</span>
-                    <span class="chip device">Ex : chariot, rail</span>
+                    <span class="chip site">Oriente : levage chantier (bleu clair)</span>
+                    <span class="chip core">Ex : chariot, rail, translation</span>
                   </div>
                 </label>
               </div>
@@ -444,8 +380,8 @@
                   <b>Accrocher / saisir la charge</b>
                   <span class="small">Mettre en prise la charge pour lever ou maintenir.</span>
                   <div class="meta">
-                    <span class="chip access">Oriente : accessoires</span>
-                    <span class="chip access">Ex : élingues, pinces</span>
+                    <span class="chip accessories">Oriente : accessoires (rouge)</span>
+                    <span class="chip accessories">Ex : élingues, pinces</span>
                   </div>
                 </label>
               </div>
@@ -456,8 +392,8 @@
                   <b>Supporter l’opération</b>
                   <span class="small">Prévoir une structure pour porter l’appareil (potence/portique…).</span>
                   <div class="meta">
-                    <span class="chip support">Oriente : supports</span>
-                    <span class="chip support">Ex : potence, portique</span>
+                    <span class="chip core">Oriente : supports</span>
+                    <span class="chip core">Ex : potence, portique</span>
                   </div>
                 </label>
               </div>
@@ -474,41 +410,18 @@
               <div class="tip">i
                 <div class="bubble">
                   <p class="t">Aide — Q2</p>
-                  <p class="p">Plus le mouvement est complexe (basculement/retournement), plus on sort du standard et on valide avec un spécialiste.</p>
+                  <p class="p">Plus le mouvement est complexe (basculement/retournement), plus on sort du standard → validation recommandée.</p>
                 </div>
               </div>
             </div>
 
             <div class="opts">
-              <div class="opt">
-                <input name="q2_mode" id="q2_vonly" type="radio">
-                <label for="q2_vonly"><b>Verticalement uniquement</b><span class="small">Montée/descente sans translation latérale.</span></label>
-              </div>
-
-              <div class="opt">
-                <input name="q2_mode" id="q2_h1" type="radio">
-                <label for="q2_h1"><b>Horizontal — une direction</b><span class="small">Translation sur un axe (rail/chariot).</span></label>
-              </div>
-
-              <div class="opt">
-                <input name="q2_mode" id="q2_hmulti" type="radio">
-                <label for="q2_hmulti"><b>Horizontal — plusieurs directions</b><span class="small">Plusieurs positions dans la zone (mobilité).</span></label>
-              </div>
-
-              <div class="opt">
-                <input name="q2_mode" id="q2_tilt" type="radio">
-                <label for="q2_tilt"><b>Incliner / basculer</b><span class="small">Positionnement par inclinaison (contrôle nécessaire).</span><div class="meta"><span class="chip risk">Souvent à vérifier</span></div></label>
-              </div>
-
-              <div class="opt">
-                <input name="q2_mode" id="q2_flip" type="radio">
-                <label for="q2_flip"><b>Retourner la charge</b><span class="small">Retournement complet (180°) : solution dédiée.</span><div class="meta"><span class="chip risk">Hors standard</span></div></label>
-              </div>
-
-              <div class="opt">
-                <input name="q2_mode" id="q2_unknown" type="radio">
-                <label for="q2_unknown"><b>Je ne sais pas</b><span class="small">La synthèse indiquera si une validation est probable.</span></label>
-              </div>
+              <div class="opt"><input name="q2_mode" id="q2_vonly" type="radio"><label for="q2_vonly"><b>Verticalement uniquement</b><span class="small">Montée/descente sans translation latérale.</span></label></div>
+              <div class="opt"><input name="q2_mode" id="q2_h1" type="radio"><label for="q2_h1"><b>Horizontal — une direction</b><span class="small">Translation sur un axe (rail/chariot).</span></label></div>
+              <div class="opt"><input name="q2_mode" id="q2_hmulti" type="radio"><label for="q2_hmulti"><b>Horizontal — plusieurs directions</b><span class="small">Plusieurs positions dans la zone (mobilité).</span></label></div>
+              <div class="opt"><input name="q2_mode" id="q2_tilt" type="radio"><label for="q2_tilt"><b>Incliner / basculer</b><span class="small">Positionnement par inclinaison.</span><div class="meta"><span class="chip risk">Souvent à vérifier</span></div></label></div>
+              <div class="opt"><input name="q2_mode" id="q2_flip" type="radio"><label for="q2_flip"><b>Retourner la charge</b><span class="small">Retournement complet (180°).</span><div class="meta"><span class="chip risk">Hors standard</span></div></label></div>
+              <div class="opt"><input name="q2_mode" id="q2_unknown" type="radio"><label for="q2_unknown"><b>Je ne sais pas</b><span class="small">La synthèse indiquera si une validation est probable.</span></label></div>
             </div>
           </div>
 
@@ -522,28 +435,16 @@
               <div class="tip">i
                 <div class="bubble">
                   <p class="t">Aide — Q3</p>
-                  <p class="p">La localisation aide à choisir : support fixe / couvrant zone / mobile / transportable.</p>
+                  <p class="p">La localisation guide le choix : support fixe / couvrant zone / mobile / transportable.</p>
                 </div>
               </div>
             </div>
 
             <div class="opts">
-              <div class="opt">
-                <input name="q3_loc" id="q3_station" type="radio">
-                <label for="q3_station"><b>Un poste de travail dédié</b><span class="small">Toujours au même endroit.</span></label>
-              </div>
-              <div class="opt">
-                <input name="q3_loc" id="q3_zone" type="radio">
-                <label for="q3_zone"><b>Une zone de travail définie</b><span class="small">Déplacements sur plusieurs mètres dans la zone.</span></label>
-              </div>
-              <div class="opt">
-                <input name="q3_loc" id="q3_multi" type="radio">
-                <label for="q3_multi"><b>Plusieurs postes / zones</b><span class="small">Emplacements distincts.</span></label>
-              </div>
-              <div class="opt">
-                <input id="q3_multisite" type="checkbox">
-                <label for="q3_multisite"><b>Option : multi-sites</b><span class="small">Ateliers / bâtiments / sites différents (transportable).</span><div class="meta"><span class="chip risk">Délais/validation ↑</span></div></label>
-              </div>
+              <div class="opt"><input name="q3_loc" id="q3_station" type="radio"><label for="q3_station"><b>Un poste de travail dédié</b><span class="small">Toujours au même endroit.</span></label></div>
+              <div class="opt"><input name="q3_loc" id="q3_zone" type="radio"><label for="q3_zone"><b>Une zone de travail définie</b><span class="small">Déplacements sur plusieurs mètres.</span></label></div>
+              <div class="opt"><input name="q3_loc" id="q3_multi" type="radio"><label for="q3_multi"><b>Plusieurs postes / zones</b><span class="small">Emplacements distincts.</span></label></div>
+              <div class="opt"><input id="q3_multisite" type="checkbox"><label for="q3_multisite"><b>Option : multi-sites</b><span class="small">Ateliers / bâtiments / sites différents.</span><div class="meta"><span class="chip risk">Délais/validation ↑</span></div></label></div>
             </div>
           </div>
 
@@ -552,33 +453,26 @@
             <div class="qhead">
               <div>
                 <h3>Q4 — Accrochage : ancrages / prise & centre de gravité</h3>
-                <div class="hint">Cette question oriente fortement le choix d’accessoires (et les restrictions d’utilisation).</div>
+                <div class="hint">Oriente fortement le choix des <span style="color:var(--cat-accessories);font-weight:1000">accessoires</span>.</div>
               </div>
               <div class="tip">i
                 <div class="bubble">
                   <p class="t">Aide — Q4</p>
-                  <p class="p"><b>Avec ancrages</b> : nombre de points + CG. <b>Sans ancrages</b> : pince/ventouse/aimant → restrictions fréquentes.</p>
+                  <p class="p"><b>Avec ancrages</b> : nombre de points + CG. <b>Sans ancrages</b> : pince/ventouse/aimant → restrictions.</p>
                 </div>
               </div>
             </div>
 
             <div class="opts">
-              <div class="opt">
-                <input name="q4_anchor" id="q4_has" type="radio">
-                <label for="q4_has"><b>La charge a des points d’ancrage</b><span class="small">Anneaux, anses, points prévus/validés.</span></label>
-              </div>
-              <div class="opt">
-                <input name="q4_anchor" id="q4_none" type="radio">
-                <label for="q4_none"><b>La charge n’a pas de points d’ancrage</b><span class="small">Prise par serrage, ventouse, aimant…</span><div class="meta"><span class="chip risk">Restrictions fréquentes</span></div></label>
-              </div>
+              <div class="opt"><input name="q4_anchor" id="q4_has" type="radio"><label for="q4_has"><b>La charge a des points d’ancrage</b><span class="small">Anneaux, anses, points prévus/validés.</span></label></div>
+              <div class="opt"><input name="q4_anchor" id="q4_none" type="radio"><label for="q4_none"><b>La charge n’a pas de points d’ancrage</b><span class="small">Prise par serrage, ventouse, aimant…</span><div class="meta"><span class="chip risk">Restrictions fréquentes</span></div></label></div>
             </div>
 
             <div class="divider"></div>
 
-            <!-- With anchors -->
             <div id="withAnchors" style="display:none">
               <div class="row" style="justify-content:space-between">
-                <span class="chip access">Accessoires (ancrages)</span>
+                <span class="chip accessories">Accessoires (ancrages)</span>
                 <span class="chip risk">Angles / répartition à vérifier</span>
               </div>
 
@@ -589,10 +483,7 @@
                 <div class="opt"><input name="q4_points" id="q4_p2" type="radio"><label for="q4_p2"><b>2 points</b><span class="small">Répartition à vérifier.</span></label></div>
                 <div class="opt"><input name="q4_points" id="q4_p3" type="radio"><label for="q4_p3"><b>3 points</b><span class="small">Réglages souvent nécessaires.</span></label></div>
                 <div class="opt"><input name="q4_points" id="q4_p4" type="radio"><label for="q4_p4"><b>4 points</b><span class="small">Angles critiques : validation recommandée.</span><div class="meta"><span class="chip risk">Souvent à vérifier</span></div></label></div>
-                <div class="opt">
-                  <input id="q4_dedicated" type="checkbox">
-                  <label for="q4_dedicated"><b>Option : points dédiés au levage</b><span class="small">Points prévus/validés par le fabricant.</span></label>
-                </div>
+                <div class="opt"><input id="q4_dedicated" type="checkbox"><label for="q4_dedicated"><b>Option : points dédiés au levage</b><span class="small">Points prévus/validés par le fabricant.</span></label></div>
               </div>
 
               <div class="divider"></div>
@@ -605,10 +496,9 @@
               </div>
             </div>
 
-            <!-- No anchors -->
             <div id="noAnchors" style="display:none">
               <div class="row" style="justify-content:space-between">
-                <span class="chip access">Accessoires (sans ancrage)</span>
+                <span class="chip accessories">Accessoires (sans ancrage)</span>
                 <span class="chip risk">Restrictions d’usage</span>
               </div>
 
@@ -616,16 +506,16 @@
 
               <div class="opts">
                 <div class="opt"><input name="q4_grip" id="q4_grip_positive" type="radio"><label for="q4_grip_positive"><b>Prise positive</b><span class="small">Accrochage mécanique par forme.</span></label></div>
-                <div class="opt"><input name="q4_grip" id="q4_grip_clamp" type="radio"><label for="q4_grip_clamp"><b>Serrage (pince)</b><span class="small">Maintien par pression (risque de glissement).</span><div class="meta"><span class="chip risk">À vérifier</span></div></label></div>
-                <div class="opt"><input name="q4_grip" id="q4_grip_suction" type="radio"><label for="q4_grip_suction"><b>Ventouses</b><span class="small">Surface compatible, étanchéité, état de surface.</span><div class="meta"><span class="chip risk">Restrictions</span></div></label></div>
-                <div class="opt"><input name="q4_grip" id="q4_grip_mag" type="radio"><label for="q4_grip_mag"><b>Magnétisme</b><span class="small">Uniquement ferromagnétique (acier…).</span><div class="meta"><span class="chip risk">Restrictions</span></div></label></div>
+                <div class="opt"><input name="q4_grip" id="q4_grip_clamp" type="radio"><label for="q4_grip_clamp"><b>Serrage (pince)</b><span class="small">Maintien par pression.</span><div class="meta"><span class="chip risk">À vérifier</span></div></label></div>
+                <div class="opt"><input name="q4_grip" id="q4_grip_suction" type="radio"><label for="q4_grip_suction"><b>Ventouses</b><span class="small">Surface compatible, étanchéité.</span><div class="meta"><span class="chip risk">Restrictions</span></div></label></div>
+                <div class="opt"><input name="q4_grip" id="q4_grip_mag" type="radio"><label for="q4_grip_mag"><b>Aimants</b><span class="small">Uniquement ferromagnétique.</span><div class="meta"><span class="chip magnets">Catégorie : aimants (vert)</span><span class="chip risk">Restrictions</span></div></label></div>
                 <div class="opt"><input name="q4_grip" id="q4_grip_unknown" type="radio"><label for="q4_grip_unknown"><b>Je ne sais pas</b><span class="small">Validation probable.</span></label></div>
               </div>
 
               <div class="divider"></div>
 
               <div class="opts">
-                <div class="opt"><input name="q4_stab" id="q4_stab_stable" type="radio"><label for="q4_stab_stable"><b>Charge stable</b><span class="small">Peu de risque d’inclinaison à la prise.</span></label></div>
+                <div class="opt"><input name="q4_stab" id="q4_stab_stable" type="radio"><label for="q4_stab_stable"><b>Charge stable</b><span class="small">Peu de risque d’inclinaison.</span></label></div>
                 <div class="opt"><input name="q4_stab" id="q4_stab_sensitive" type="radio"><label for="q4_stab_sensitive"><b>Charge sensible</b><span class="small">Peut s’incliner.</span><div class="meta"><span class="chip risk">À vérifier</span></div></label></div>
                 <div class="opt"><input name="q4_stab" id="q4_stab_unstable" type="radio"><label for="q4_stab_unstable"><b>Charge instable</b><span class="small">Risque fort de basculement.</span><div class="meta"><span class="chip risk">Spécialiste recommandé</span></div></label></div>
                 <div class="opt"><input name="q4_stab" id="q4_stab_unknown" type="radio"><label for="q4_stab_unknown"><b>Je ne sais pas</b><span class="small">Validation probable.</span></label></div>
@@ -643,7 +533,7 @@
               <div class="tip">i
                 <div class="bubble">
                   <p class="t">Aide — Q5</p>
-                  <p class="p">Plus c’est précis, plus le système doit maîtriser la vitesse et limiter le ballant.</p>
+                  <p class="p">Plus c’est précis, plus il faut maîtriser vitesse et ballant (souvent validation).</p>
                 </div>
               </div>
             </div>
@@ -656,15 +546,14 @@
             </div>
           </div>
 
-          <!-- Sticky actions -->
           <div class="stickyBottom">
             <div class="row" style="justify-content:space-between">
               <div class="row">
-                <button class="btn blue" id="updateBtn" type="button">Mettre à jour la synthèse</button>
+                <button class="btn core" id="updateBtn" type="button">Mettre à jour la synthèse</button>
                 <button class="btn" id="copyBtn" type="button">Copier le cahier des charges</button>
               </div>
               <div class="row">
-                <button class="btn primary" id="downloadBtn" type="button">Télécharger (.txt)</button>
+                <button class="btn hoists" id="downloadBtn" type="button">Télécharger (.txt)</button>
               </div>
             </div>
             <div class="mini" id="msg"></div>
@@ -673,28 +562,26 @@
         </div>
       </div>
 
-      <!-- RIGHT: Résultats -->
       <div class="card rightCol">
         <div class="hd">
           <div>
             <h2>Orientation & Cahier des charges</h2>
-            <p>Pré-qualification utilisable par un commercial + alertes quand une validation spécialiste est recommandée.</p>
+            <p>Pré-qualification + alertes quand une validation spécialiste est recommandée.</p>
           </div>
         </div>
         <div class="bd">
 
           <div class="row" style="justify-content:space-between">
-            <span class="chip support">Supports</span>
-            <span class="chip device">Appareils</span>
-            <span class="chip access">Accessoires</span>
+            <span class="chip accessories">Accessoires (rouge)</span>
+            <span class="chip magnets">Aimants (vert)</span>
+            <span class="chip site">Chantier (bleu clair)</span>
+            <span class="chip hoists">Palans (orange)</span>
           </div>
 
           <div class="divider"></div>
 
           <table>
-            <thead>
-              <tr><th>Ce que vous avez décrit</th><th>Impact</th></tr>
-            </thead>
+            <thead><tr><th>Ce que vous avez décrit</th><th>Impact</th></tr></thead>
             <tbody id="summary"></tbody>
           </table>
 
@@ -709,12 +596,15 @@
           <div class="divider"></div>
 
           <div class="row" style="justify-content:space-between">
-            <span class="chip device">Cahier des charges (copiable)</span>
+            <span class="chip core">Cahier des charges (copiable)</span>
             <span class="subtitle" id="complexity">—</span>
           </div>
 
           <div class="mono" id="cdc">—</div>
-          <div class="mini">Si l’outil conclut “Spécialiste recommandé”, l’action attendue est : <b>appel Matériel-Levage</b> avec ce cahier des charges.</div>
+          <div class="mini">
+            Si l’outil conclut “Spécialiste recommandé”, action attendue :
+            <button class="btn accessories" type="button" id="callBtn">Appeler un spécialiste Matériel-Levage</button>
+          </div>
 
         </div>
       </div>
@@ -725,7 +615,6 @@
   <script>
     const $ = (id)=>document.getElementById(id);
 
-    /* ===== Nav config ===== */
     const questions = [
       { id:"q1", label:"Q1", title:"Action sur la charge", tag:"Base" },
       { id:"q2", label:"Q2", title:"Type de déplacement", tag:"Mouvement" },
@@ -740,16 +629,14 @@
       el.scrollIntoView({behavior:"smooth", block:"start"});
       setActiveNav(id);
     }
-
     function setActiveNav(id){
       document.querySelectorAll(".navItem").forEach(x=>x.classList.remove("active"));
       document.querySelectorAll(".mBtn").forEach(x=>x.classList.remove("active"));
-      const a = document.querySelector(`.navItem[data-id="${id}"]`);
-      const b = document.querySelector(`.mBtn[data-id="${id}"]`);
+      const a = document.querySelector(\`.navItem[data-id="\${id}"]\`);
+      const b = document.querySelector(\`.mBtn[data-id="\${id}"]\`);
       if(a) a.classList.add("active");
       if(b) b.classList.add("active");
     }
-
     function buildNav(){
       const navList = $("navList");
       navList.innerHTML = "";
@@ -757,7 +644,7 @@
         const div = document.createElement("div");
         div.className = "navItem" + (idx===0 ? " active":"");
         div.dataset.id = q.id;
-        div.innerHTML = `<div><div class="q">${q.label} — ${q.title}</div><div class="tag">${q.tag}</div></div><div style="color:var(--ml-blue);font-weight:1000">→</div>`;
+        div.innerHTML = \`<div><div class="q">\${q.label} — \${q.title}</div><div class="tag">\${q.tag}</div></div><div style="color:var(--ml-blue);font-weight:1000">→</div>\`;
         div.onclick = ()=>scrollToQ(q.id);
         navList.appendChild(div);
       });
@@ -775,21 +662,15 @@
       });
     }
 
-    /* ===== Read state ===== */
     function checked(id){ return $(id).checked; }
     function radioVal(name){
-      const n = document.querySelector(`input[name="${CSS.escape(name)}"]:checked`);
+      const n = document.querySelector(\`input[name="\${CSS.escape(name)}"]:checked\`);
       return n ? n.id : null;
     }
 
     function readState(){
       return {
-        q1: {
-          lift: checked("q1_lift"),
-          move: checked("q1_move"),
-          hook: checked("q1_hook"),
-          support: checked("q1_support")
-        },
+        q1: { lift: checked("q1_lift"), move: checked("q1_move"), hook: checked("q1_hook"), support: checked("q1_support") },
         q2: radioVal("q2_mode"),
         q3: radioVal("q3_loc"),
         q3_multisite: checked("q3_multisite"),
@@ -804,10 +685,8 @@
     }
 
     function updateQ4Visibility(s){
-      const withA = $("withAnchors");
-      const noA = $("noAnchors");
-      withA.style.display = (s.q4_anchor === "q4_has") ? "block" : "none";
-      noA.style.display = (s.q4_anchor === "q4_none") ? "block" : "none";
+      $("withAnchors").style.display = (s.q4_anchor === "q4_has") ? "block" : "none";
+      $("noAnchors").style.display = (s.q4_anchor === "q4_none") ? "block" : "none";
     }
 
     function clarityScore(s){
@@ -834,135 +713,33 @@
       return Math.max(0, Math.min(100, Math.round(score)));
     }
 
-    function compute(s){
-      const rows = [];
-      const alerts = [];
-      const families = [];
-
-      // Families
-      if(s.q1.support) families.push("Supports");
-      if(s.q1.lift || s.q1.move) families.push("Appareils");
-      if(s.q1.hook) families.push("Accessoires");
-
-      // Summary
-      const actions = [];
-      if(s.q1.lift) actions.push("Lever");
-      if(s.q1.move) actions.push("Déplacer");
-      if(s.q1.hook) actions.push("Accrocher/saisir");
-      if(s.q1.support) actions.push("Supporter");
-      rows.push(["Actions", actions.length ? actions.join(", ") : "Non renseigné"]);
-
-      const mapQ2 = {
-        q2_vonly:"Vertical uniquement",
-        q2_h1:"Horizontal (1 direction)",
-        q2_hmulti:"Horizontal (multi-direction)",
-        q2_tilt:"Incliner/basculer",
-        q2_flip:"Retourner (180°)",
-        q2_unknown:"Inconnu"
-      };
-      if(s.q1.move) rows.push(["Déplacement", mapQ2[s.q2] || "Non renseigné"]);
-
-      const mapQ3 = { q3_station:"Poste dédié", q3_zone:"Zone définie", q3_multi:"Plusieurs postes/zones" };
-      if(s.q1.lift || s.q1.move){
-        let loc = mapQ3[s.q3] || "Non renseigné";
-        if(s.q3_multisite) loc += " (+ multi-sites)";
-        rows.push(["Localisation", loc]);
-      }
-
-      // Q4
-      if(s.q1.hook){
-        if(s.q4_anchor === "q4_has"){
-          const ptsMap = { q4_p1:"1", q4_p2:"2", q4_p3:"3", q4_p4:"4" };
-          const cgMap = {
-            q4_cg_center:"CG centré",
-            q4_cg_above_off:"CG décentré (au-dessus)",
-            q4_cg_below:"CG sous ancrages",
-            q4_cg_unknown:"CG inconnu"
-          };
-          rows.push(["Accrochage", `Points d’ancrage : ${ptsMap[s.q4_points] || "?"}${s.q4_dedicated?" (dédiés)":""} • ${cgMap[s.q4_cg] || "CG ?"} `]);
-          if(s.q4_points === "q4_p4" || s.q4_points === "q4_p3") alerts.push("3–4 points : angles et répartition à valider (risque d’écart CMU).");
-          if(s.q4_cg === "q4_cg_below") alerts.push("CG sous ancrages : risque de basculement/retournement → spécialiste recommandé.");
-          if(s.q4_cg === "q4_cg_above_off") alerts.push("CG décentré : prévoir équilibrage/ajustement et contrôle d’inclinaison.");
-        } else if(s.q4_anchor === "q4_none"){
-          const gripMap = {
-            q4_grip_positive:"Prise positive",
-            q4_grip_clamp:"Serrage (pince)",
-            q4_grip_suction:"Ventouses",
-            q4_grip_mag:"Aimant",
-            q4_grip_unknown:"Inconnu"
-          };
-          const stabMap = {
-            q4_stab_stable:"Stable",
-            q4_stab_sensitive:"Sensible",
-            q4_stab_unstable:"Instable",
-            q4_stab_unknown:"Inconnu"
-          };
-          rows.push(["Accrochage", `Sans ancrage • ${gripMap[s.q4_grip] || "?"} • Stabilité : ${stabMap[s.q4_stab] || "?"}`]);
-          alerts.push("Sans ancrage : restrictions d’utilisation fréquentes (surface, matériau, serrage, sécurité).");
-          if(s.q4_stab === "q4_stab_unstable") alerts.push("Charge instable : risque élevé → spécialiste recommandé.");
-          if(s.q4_grip === "q4_grip_suction") alerts.push("Ventouses : surface/étanchéité/état de surface à valider.");
-          if(s.q4_grip === "q4_grip_mag") alerts.push("Aimant : matériau ferromagnétique uniquement + épaisseur/état de surface à valider.");
-        } else {
-          rows.push(["Accrochage", "Non renseigné"]);
-          alerts.push("Accrochage non renseigné : validation probable.");
-        }
-      }
-
-      // Q5
-      const mapQ5 = { q5_simple:"Simple", q5_precise:"Précise", q5_very:"Très précise", q5_unknown:"Inconnu" };
-      if(s.q1.lift || s.q1.move || s.q1.hook) rows.push(["Qualité attendue", mapQ5[s.q5] || "Non renseigné"]);
-
-      // Complexity / status
-      let complexity = "Modéré";
-      if(s.q2 === "q2_flip") complexity = "Hors standard";
-      if(s.q2 === "q2_tilt") complexity = "Complexe";
-      if(s.q5 === "q5_very") complexity = "Complexe";
-      if(s.q4_anchor === "q4_has" && s.q4_cg === "q4_cg_below") complexity = "Hors standard";
-      if(s.q4_anchor === "q4_none" && s.q4_stab === "q4_stab_unstable") complexity = "Hors standard";
-
-      const clarity = clarityScore(s);
-
-      let status = "Pré-sélection possible";
-      let dot = "good";
-      if(clarity < 70){ status = "À compléter"; dot = "warn"; }
-      if(complexity === "Complexe"){ status = "À vérifier"; dot = "warn"; }
-      if(complexity === "Hors standard"){ status = "Spécialiste recommandé"; dot = "bad"; }
-
-      if(s.q3_multisite) alerts.push("Multi-sites : privilégier une solution transportable/démontable + validation par site.");
-      if(!s.q1.lift && !s.q1.move && !s.q1.hook && !s.q1.support) alerts.unshift("Commencez par cocher au moins une action en Q1.");
-
-      const cdc = buildCDC(s, clarity, status, complexity, families, alerts);
-
-      return { rows, alerts, families, clarity, status, dot, complexity, cdc };
-    }
-
     function buildCDC(s, clarity, status, complexity, families, alerts){
       const lines = [];
       lines.push("CAHIER DES CHARGES — AIDE AU CHOIX (LEVAGE) — Pré-qualification");
       lines.push("");
-      lines.push(`Clarté : ${clarity}%`);
-      lines.push(`Statut : ${status}`);
-      lines.push(`Complexité : ${complexity}`);
-      lines.push(`Familles orientées : ${families.length ? families.join(" / ") : "Non déterminé"}`);
+      lines.push(\`Clarté : \${clarity}%\`);
+      lines.push(\`Statut : \${status}\`);
+      lines.push(\`Complexité : \${complexity}\`);
+      lines.push(\`Familles orientées : \${families.length ? families.join(" / ") : "Non déterminé"}\`);
       lines.push("");
       lines.push("1) Actions");
-      lines.push(`- Lever : ${s.q1.lift ? "Oui" : "Non"}`);
-      lines.push(`- Déplacer : ${s.q1.move ? "Oui" : "Non"}`);
-      lines.push(`- Accrocher/saisir : ${s.q1.hook ? "Oui" : "Non"}`);
-      lines.push(`- Supporter : ${s.q1.support ? "Oui" : "Non"}`);
+      lines.push(\`- Lever : \${s.q1.lift ? "Oui" : "Non"}\`);
+      lines.push(\`- Déplacer : \${s.q1.move ? "Oui" : "Non"}\`);
+      lines.push(\`- Accrocher/saisir : \${s.q1.hook ? "Oui" : "Non"}\`);
+      lines.push(\`- Supporter : \${s.q1.support ? "Oui" : "Non"}\`);
 
       if(s.q1.move){
         const mapQ2 = { q2_vonly:"Vertical uniquement", q2_h1:"Horizontal 1 direction", q2_hmulti:"Horizontal multi-direction", q2_tilt:"Incliner/basculer", q2_flip:"Retourner 180°", q2_unknown:"Inconnu" };
         lines.push("");
         lines.push("2) Déplacement");
-        lines.push(`- ${mapQ2[s.q2] || "Non renseigné"}`);
+        lines.push(\`- \${mapQ2[s.q2] || "Non renseigné"}\`);
       }
 
       if(s.q1.lift || s.q1.move){
         const mapQ3 = { q3_station:"Poste dédié", q3_zone:"Zone définie", q3_multi:"Plusieurs postes/zones" };
         lines.push("");
         lines.push("3) Localisation");
-        lines.push(`- ${mapQ3[s.q3] || "Non renseigné"}${s.q3_multisite ? " (+ multi-sites)" : ""}`);
+        lines.push(\`- \${mapQ3[s.q3] || "Non renseigné"}\${s.q3_multisite ? " (+ multi-sites)" : ""}\`);
       }
 
       if(s.q1.hook){
@@ -971,14 +748,14 @@
         if(s.q4_anchor === "q4_has"){
           const ptsMap = { q4_p1:"1", q4_p2:"2", q4_p3:"3", q4_p4:"4" };
           const cgMap = { q4_cg_center:"CG centré", q4_cg_above_off:"CG décentré (au-dessus)", q4_cg_below:"CG sous ancrages", q4_cg_unknown:"CG inconnu" };
-          lines.push(`- Points d’ancrage : ${ptsMap[s.q4_points] || "?"}${s.q4_dedicated ? " (dédiés)" : ""}`);
-          lines.push(`- Centre de gravité : ${cgMap[s.q4_cg] || "?"}`);
+          lines.push(\`- Points d’ancrage : \${ptsMap[s.q4_points] || "?"}\${s.q4_dedicated ? " (dédiés)" : ""}\`);
+          lines.push(\`- Centre de gravité : \${cgMap[s.q4_cg] || "?"}\`);
         } else if(s.q4_anchor === "q4_none"){
-          const gripMap = { q4_grip_positive:"Prise positive", q4_grip_clamp:"Serrage (pince)", q4_grip_suction:"Ventouses", q4_grip_mag:"Aimant", q4_grip_unknown:"Inconnu" };
+          const gripMap = { q4_grip_positive:"Prise positive", q4_grip_clamp:"Serrage (pince)", q4_grip_suction:"Ventouses", q4_grip_mag:"Aimants", q4_grip_unknown:"Inconnu" };
           const stabMap = { q4_stab_stable:"Stable", q4_stab_sensitive:"Sensible", q4_stab_unstable:"Instable", q4_stab_unknown:"Inconnu" };
           lines.push("- Absence de points d’ancrage : Oui");
-          lines.push(`- Mode de prise : ${gripMap[s.q4_grip] || "?"}`);
-          lines.push(`- Stabilité : ${stabMap[s.q4_stab] || "?"}`);
+          lines.push(\`- Mode de prise : \${gripMap[s.q4_grip] || "?"}\`);
+          lines.push(\`- Stabilité : \${stabMap[s.q4_stab] || "?"}\`);
         } else {
           lines.push("- Non renseigné");
         }
@@ -988,31 +765,107 @@
         const mapQ5 = { q5_simple:"Simple", q5_precise:"Précise", q5_very:"Très précise", q5_unknown:"Inconnu" };
         lines.push("");
         lines.push("5) Qualité attendue");
-        lines.push(`- ${mapQ5[s.q5] || "Non renseigné"}`);
+        lines.push(\`- \${mapQ5[s.q5] || "Non renseigné"}\`);
       }
 
       lines.push("");
       lines.push("Alertes / recommandations");
-      (alerts.length ? alerts : ["Aucune alerte à ce stade."]).forEach(a=>lines.push(`- ${a}`));
+      (alerts.length ? alerts : ["Aucune alerte à ce stade."]).forEach(a=>lines.push(\`- \${a}\`));
       lines.push("");
       lines.push("Prochaine étape : sélectionner des références et valider (CMU, angles, énergie, installation, environnement, maintenance).");
-
-      return lines.join("\n");
+      return lines.join("\\n");
     }
 
-    /* ===== Render ===== */
+    function compute(s){
+      const rows = [];
+      const alerts = [];
+      const families = [];
+
+      if(s.q1.support) families.push("Supports");
+      if(s.q1.lift || s.q1.move) families.push("Appareils");
+      if(s.q1.hook) families.push("Accessoires");
+
+      const actions = [];
+      if(s.q1.lift) actions.push("Lever");
+      if(s.q1.move) actions.push("Déplacer");
+      if(s.q1.hook) actions.push("Accrocher/saisir");
+      if(s.q1.support) actions.push("Supporter");
+      rows.push(["Actions", actions.length ? actions.join(", ") : "Non renseigné"]);
+
+      const mapQ2 = { q2_vonly:"Vertical uniquement", q2_h1:"Horizontal (1 direction)", q2_hmulti:"Horizontal (multi-direction)", q2_tilt:"Incliner/basculer", q2_flip:"Retourner (180°)", q2_unknown:"Inconnu" };
+      if(s.q1.move) rows.push(["Déplacement", mapQ2[s.q2] || "Non renseigné"]);
+
+      const mapQ3 = { q3_station:"Poste dédié", q3_zone:"Zone définie", q3_multi:"Plusieurs postes/zones" };
+      if(s.q1.lift || s.q1.move){
+        let loc = mapQ3[s.q3] || "Non renseigné";
+        if(s.q3_multisite) loc += " (+ multi-sites)";
+        rows.push(["Localisation", loc]);
+      }
+
+      if(s.q1.hook){
+        if(s.q4_anchor === "q4_has"){
+          const ptsMap = { q4_p1:"1", q4_p2:"2", q4_p3:"3", q4_p4:"4" };
+          const cgMap = { q4_cg_center:"CG centré", q4_cg_above_off:"CG décentré (au-dessus)", q4_cg_below:"CG sous ancrages", q4_cg_unknown:"CG inconnu" };
+          rows.push(["Accrochage", `Points : ${ptsMap[s.q4_points] || "?"}${s.q4_dedicated?" (dédiés)":"")} • ${cgMap[s.q4_cg] || "CG ?"} `]);
+          if(s.q4_points === "q4_p4" || s.q4_points === "q4_p3") alerts.push("3–4 points : angles/répartition à valider (écart CMU possible).");
+          if(s.q4_cg === "q4_cg_below") alerts.push("CG sous ancrages : risque de basculement → spécialiste recommandé.");
+          if(s.q4_cg === "q4_cg_above_off") alerts.push("CG décentré : prévoir équilibrage et contrôle d’inclinaison.");
+        } else if(s.q4_anchor === "q4_none"){
+          rows.push(["Accrochage", "Sans ancrage : restrictions fréquentes (surface, matériau, sécurité)."]);
+          alerts.push("Sans ancrage : restrictions d’utilisation fréquentes.");
+        } else {
+          rows.push(["Accrochage", "Non renseigné"]);
+          alerts.push("Accrochage non renseigné : validation probable.");
+        }
+      }
+
+      const mapQ5 = { q5_simple:"Simple", q5_precise:"Précise", q5_very:"Très précise", q5_unknown:"Inconnu" };
+      if(s.q1.lift || s.q1.move || s.q1.hook) rows.push(["Qualité attendue", mapQ5[s.q5] || "Non renseigné"]);
+
+      let complexity = "Modéré";
+      if(s.q2 === "q2_flip") complexity = "Hors standard";
+      if(s.q2 === "q2_tilt") complexity = "Complexe";
+      if(s.q5 === "q5_very") complexity = "Complexe";
+
+      const clarity = clarityScore(s);
+      let status = "Pré-sélection possible";
+      let dot = "good";
+      if(clarity < 70){ status = "À compléter"; dot = "warn"; }
+      if(complexity === "Complexe"){ status = "À vérifier"; dot = "warn"; }
+      if(complexity === "Hors standard"){ status = "Spécialiste recommandé"; dot = "bad"; }
+
+      if(s.q3_multisite) alerts.push("Multi-sites : solution transportable/démontable + validation par site.");
+      if(!s.q1.lift && !s.q1.move && !s.q1.hook && !s.q1.support) alerts.unshift("Commencez par cocher au moins une action en Q1.");
+
+      const cdc = buildCDC(s, clarity, status, complexity, families, alerts);
+      return { rows, alerts, families, clarity, status, dot, complexity, cdc };
+    }
+
+    function escapeHtml(s){
+      return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+    }
+
+    function getCurrentSectionId(){
+      const ids = questions.map(q=>q.id);
+      let best = ids[0], bestTop = Infinity;
+      ids.forEach(id=>{
+        const el = $(id); if(!el) return;
+        const r = el.getBoundingClientRect();
+        const d = Math.abs(r.top - 120);
+        if(d < bestTop){ bestTop = d; best = id; }
+      });
+      return best;
+    }
+
     function render(activeId=null){
       const s = readState();
       updateQ4Visibility(s);
-
       const out = compute(s);
 
-      // Header status
       $("clarityTxt").textContent = out.clarity + "%";
       $("statusTxt").textContent = out.status;
       $("dot").className = "statusDot " + out.dot;
 
-      // Summary table
       const tb = $("summary");
       tb.innerHTML = "";
       out.rows.forEach(([a,b])=>{
@@ -1021,32 +874,19 @@
         tb.appendChild(tr);
       });
 
-      // Alerts
       const ul = $("alerts");
       ul.innerHTML = "";
-      (out.alerts.length ? out.alerts : ["Continuez à préciser si possible (déplacement / accrochage / précision)."]).forEach(x=>{
+      (out.alerts.length ? out.alerts : ["Continuez à préciser si possible."]).forEach(x=>{
         const li = document.createElement("li");
         li.textContent = x;
         ul.appendChild(li);
       });
 
-      // Recap
       $("recapFamilies").textContent = out.families.length ? ("Familles : " + out.families.join(" / ")) : "Familles : —";
       $("complexity").textContent = "Complexité : " + out.complexity;
-
-      // CDC
       $("cdc").textContent = out.cdc;
 
       if(activeId) setActiveNav(activeId);
-    }
-
-    function escapeHtml(s){
-      return String(s)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
     }
 
     function resetAll(){
@@ -1064,18 +904,14 @@
       $("q1_move").checked = true;
       $("q1_hook").checked = true;
       $("q1_support").checked = true;
-
       $("q2_hmulti").checked = true;
       $("q3_multi").checked = true;
       $("q3_multisite").checked = true;
-
       $("q4_has").checked = true;
       $("q4_p4").checked = true;
       $("q4_dedicated").checked = true;
       $("q4_cg_above_off").checked = true;
-
       $("q5_precise").checked = true;
-
       render("q1");
     }
 
@@ -1111,10 +947,8 @@
     }
 
     function bindAll(){
-      // On change → update
       document.querySelectorAll("input").forEach(inp=>{
         inp.addEventListener("change", ()=>{
-          // si on change Q4 anchor → reset sous-choix
           if(inp.id === "q4_has" || inp.id === "q4_none"){
             document.querySelectorAll('input[name="q4_points"]').forEach(x=>x.checked=false);
             document.querySelectorAll('input[name="q4_cg"]').forEach(x=>x.checked=false);
@@ -1122,7 +956,6 @@
             document.querySelectorAll('input[name="q4_stab"]').forEach(x=>x.checked=false);
             $("q4_dedicated").checked=false;
           }
-          // highlight active question based on nearest section in viewport
           render(getCurrentSectionId());
         });
       });
@@ -1133,29 +966,16 @@
       $("copyBtn").addEventListener("click", copyCDC);
       $("downloadBtn").addEventListener("click", downloadCDC);
 
-      // Observe scroll to activate nav
+      const callBtn = $("callBtn");
+      if(callBtn){
+        callBtn.addEventListener("click", ()=>{
+          alert("👉 Spécialiste Matériel-Levage : utilisez le cahier des charges copié pour votre demande.");
+        });
+      }
+
       window.addEventListener("scroll", ()=>setActiveNav(getCurrentSectionId()), {passive:true});
     }
 
-    function getCurrentSectionId(){
-      const ids = questions.map(q=>q.id);
-      let best = ids[0];
-      let bestTop = Infinity;
-      ids.forEach(id=>{
-        const el = $(id);
-        if(!el) return;
-        const r = el.getBoundingClientRect();
-        // section closest to top (but not too far above)
-        const d = Math.abs(r.top - 120);
-        if(d < bestTop){
-          bestTop = d;
-          best = id;
-        }
-      });
-      return best;
-    }
-
-    // init
     buildNav();
     bindAll();
     render("q1");
