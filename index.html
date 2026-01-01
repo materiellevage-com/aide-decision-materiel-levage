@@ -8,7 +8,6 @@
 
   <style>
     :root{
-      /* Structure (proche visuels) */
       --ml-blue:#2a2e86;
       --ml-blue-dark:#1f2268;
       --ml-yellow:#f2c200;
@@ -20,7 +19,6 @@
       --ml-shadow:0 10px 25px rgba(17,24,39,.10);
       --ml-radius:16px;
 
-      /* Catégories catalogue (réservées à la charte, pas aux textes d'orientation) */
       --cat-accessories:#b10f1b;  /* rouge accessoires */
       --cat-magnets:#22a35a;      /* vert aimants */
       --cat-site:#2b77d9;         /* bleu clair chantier */
@@ -33,10 +31,10 @@
     }
 
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth;}
     body{margin:0;font-family:var(--font);color:var(--ml-text);background:var(--ml-bg)}
     .wrap{max-width:1100px;margin:0 auto;padding:14px}
 
-    /* Header */
     .topbar{
       background:#fff;
       border-bottom:4px solid var(--cat-accessories);
@@ -76,7 +74,6 @@
     .statusDot.warn{background:var(--warn)}
     .statusDot.bad{background:var(--bad)}
 
-    /* Layout */
     .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;margin-top:14px}
     @media (max-width:980px){.grid{grid-template-columns:1fr}}
 
@@ -96,11 +93,6 @@
     .card .hd p{margin:6px 0 0;color:var(--ml-muted);font-size:12px;line-height:1.4}
     .card .bd{padding:14px}
 
-    /* Conversation */
-    .chatTitle{
-      font-weight:1000;color:#111827;font-size:14px;margin:0 0 6px;
-    }
-    .chatHint{color:var(--ml-muted);font-size:12px;line-height:1.45;margin:0}
     .progressRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
 
     .questionBox{
@@ -108,7 +100,14 @@
       border-radius:16px;
       padding:14px;
       background:#fff;
+      scroll-margin-top: 90px; /* compense la topbar sticky */
+      transition: box-shadow .25s, transform .25s;
     }
+    .questionBox.flash{
+      box-shadow: 0 0 0 4px rgba(42,46,134,.10), var(--ml-shadow);
+      transform: translateY(-1px);
+    }
+
     .askRow{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
     .ask{
       margin:0;
@@ -179,7 +178,6 @@
 
     .mini{color:var(--ml-muted);font-size:12px;line-height:1.45;margin-top:8px}
 
-    /* Right column */
     table{width:100%;border-collapse:collapse}
     th,td{padding:10px;border-bottom:1px solid var(--ml-line);vertical-align:top}
     th{font-size:12px;color:var(--ml-muted);text-align:left}
@@ -191,7 +189,6 @@
       border-radius:14px;padding:12px;white-space:pre-wrap;color:#0f172a;
     }
     ul{margin:10px 0 0;padding-left:18px;color:var(--ml-muted);font-size:12px;line-height:1.55}
-
     .divider{height:1px;background:var(--ml-line);margin:12px 0}
   </style>
 </head>
@@ -229,7 +226,7 @@
         <div class="hd">
           <div>
             <h2>Questions (une à la fois)</h2>
-            <p>Validez votre réponse pour passer à la suite. Si vous ne savez pas, utilisez le bouton dédié.</p>
+            <p>Après validation (ou “Je ne sais pas”), la conversation avance automatiquement.</p>
           </div>
         </div>
 
@@ -267,7 +264,7 @@
       </div>
 
       <!-- Synthèse -->
-      <div class="card">
+      <div class="card" id="summaryCard">
         <div class="hd">
           <div>
             <h2>Synthèse & Cahier des charges</h2>
@@ -304,8 +301,29 @@
   <script>
     const $ = (id)=>document.getElementById(id);
 
+    // --- util scroll / focus (le point clé demandé) ---
+    function focusQuestionBox(){
+      const box = $("questionBox");
+      if(!box) return;
+
+      // scroll vers le bloc question (compense topbar sticky via scroll-margin-top CSS)
+      box.scrollIntoView({behavior:"smooth", block:"start"});
+
+      // petit flash visuel pour repérer la nouvelle question
+      box.classList.remove("flash");
+      // force reflow
+      void box.offsetWidth;
+      box.classList.add("flash");
+      setTimeout(()=>box.classList.remove("flash"), 550);
+    }
+
+    function focusSummary(){
+      const el = $("summaryCard");
+      if(!el) return;
+      el.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
     // Questions (sans Q1/Q2 visibles)
-    // "dontKnow" est géré par le bouton, pas dans les réponses.
     const flow = [
       {
         id:"action",
@@ -408,12 +426,10 @@
       }
     ];
 
-    // State + scoring
     const state = {};
     const dontKnowCount = { total:0, byId:{} };
-
     let stepIndex = 0;
-    const visibleSteps = []; // steps taking gates into account
+    const visibleSteps = [];
 
     function buildVisibleSteps(){
       visibleSteps.length = 0;
@@ -421,7 +437,6 @@
         const ok = q.gate ? q.gate(state) : true;
         if(ok) visibleSteps.push(idx);
       });
-      // Ensure stepIndex is valid
       if(stepIndex >= visibleSteps.length) stepIndex = visibleSteps.length - 1;
       if(stepIndex < 0) stepIndex = 0;
     }
@@ -434,23 +449,14 @@
       return n;
     }
 
-    // Precision score: starts at 100, decreases with dontKnow + missing requireds
     function precisionScore(){
       let score = 100;
-
-      // penalty per "Je ne sais pas"
       score -= dontKnowCount.total * 10;
-
-      // penalty for missing key items (soft)
       if(!state.action || state.action.length===0) score -= 40;
-
       if(state.action?.includes("move") && !state.movement) score -= 10;
       if((state.action?.includes("lift") || state.action?.includes("move")) && !state.location) score -= 10;
-
       if(state.action?.includes("hook") && !state.hooking) score -= 18;
-
       if((state.action?.includes("lift") || state.action?.includes("move") || state.action?.includes("hook")) && !state.quality) score -= 8;
-
       score = Math.max(0, Math.min(100, Math.round(score)));
       return score;
     }
@@ -462,7 +468,6 @@
     }
 
     function complexity(){
-      // simple heuristic
       if(state.movement === "flip") return "Complexité : Hors standard";
       if(state.movement === "tilt") return "Complexité : Complexe";
       if(state.quality === "very") return "Complexité : Complexe";
@@ -482,7 +487,6 @@
     }
 
     function setStepPills(){
-      $("stepTxt").textContent = String(stepIndex + 1);
       $("stepPill").innerHTML = `<b>${stepIndex + 1}</b> / ${visibleSteps.length}`;
       $("answeredTxt").textContent = String(answeredCount());
     }
@@ -503,7 +507,6 @@
       const opts = $("opts");
       opts.innerHTML = "";
 
-      // Build UI per type
       if(q.type === "multi"){
         q.options.forEach(o=>{
           const id = `opt_${q.id}_${o.id}`;
@@ -537,7 +540,6 @@
       }
 
       if(q.type === "mixed"){
-        // radio group
         q.optionsRadio.forEach(o=>{
           const id = `opt_${q.id}_${o.id}`;
           const checked = state[q.id] === o.id;
@@ -551,7 +553,6 @@
             </div>
           `);
         });
-        // single checkbox option (no warning label underneath, as requested)
         const oc = q.optionCheck;
         const cid = `opt_${q.id}_${oc.id}`;
         const cchecked = !!(state[`${q.id}_${oc.id}`]);
@@ -567,7 +568,6 @@
       }
 
       if(q.type === "branch"){
-        // First choice
         q.first.forEach(o=>{
           const id = `opt_${q.id}_first_${o.id}`;
           const checked = (state[q.id]?.mode === o.id);
@@ -582,11 +582,9 @@
           `);
         });
 
-        // Branch details if selected
         const mode = state[q.id]?.mode;
         if(mode === "has"){
           opts.insertAdjacentHTML("beforeend", `<div class="divider"></div>`);
-
           q.branchHas.points.forEach(o=>{
             const id = `opt_${q.id}_points_${o.id}`;
             const checked = (state[q.id]?.points === o.id);
@@ -614,7 +612,6 @@
           `);
 
           opts.insertAdjacentHTML("beforeend", `<div class="divider"></div>`);
-
           q.branchHas.cg.forEach(o=>{
             const id = `opt_${q.id}_cg_${o.id}`;
             const checked = (state[q.id]?.cg === o.id);
@@ -632,7 +629,6 @@
 
         if(mode === "none"){
           opts.insertAdjacentHTML("beforeend", `<div class="divider"></div>`);
-
           q.branchNone.grip.forEach(o=>{
             const id = `opt_${q.id}_grip_${o.id}`;
             const checked = (state[q.id]?.grip === o.id);
@@ -648,7 +644,6 @@
           });
 
           opts.insertAdjacentHTML("beforeend", `<div class="divider"></div>`);
-
           q.branchNone.stab.forEach(o=>{
             const id = `opt_${q.id}_stab_${o.id}`;
             const checked = (state[q.id]?.stab === o.id);
@@ -665,7 +660,6 @@
         }
       }
 
-      // Back button visibility
       $("backBtn").style.display = (stepIndex === 0) ? "none" : "inline-block";
     }
 
@@ -705,8 +699,6 @@
 
       if(q.type === "branch"){
         const out = { mode:null, points:null, dedicated:false, cg:null, grip:null, stab:null };
-
-        // first
         q.first.forEach(o=>{
           const id = `opt_${q.id}_first_${o.id}`;
           const el = $(id);
@@ -720,7 +712,6 @@
             if(el && el.checked) out.points = o.id;
           });
           out.dedicated = $(`opt_${q.id}_dedicated_${q.branchHas.dedicated.id}`)?.checked || false;
-
           q.branchHas.cg.forEach(o=>{
             const id = `opt_${q.id}_cg_${o.id}`;
             const el = $(id);
@@ -740,7 +731,6 @@
             if(el && el.checked) out.stab = o.id;
           });
         }
-
         return out;
       }
 
@@ -751,12 +741,9 @@
       const q = flow[ visibleSteps[stepIndex] ];
 
       if(isDontKnow){
-        // Do not overwrite existing answer; just mark dontKnow and keep null if empty
         dontKnowCount.total += 1;
         dontKnowCount.byId[q.id] = (dontKnowCount.byId[q.id] || 0) + 1;
-        // ensure key exists as null if not present
         if(state[q.id] === undefined) state[q.id] = null;
-        // for mixed: store null + checkbox separately
         if(q.type==="mixed"){
           if(state[q.id] === undefined) state[q.id] = null;
           if(state[`${q.id}_${q.optionCheck.id}`] === undefined) state[`${q.id}_${q.optionCheck.id}`] = false;
@@ -764,7 +751,6 @@
         return true;
       }
 
-      // Normal save
       if(q.type==="mixed"){
         state[q.id] = answer.radio;
         state[`${q.id}_${q.optionCheck.id}`] = !!answer.check;
@@ -781,9 +767,11 @@
         stepIndex += 1;
         renderCurrent();
         renderSummary();
+        focusQuestionBox(); // ✅ défilement vers la nouvelle question
       } else {
         renderSummary(true);
         $("msg").textContent = "Fin des questions — la synthèse est à droite ✅";
+        focusSummary(); // sur mobile c’est plus logique de montrer la synthèse
       }
       setHeader();
       setStepPills();
@@ -794,6 +782,7 @@
         stepIndex -= 1;
         renderCurrent();
         renderSummary();
+        focusQuestionBox(); // ✅ défilement aussi en retour
       }
       setHeader();
       setStepPills();
@@ -804,25 +793,14 @@
       const q = flow[ visibleSteps[stepIndex] ];
       const ans = collectCurrentAnswer();
 
-      // Minimal validation: allow empty ONLY if user used "Je ne sais pas"
       let ok = true;
-      if(q.type === "multi"){
-        ok = ans.length > 0;
-      }
-      if(q.type === "single"){
-        ok = !!ans;
-      }
-      if(q.type === "mixed"){
-        ok = !!ans.radio; // checkbox alone isn't enough
-      }
+      if(q.type === "multi") ok = ans.length > 0;
+      if(q.type === "single") ok = !!ans;
+      if(q.type === "mixed") ok = !!ans.radio;
       if(q.type === "branch"){
         ok = !!ans.mode;
-        if(ans.mode === "has"){
-          ok = ok && !!ans.points && !!ans.cg; // require these if answered
-        }
-        if(ans.mode === "none"){
-          ok = ok && !!ans.grip && !!ans.stab;
-        }
+        if(ans.mode === "has") ok = ok && !!ans.points && !!ans.cg;
+        if(ans.mode === "none") ok = ok && !!ans.grip && !!ans.stab;
       }
 
       if(!ok){
@@ -832,8 +810,6 @@
       }
 
       saveAnswer(ans, false);
-
-      // If action changed, rebuild visible steps now
       buildVisibleSteps();
 
       $("msg").textContent = "Réponse enregistrée ✅";
@@ -848,6 +824,7 @@
 
       $("msg").textContent = "D’accord — on continue. (La précision de la demande baisse)";
       $("msg").style.color = "var(--warn)";
+
       next();
     }
 
@@ -856,23 +833,18 @@
       tb.innerHTML = "";
 
       const score = precisionScore();
-      const cx = complexity();
-      $("complexity").textContent = cx;
+      $("complexity").textContent = complexity();
 
       const rows = [];
-
-      // Action
       const actMap = { lift:"Lever", move:"Déplacer", hook:"Accrocher/saisir", support:"Prévoir une structure" };
       const act = state.action?.length ? state.action.map(x=>actMap[x]||x).join(", ") : "—";
       rows.push(["Action sur la charge", act]);
 
-      // Movement
       if(state.action?.includes("move")){
         const mvMap = { vonly:"Vertical uniquement", h1:"Horizontal — une direction", hmulti:"Horizontal — plusieurs directions", tilt:"Incliner / basculer", flip:"Retourner (180°)" };
         rows.push(["Mouvement", state.movement ? (mvMap[state.movement]||state.movement) : "—"]);
       }
 
-      // Location
       if(state.action?.includes("lift") || state.action?.includes("move")){
         const locMap = { station:"Un poste dédié", zone:"Une zone définie", multi:"Plusieurs postes/zones" };
         const loc = state.location ? (locMap[state.location]||state.location) : "—";
@@ -880,7 +852,6 @@
         rows.push(["Localisation", loc + ms]);
       }
 
-      // Hooking
       if(state.action?.includes("hook")){
         if(state.hooking && typeof state.hooking === "object"){
           if(state.hooking.mode === "has"){
@@ -904,20 +875,17 @@
         }
       }
 
-      // Quality
       if(state.action?.includes("lift") || state.action?.includes("move") || state.action?.includes("hook")){
         const qMap = { simple:"Simple", precise:"Précise", very:"Très précise" };
         rows.push(["Précision attendue", state.quality ? (qMap[state.quality]||state.quality) : "—"]);
       }
 
-      // Populate table
       rows.forEach(([a,b])=>{
         const tr = document.createElement("tr");
         tr.innerHTML = `<td>${esc(a)}</td><td>${esc(b)}</td>`;
         tb.appendChild(tr);
       });
 
-      // Alerts (soft, sans encarts que tu veux supprimer)
       const alerts = [];
       if(state.movement === "flip") alerts.push("Retourner une charge : prévoir une validation technique sur la solution retenue.");
       if(state.movement === "tilt") alerts.push("Incliner/basculer : préciser l’angle attendu et la stabilité de la charge.");
@@ -944,12 +912,11 @@
         });
       }
 
-      // CDC text
       const cdcLines = [];
       cdcLines.push("CAHIER DES CHARGES — PRÉ-QUALIFICATION (LEVAGE)");
       cdcLines.push("");
       cdcLines.push(`Précision : ${score}%`);
-      cdcLines.push(cx);
+      cdcLines.push(complexity());
       cdcLines.push("");
 
       cdcLines.push("1) Ce que je dois faire");
@@ -1006,13 +973,12 @@
 
       $("cdc").textContent = cdcLines.join("\n");
 
-      if(forceFocus && window.innerWidth < 980){
-        // on mobile, scroll a bit to show summary area
-        document.querySelectorAll(".card")[1]?.scrollIntoView({behavior:"smooth", block:"start"});
-      }
-
       setHeader();
       setStepPills();
+
+      if(forceFocus && window.innerWidth < 980){
+        focusSummary(); // ✅ sur mobile, on amène la synthèse
+      }
     }
 
     function resetAll(){
@@ -1023,6 +989,7 @@
       buildVisibleSteps();
       renderCurrent();
       renderSummary();
+      focusQuestionBox(); // ✅ retour au début
     }
 
     function fillDemo(){
@@ -1036,6 +1003,7 @@
       buildVisibleSteps();
       renderCurrent();
       renderSummary();
+      focusQuestionBox(); // ✅ montre la question en cours
     }
 
     async function copyCDC(){
@@ -1051,6 +1019,7 @@
         }
         $("msg").textContent = "Cahier des charges copié ✅";
         $("msg").style.color = "var(--good)";
+        focusQuestionBox();
       }catch(e){
         $("msg").textContent = "Copie impossible : sélectionnez manuellement le texte.";
         $("msg").style.color = "var(--bad)";
@@ -1071,21 +1040,17 @@
       $("validateBtn").addEventListener("click", validate);
       $("dontKnowBtn").addEventListener("click", dontKnow);
       $("backBtn").addEventListener("click", back);
-      $("skipToSummaryBtn").addEventListener("click", ()=>renderSummary(true));
+      $("skipToSummaryBtn").addEventListener("click", ()=>{ renderSummary(true); focusSummary(); });
       $("resetBtn").addEventListener("click", resetAll);
       $("demoBtn").addEventListener("click", fillDemo);
-
       $("copyBtn").addEventListener("click", copyCDC);
       $("downloadBtn").addEventListener("click", downloadCDC);
-      $("callBtn").addEventListener("click", ()=>{
-        alert("👉 Contact spécialiste : copiez le cahier des charges et envoyez-le au commercial.");
-      });
+      $("callBtn").addEventListener("click", ()=> alert("👉 Contact spécialiste : copiez le cahier des charges et envoyez-le au commercial."));
 
-      // Re-render if user changes branching (hooking first mode)
+      // Rendu live si changement de branche (accrochage)
       document.addEventListener("change", (e)=>{
         const current = flow[ visibleSteps[stepIndex] ];
         if(current?.type === "branch"){
-          // If user changes first mode, we should preserve state but re-render details live
           const q = current;
           const firstHas = $(`opt_${q.id}_first_has`)?.checked;
           const firstNone = $(`opt_${q.id}_first_none`)?.checked;
@@ -1093,13 +1058,13 @@
             const mode = firstHas ? "has" : "none";
             state[q.id] = state[q.id] || {};
             state[q.id].mode = mode;
-            // Clear branch fields when switching
             if(mode === "has"){
               state[q.id].grip = null; state[q.id].stab = null;
             } else {
               state[q.id].points = null; state[q.id].cg = null; state[q.id].dedicated = false;
             }
             renderCurrent();
+            // pas de scroll ici, juste re-render
           }
         }
       });
@@ -1110,6 +1075,9 @@
     bind();
     renderCurrent();
     renderSummary();
+
+    // ✅ au chargement, placer l'utilisateur sur la question (utile mobile)
+    window.addEventListener("load", ()=> setTimeout(focusQuestionBox, 50));
   </script>
 </body>
 </html>
