@@ -3,12 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Aide au choix — Levage | Spécialiste MATERIEL-LEVAGE</title>
+  <title>Aide au choix — Levage | Cahier des charges & présélection (Spécialiste)</title>
 
   <!-- SEO -->
-  <meta name="description" content="Aide au choix levage : qualifiez votre besoin comme avec un spécialiste. Conditions d’exploitation, responsabilité des choix, restrictions d’usage, maintenance et conformité. Génération d’un cahier des charges." />
+  <meta name="description" content="Aide au choix levage : qualifiez votre besoin comme avec un spécialiste. Responsabilité des choix techniques, conditions d’exploitation, restrictions d’usage, maintenance et conformité. Génération d’un cahier des charges + présélection orientée métier (maillage interne vers les fiches)."/>
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://materiellevage-com.github.io/aide-decision-materiel-levage/" />
+
+  <!-- OpenGraph (optionnel mais utile) -->
+  <meta property="og:title" content="Aide au choix — Levage | Cahier des charges & présélection" />
+  <meta property="og:description" content="Un échange guidé orienté métier : qualifier l’opération, la prise, la stabilité, l’environnement et l’exploitation. Génération d’un cahier des charges + présélection produits." />
+  <meta property="og:type" content="website" />
 
   <style>
     :root{
@@ -38,7 +43,7 @@
     *{box-sizing:border-box}
     html{scroll-behavior:smooth;}
     body{margin:0;font-family:var(--font);color:var(--ml-text);background:var(--ml-bg)}
-    .wrap{max-width:1100px;margin:0 auto;padding:14px}
+    .wrap{max-width:1320px;margin:0 auto;padding:14px}
 
     .topbar{
       background:#fff;
@@ -47,7 +52,7 @@
       position:sticky;top:0;z-index:50;
     }
     .topbar-inner{
-      max-width:1100px;margin:0 auto;padding:10px 14px;
+      max-width:1320px;margin:0 auto;padding:10px 14px;
       display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
     }
     .brand{display:flex;align-items:center;gap:12px}
@@ -79,8 +84,17 @@
     .statusDot.warn{background:var(--warn)}
     .statusDot.bad{background:var(--bad)}
 
-    .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;margin-top:14px}
-    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+    /* 3 colonnes */
+    .grid3{
+      display:grid;
+      grid-template-columns: 1.05fr 1.20fr 1.05fr; /* gauche / centre / droite */
+      gap:14px;
+      margin-top:14px;
+      align-items:start;
+    }
+    @media (max-width:1200px){
+      .grid3{ grid-template-columns: 1fr; }
+    }
 
     .card{
       background:var(--ml-card);
@@ -98,8 +112,17 @@
     .card .hd p{margin:6px 0 0;color:var(--ml-muted);font-size:12px;line-height:1.4}
     .card .bd{padding:14px}
 
-    .progressRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
+    /* Bloc SEO d’intention (E-E-A-T) */
+    .seoBlock{
+      background:#fff;border:1px solid var(--ml-line);
+      border-radius:16px;box-shadow:var(--ml-shadow);
+      padding:14px;margin-top:14px;
+    }
+    .seoBlock h1{margin:0 0 8px;font-size:16px;font-weight:1100;color:var(--ml-blue-dark)}
+    .seoBlock p{margin:8px 0;color:var(--ml-muted);font-size:12px;line-height:1.65}
+    .seoBlock .k{color:#111827;font-weight:900}
 
+    /* Question centre */
     .questionBox{
       border:1px solid var(--ml-line);
       border-radius:16px;
@@ -133,6 +156,8 @@
     .tip:hover .bubble{display:block}
     .bubble .t{margin:0 0 6px;font-size:12px;font-weight:1000;color:#111827}
     .bubble .p{margin:0;color:var(--ml-muted);font-size:12px;line-height:1.45}
+
+    .progressRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
 
     .opts{display:grid;gap:10px;margin-top:12px}
     .opt{
@@ -174,93 +199,124 @@
 
     .mini{color:var(--ml-muted);font-size:12px;line-height:1.45;margin-top:8px}
 
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:10px;border-bottom:1px solid var(--ml-line);vertical-align:top}
-    th{font-size:12px;color:var(--ml-muted);text-align:left}
-    td{font-size:13px}
+    /* FAQ */
+    details{border:1px solid var(--ml-line);border-radius:14px;padding:10px 12px;background:#fff;margin-top:10px}
+    summary{cursor:pointer;font-weight:1000;color:#111827;font-size:13px}
+    details p{margin:8px 0 0;color:var(--ml-muted);font-size:12px;line-height:1.55}
+    .faqTitle{font-weight:1000;color:var(--ml-blue-dark);font-size:13px;margin-top:14px;}
+    .faqNote{color:var(--ml-muted);font-size:12px;line-height:1.45;margin-top:4px;}
 
+    /* CDC droite */
+    .divider{height:1px;background:var(--ml-line);margin:12px 0}
     .mono{
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size:12px;background:#fbfbff;border:1px solid var(--ml-line);
       border-radius:14px;padding:12px;white-space:pre-wrap;color:#0f172a;
+      min-height: 260px;
     }
-
-    .seoBlock{
-      background:#fff;border:1px solid var(--ml-line);
-      border-radius:16px;box-shadow:var(--ml-shadow);
-      padding:14px;margin-top:14px;
-    }
-    .seoBlock h2{margin:0 0 8px;font-size:14px;font-weight:1000;color:var(--ml-blue-dark)}
-    .seoBlock p{margin:8px 0;color:var(--ml-muted);font-size:12px;line-height:1.6}
-    details{border:1px solid var(--ml-line);border-radius:14px;padding:10px 12px;background:#fff;margin-top:10px}
-    summary{cursor:pointer;font-weight:1000;color:#111827;font-size:13px}
-    details p{margin:8px 0 0}
-    .divider{height:1px;background:var(--ml-line);margin:12px 0}
     ul{margin:10px 0 0;padding-left:18px;color:var(--ml-muted);font-size:12px;line-height:1.55}
 
-    .faqTitle{font-weight:1000;color:var(--ml-blue-dark);font-size:13px;margin-top:14px;}
-    .faqNote{color:var(--ml-muted);font-size:12px;line-height:1.45;margin-top:4px;}
+    /* Produits gauche */
+    .filters{
+      display:grid;gap:10px;
+      border:1px solid var(--ml-line);
+      border-radius:14px;padding:12px;background:#fff;
+    }
+    .filters .row{display:grid;gap:6px}
+    .filters label{font-size:12px;color:var(--ml-muted);font-weight:800}
+    .filters input, .filters select{
+      width:100%;
+      padding:10px 10px;
+      border-radius:12px;
+      border:1px solid var(--ml-line);
+      background:#fff;
+      font-size:13px;
+      outline:none;
+    }
+    .filters input:focus, .filters select:focus{border-color:rgba(42,46,134,.35);box-shadow:0 0 0 4px rgba(42,46,134,.08)}
+    .hint{font-size:12px;color:var(--ml-muted);line-height:1.45}
 
-    /* =========================================================
-       AJOUT UNIQUEMENT : préselection produits (base 100)
-       ========================================================= */
-    .prodTopRow{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      margin-top:6px;
+    .productList{
+      display:grid;
+      gap:10px;
+      margin-top:12px;
     }
-    .prodMeta{
-      display:flex;gap:10px;flex-wrap:wrap;align-items:center;
-      color:var(--ml-muted);font-size:12px;
-    }
-    .prodGrid{
-      display:grid;gap:10px;margin-top:12px;
-      grid-template-columns:1fr;
-    }
-    .prodCard{
+    .pCard{
+      display:grid;
+      grid-template-columns: 86px 1fr;
+      gap:10px;
+      padding:10px;
       border:1px solid var(--ml-line);
       border-radius:14px;
-      overflow:hidden;
       background:#fff;
-      display:grid;
-      grid-template-columns:84px 1fr;
-      min-height:84px;
+      transition:.12s;
     }
-    .prodImg{
-      width:84px;height:84px;display:block;object-fit:cover;background:#f3f4f6;
-      border-right:1px solid var(--ml-line);
+    .pCard:hover{border-color:#d1d5db;background:#fcfcff}
+    .pImg{
+      width:86px;height:86px;border-radius:12px;border:1px solid var(--ml-line);
+      background:#fff;overflow:hidden;display:grid;place-items:center;
     }
-    .prodBody{padding:10px}
-    .prodName{
+    .pImg img{width:100%;height:100%;object-fit:contain}
+    .pTitle{
       margin:0;
       font-weight:1000;
       font-size:13px;
+      line-height:1.25;
       color:#111827;
-      line-height:1.2;
     }
-    .prodLine{
+    .pMeta{
       margin:6px 0 0;
-      color:var(--ml-muted);
-      font-size:12px;
-      line-height:1.45;
+      font-size:12px;color:var(--ml-muted);line-height:1.4;
     }
-    .tag{
-      display:inline-flex;align-items:center;
-      padding:4px 8px;border-radius:999px;
-      font-size:11px;font-weight:1000;
-      border:1px solid rgba(0,0,0,.06);
-      margin-top:8px;
-      width:max-content;
+    .pBadges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+    .badge{
+      font-size:11px;
+      font-weight:900;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid var(--ml-line);
+      background:#fff;
+      color:#111827;
     }
-    .tag.accessories{background:rgba(177,15,27,.10); color:#7a0b12}
-    .tag.magnets{background:rgba(34,163,90,.10); color:#0b6b33}
-    .tag.site{background:rgba(43,119,217,.12); color:#144c9c}
-    .tag.hoists{background:rgba(242,140,0,.12); color:#8a4b00}
-    .tag.other{background:rgba(42,46,134,.08); color:var(--ml-blue-dark)}
+    .badge.accessoire{border-color:rgba(177,15,27,.35);background:rgba(177,15,27,.08);color:#7a0b12}
+    .badge.aimant{border-color:rgba(34,163,90,.35);background:rgba(34,163,90,.10);color:#0b5c2f}
+    .badge.chantier{border-color:rgba(43,119,217,.35);background:rgba(43,119,217,.10);color:#184a9a}
+    .badge.palan{border-color:rgba(242,140,0,.35);background:rgba(242,140,0,.10);color:#8a4b00}
+    .badge.tech{background:#fbfbff}
 
-    .prodActions{
-      display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px;
+    .pLinks{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .plink{
+      font-size:12px;font-weight:1000;
+      color:var(--ml-blue-dark);
+      text-decoration:none;
+      border:1px solid rgba(42,46,134,.20);
+      background:rgba(42,46,134,.06);
+      padding:7px 10px;border-radius:12px;
+      display:inline-flex;align-items:center;gap:6px;
     }
-    .noteSmall{color:var(--ml-muted);font-size:12px;line-height:1.45;margin-top:6px;}
+    .plink:hover{background:rgba(42,46,134,.10)}
+    .plink.secondary{
+      border-color:rgba(107,114,128,.20);
+      background:rgba(107,114,128,.06);
+      color:#111827;
+    }
+
+    /* micro-ligne “présélection orientée métier” */
+    .psLine{
+      margin-top:8px;
+      font-size:12px;
+      color:var(--ml-muted);
+      line-height:1.55;
+    }
+
+    /* stat produits */
+    .pStats{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+      margin-top:10px;
+    }
+
+    /* petites ancrages */
+    .sr-only{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;}
   </style>
 </head>
 
@@ -274,9 +330,11 @@
         </div>
         <div>
           <div style="font-weight:1000;color:var(--ml-blue-dark);font-size:18px;line-height:1.15">
-            Aide au choix — Levage (approche spécialiste)
+            Aide au choix — Levage (cahier des charges + présélection)
           </div>
-          <div class="subtitle">Un échange guidé pour qualifier l’opération, la prise, la stabilité, l’environnement et la fréquence d’exploitation.</div>
+          <div class="subtitle">
+            Une approche “spécialiste” : qualifier l’usage, la prise, la stabilité, l’environnement et l’exploitation — puis orienter vers des fiches produits pertinentes.
+          </div>
         </div>
       </div>
 
@@ -290,16 +348,103 @@
   </div>
 
   <div class="wrap">
-    <section class="seoBlock" aria-label="Expertise levage">
-      <h2>Une méthode de spécialiste, pas un simple choix produit</h2>
+    <section class="seoBlock" aria-label="Méthode de qualification levage">
+      <h1>Qualifier un besoin de levage engage la responsabilité : ici, on construit un cahier des charges</h1>
       <p>
-        Le levage engage des <b>choix techniques</b> et des <b>responsabilités</b> : type de mouvement, mode de prise, stabilité, variabilité, conditions d’exploitation.
-        Cette page transforme votre demande en <b>cahier des charges</b> clair pour l’arbitrage, l’usage, les restrictions, et l’orientation vers la bonne solution.
+        Cette page n’est pas un “comparateur marchand”. Elle formalise votre demande comme le ferait un <span class="k">spécialiste du levage</span> :
+        type de mouvement, mode de prise, stabilité (centre de gravité), variabilité, environnement et niveau d’exploitation.
+        À la fin, vous obtenez un <span class="k">cahier des charges copiable</span> + une <span class="k">présélection orientée métier</span> de produits à consulter (maillage interne vers les fiches).
+      </p>
+      <p class="hint">
+        Objectif : réduire les erreurs de sélection, expliciter les points à valider et orienter vers les bonnes catégories du catalogue, sans noyer l’utilisateur dans la technique.
       </p>
     </section>
 
-    <div class="grid">
-      <div class="card">
+    <div class="grid3">
+
+      <!-- GAUCHE : PRÉSELECTION PRODUITS -->
+      <aside class="card" aria-label="Présélection produits orientée métier">
+        <div class="hd">
+          <div>
+            <h2>Présélection orientée métier</h2>
+            <p>10 fiches proposées selon vos réponses, puis affinage via filtres techniques.</p>
+          </div>
+        </div>
+        <div class="bd">
+          <div class="filters" aria-label="Filtres techniques produits">
+            <div class="row">
+              <label for="f_search">Recherche (réf / nom)</label>
+              <input id="f_search" type="search" placeholder="Ex : palan, manille, AG_..." />
+            </div>
+
+            <div class="row">
+              <label for="f_family">Famille</label>
+              <select id="f_family">
+                <option value="">Toutes</option>
+                <option value="appareil">Appareils</option>
+                <option value="accessoire">Accessoires</option>
+                <option value="support">Supports / structures</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <label for="f_category">Catégorie catalogue</label>
+              <select id="f_category">
+                <option value="">Toutes catégories</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <label for="f_actions">Action(s) supportée(s)</label>
+              <select id="f_actions">
+                <option value="">Toutes</option>
+                <option value="lift">Lever</option>
+                <option value="move">Déplacer</option>
+                <option value="hook">Accrocher / saisir</option>
+                <option value="support">Structure</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <label for="f_atex">ATEX</label>
+              <select id="f_atex">
+                <option value="">Indifférent</option>
+                <option value="true">ATEX uniquement</option>
+                <option value="false">Exclure ATEX</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <label for="f_saline">Milieu salin</label>
+              <select id="f_saline">
+                <option value="">Indifférent</option>
+                <option value="true">Compatible salin</option>
+                <option value="false">Exclure salin</option>
+              </select>
+            </div>
+
+            <div class="pStats">
+              <span class="pill">Base : <b id="p_loaded">0</b></span>
+              <span class="pill">Retenus : <b id="p_retained">0</b></span>
+              <span class="pill">Affichés : <b id="p_shown">10</b></span>
+            </div>
+
+            <div class="hint">
+              Les filtres sont <b>techniques</b> et n’impactent pas la logique du questionnaire.
+              Ils servent à affiner la présélection, pas à “deviner” le besoin.
+            </div>
+          </div>
+
+          <div class="psLine" id="psLine">
+            La présélection s’ajuste automatiquement après chaque réponse.
+          </div>
+
+          <div class="productList" id="productList" aria-label="Liste de produits présélectionnés"></div>
+        </div>
+      </aside>
+
+      <!-- CENTRE : QUESTIONNAIRE + FAQ -->
+      <main class="card" aria-label="Questionnaire guidé">
         <div class="hd">
           <div>
             <h2>Conversation guidée</h2>
@@ -342,27 +487,25 @@
             <div id="faqDynamic"></div>
           </div>
         </div>
-      </div>
+      </main>
 
-      <div class="card" id="summaryCard">
+      <!-- DROITE : CDC COPIABLE + ALERTES -->
+      <aside class="card" id="summaryCard" aria-label="Cahier des charges">
         <div class="hd">
           <div>
-            <h2>Synthèse & Cahier des charges</h2>
-            <p>La précision baisse si certaines informations sont inconnues.</p>
+            <h2>Cahier des charges (copiable)</h2>
+            <p>La précision baisse si certaines informations sont inconnues. Les compléments à préciser structurent l’arbitrage.</p>
           </div>
         </div>
         <div class="bd">
-          <table>
-            <thead><tr><th>Élément</th><th>Votre réponse</th></tr></thead>
-            <tbody id="summary"></tbody>
-          </table>
+
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center">
+            <div class="pill">Complexité : <b id="complexity">—</b></div>
+            <div class="pill">Synthèse : <b id="cdcLen">—</b></div>
+          </div>
 
           <div class="divider"></div>
 
-          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center">
-            <div style="font-weight:1000;color:var(--ml-blue-dark)">Cahier des charges (copiable)</div>
-            <div class="mini" id="complexity">—</div>
-          </div>
           <div class="mono" id="cdc">—</div>
 
           <div class="actions" style="margin-top:12px">
@@ -371,35 +514,25 @@
             <button class="btn danger" id="callBtn" type="button">Contacter un spécialiste</button>
           </div>
 
-          <ul id="alerts"></ul>
-
-          <!-- =========================================================
-               AJOUT UNIQUEMENT : préselection produits (base 100)
-               ========================================================= -->
           <div class="divider"></div>
 
-          <div style="font-weight:1000;color:var(--ml-blue-dark);font-size:14px;">Préselection produits (base 100)</div>
-          <div class="noteSmall">Affichage de la base de démonstration chargée depuis <b>products_100.json</b>. (Aucun filtrage pour l’instant.)</div>
+          <div style="font-weight:1000;color:var(--ml-blue-dark);margin-top:6px">Compléments à préciser</div>
+          <ul id="alerts"></ul>
 
-          <div class="prodTopRow">
-            <div class="prodMeta">
-              <span>Produits chargés : <b id="prodCount">0</b></span>
-              <span>•</span>
-              <span>Statut : <b id="prodStatus">chargement…</b></span>
-            </div>
-            <div class="prodActions">
-              <button class="btn" id="reloadProductsBtn" type="button">Recharger</button>
-            </div>
+          <div class="hint" style="margin-top:10px">
+            Les liens produits à gauche servent au <b>maillage interne</b> et à la <b>validation</b> des hypothèses (usage, restrictions, environnement).
           </div>
 
-          <div class="mini" id="prodMsg" style="margin-top:8px;"></div>
-          <div class="prodGrid" id="prodGrid"></div>
         </div>
-      </div>
+      </aside>
+
     </div>
   </div>
 
+  <!-- FAQ JSON-LD (dynamique) -->
   <script id="faqJsonLd" type="application/ld+json">{}</script>
+  <!-- ItemList JSON-LD (dynamique) -->
+  <script id="itemListJsonLd" type="application/ld+json">{}</script>
 
   <script>
     const $ = (id)=>document.getElementById(id);
@@ -418,6 +551,10 @@
       if(!el) return;
       el.scrollIntoView({behavior:"smooth", block:"start"});
     }
+
+    /* =========================
+       QUESTIONNAIRE (STRICT)
+       ========================= */
 
     const flow = [
       {
@@ -654,6 +791,15 @@
       ]
     };
 
+    function esc(s){
+      return String(s ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
     function renderFAQ(qid){
       const list = faqByQuestion[qid] || [];
       const root = $("faqDynamic");
@@ -737,13 +883,9 @@
 
     function complexity(){
       const m = state.movementCombo || {};
-      if(m.flip) return "Complexité : Hors standard";
-      if(m.tip || m.tilt || state.handlingMode === "hold_horizontal_cg" || state.handlingMode === "precise") return "Complexité : Élevée";
-      return "Complexité : Modérée";
-    }
-
-    function esc(s){
-      return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+      if(m.flip) return "Hors standard";
+      if(m.tip || m.tilt || state.handlingMode === "hold_horizontal_cg" || state.handlingMode === "precise") return "Élevée";
+      return "Modérée";
     }
 
     function setHeader(){
@@ -1079,10 +1221,12 @@
         stepIndex += 1;
         renderCurrent();
         renderSummary();
+        updatePreselection(); /* <-- produits */
         focusQuestionBox();
       } else {
         renderSummary(true);
-        $("msg").textContent = "Fin des questions — la synthèse est à droite ✅";
+        updatePreselection(); /* <-- produits */
+        $("msg").textContent = "Fin des questions — cahier des charges et présélection sont à jour ✅";
         focusSummary();
       }
       setHeader();
@@ -1094,6 +1238,7 @@
         stepIndex -= 1;
         renderCurrent();
         renderSummary();
+        updatePreselection();
         focusQuestionBox();
       }
       setHeader();
@@ -1139,87 +1284,8 @@
     }
 
     function renderSummary(forceFocus=false){
-      const tb = $("summary");
-      tb.innerHTML = "";
-
       const score = precisionScore();
       $("complexity").textContent = complexity();
-
-      const rows = [];
-
-      const actMap = { lift:"Lever", move:"Déplacer", hook:"Accrocher/saisir", support:"Prévoir une structure" };
-      const act = state.action?.length ? state.action.map(x=>actMap[x]||x).join(", ") : "—";
-      rows.push(["Action sur la charge", act]);
-
-      if(state.action?.includes("lift") || state.action?.includes("move")){
-        const m = state.movementCombo || {};
-        const parts = [];
-        if(m.vertical) parts.push("Lever/descendre (vertical)");
-        if(m.horizontal === "one") parts.push("Horizontal — une direction");
-        if(m.horizontal === "multi") parts.push("Horizontal — plusieurs directions");
-        if(m.tilt) parts.push("Incliner");
-        if(m.tip) parts.push("Basculer");
-        if(m.flip) parts.push("Retourner (180°)");
-        rows.push(["Mouvements", parts.length ? parts.join(", ") : "—"]);
-      }
-
-      if(state.action?.includes("lift") || state.action?.includes("move")){
-        const locMap = { station:"Un poste dédié", zone:"Une zone définie", multi:"Plusieurs postes/zones" };
-        const loc = state.location ? (locMap[state.location]||state.location) : "—";
-        const ms = state["location_multisite"] ? " + multi-sites" : "";
-        rows.push(["Localisation", loc + ms]);
-      }
-
-      if(state.action?.includes("hook")){
-        const ap = state.anchorsPresence;
-        if(ap === true){
-          rows.push(["Points d’ancrage", "Oui"]);
-          rows.push(["Points dédiés au levage", state["anchorsPresence_dedicated"] ? "Oui" : "Non / inconnu"]);
-          const ptsMap = { p1:"1 point", p2:"2 points", p3:"3 points", p4:"4 points" };
-          rows.push(["Nombre de points", state.anchorPoints ? (ptsMap[state.anchorPoints]||state.anchorPoints) : "—"]);
-        } else if(ap === false){
-          rows.push(["Points d’ancrage", "Non"]);
-          const gripMap = { positive:"Prise positive", clamp:"Serrage (pince)", suction:"Ventouses", mag:"Aimants" };
-          rows.push(["Méthode de prise", state.gripMethod ? (gripMap[state.gripMethod]||state.gripMethod) : "—"]);
-        } else {
-          rows.push(["Points d’ancrage", "—"]);
-        }
-      }
-
-      const cgMap = { center:"Centré", offset:"Excentré", above:"Au-dessus des points / de la prise" };
-      rows.push(["Centre de gravité", state.cog ? (cgMap[state.cog]||state.cog) : "—"]);
-
-      const varMap = { unique:"Unique / proche", variation:"Variations maîtrisées", diverse:"Grande diversité" };
-      rows.push(["Variabilité des charges", state.loadVariability ? (varMap[state.loadVariability]||state.loadVariability) : "—"]);
-
-      const hmMap = { safe:"Sécuritaire", precise:"Précise de positionnement", hold_horizontal_cg:"Maintien horizontal par maîtrise du CG" };
-      rows.push(["Mode de manutention", state.handlingMode ? (hmMap[state.handlingMode]||state.handlingMode) : "—"]);
-
-      const envMap = {
-        indoor:"Intérieur",
-        outdoor:"Extérieur",
-        humid:"Milieu humide",
-        saline:"Milieu salin",
-        dust:"Chantier / poussiéreux",
-        atex:"Zone ATEX",
-        hot:"Températures élevées / charge chaude"
-      };
-      rows.push(["Environnement", state.environment?.length ? state.environment.map(e=>envMap[e]||e).join(", ") : "—"]);
-
-      const freqMap = {
-        occasional:"Occasionnelle",
-        regular:"Régulière",
-        frequent:"Fréquente",
-        daily:"Quotidienne",
-        continuous:"En continu / production"
-      };
-      rows.push(["Fréquence d’utilisation", state.frequency ? (freqMap[state.frequency]||state.frequency) : "—"]);
-
-      rows.forEach(([a,b])=>{
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${esc(a)}</td><td>${esc(b)}</td>`;
-        tb.appendChild(tr);
-      });
 
       const alerts = [];
       const m = state.movementCombo || {};
@@ -1241,7 +1307,7 @@
       ul.innerHTML = "";
       if(alerts.length===0){
         const li = document.createElement("li");
-        li.textContent = "Aucune alerte à ce stade.";
+        li.textContent = "Aucun complément critique à ce stade.";
         ul.appendChild(li);
       } else {
         alerts.forEach(a=>{
@@ -1251,11 +1317,14 @@
         });
       }
 
+      const actMap = { lift:"Lever", move:"Déplacer", hook:"Accrocher/saisir", support:"Prévoir une structure" };
+      const act = state.action?.length ? state.action.map(x=>actMap[x]||x).join(", ") : "Non renseigné";
+
       const cdcLines = [];
       cdcLines.push("CAHIER DES CHARGES — PRÉ-QUALIFICATION (LEVAGE)");
       cdcLines.push("");
       cdcLines.push(`Précision : ${score}%`);
-      cdcLines.push(complexity());
+      cdcLines.push(`Complexité : ${complexity()}`);
       cdcLines.push("");
       cdcLines.push("1) Opération");
       cdcLines.push(`- Actions : ${act}`);
@@ -1339,13 +1408,15 @@
       cdcLines.push("");
       cdcLines.push("Remarques / points à valider");
       if(alerts.length) alerts.forEach(a=>cdcLines.push(`- ${a}`));
-      else cdcLines.push("- Aucun point bloquant détecté à ce stade.");
+      else cdcLines.push("- Aucun point critique détecté à ce stade.");
 
-      $("cdc").textContent = cdcLines.join("\n");
+      const out = cdcLines.join("\n");
+      $("cdc").textContent = out;
+      $("cdcLen").textContent = out.length + " caractères";
 
       setHeader();
       setStepPills();
-      if(forceFocus && window.innerWidth < 980) focusSummary();
+      if(forceFocus && window.innerWidth < 1200) focusSummary();
     }
 
     async function copyCDC(){
@@ -1386,6 +1457,7 @@
       buildVisibleSteps();
       renderCurrent();
       renderSummary();
+      updatePreselection();
       focusQuestionBox();
     }
 
@@ -1406,127 +1478,8 @@
       buildVisibleSteps();
       renderCurrent();
       renderSummary();
+      updatePreselection();
       focusQuestionBox();
-    }
-
-    /* =========================================================
-       AJOUT UNIQUEMENT : chargement + rendu préselection produits
-       (pas de filtrage à ce stade)
-       ========================================================= */
-    let PRODUCTS = [];
-
-    function pick(obj, keys, fallback=null){
-      for(const k of keys){
-        if(obj && obj[k] !== undefined && obj[k] !== null && String(obj[k]).trim() !== "") return obj[k];
-      }
-      return fallback;
-    }
-
-    function normalizeProduct(p){
-      const name = pick(p, ["name","nom","title","libelle","product_name","Nom FR","nom_fr","designation"], "Produit");
-      const url  = pick(p, ["url","link","product_url","product_link","url_produit","lien","permalink"], "");
-      const image= pick(p, ["image","img","image_url","cover","cover_url","photo","thumbnail","thumb","Image URL","image_link"], "");
-      const resume = pick(p, ["resume_expert","resume","summary","short","description_short","meta_description","meta_description_fr","description_courte","description_courte_fr"], "");
-
-      const category = pick(p, ["category","categorie","categories","cat","family","famille","famille_inferree","category_family","univers"], "");
-      const ref = pick(p, ["ref","reference","sku","id","id_product","product_id","Ref","Référence","reference_fournisseur"], "");
-
-      // tag famille/couleur (robuste)
-      const familyRaw = String(category || "").toLowerCase();
-      let fam = "other";
-      if(familyRaw.includes("access") || familyRaw.includes("acs") || familyRaw.includes("elingue") || familyRaw.includes("manille") || familyRaw.includes("crochet") || familyRaw.includes("anneau")) fam = "accessories";
-      else if(familyRaw.includes("aimant") || familyRaw.includes("magnet")) fam = "magnets";
-      else if(familyRaw.includes("chantier") || familyRaw.includes("site")) fam = "site";
-      else if(familyRaw.includes("palan") || familyRaw.includes("hoist") || familyRaw.includes("treuil")) fam = "hoists";
-
-      // libellé tag (visible)
-      let famLabel = category || "";
-      if(!famLabel){
-        if(fam==="accessories") famLabel = "Accessoires";
-        else if(fam==="magnets") famLabel = "Aimants";
-        else if(fam==="site") famLabel = "Chantier";
-        else if(fam==="hoists") famLabel = "Palans";
-        else famLabel = "Sélection";
-      }
-
-      return { name:String(name), url:String(url||""), image:String(image||""), resume:String(resume||""), category:String(category||""), fam, famLabel, ref:String(ref||"") };
-    }
-
-    function renderProducts(){
-      $("prodCount").textContent = String(PRODUCTS.length || 0);
-
-      const grid = $("prodGrid");
-      grid.innerHTML = "";
-
-      if(!PRODUCTS.length){
-        $("prodStatus").textContent = "aucune donnée";
-        $("prodMsg").textContent = "Aucune donnée produit chargée. Vérifiez que products_100.json est bien à côté de index.html.";
-        $("prodMsg").style.color = "var(--bad)";
-        return;
-      }
-
-      $("prodStatus").textContent = "ok";
-      $("prodMsg").textContent = "";
-
-      // Affichage simple : les 100 (ou moins) – sans filtrage
-      PRODUCTS.slice(0, 100).forEach((p)=>{
-        const safeName = esc(p.name);
-        const safeResume = esc(p.resume || "");
-        const safeRef = esc(p.ref || "");
-        const tagClass = p.fam || "other";
-        const tagLabel = esc(p.famLabel || "Sélection");
-
-        const imgHtml = p.image
-          ? `<img class="prodImg" src="${esc(p.image)}" alt="${safeName}" loading="lazy" />`
-          : `<div class="prodImg" aria-hidden="true"></div>`;
-
-        const titleHtml = p.url
-          ? `<a href="${esc(p.url)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit"><p class="prodName">${safeName}</p></a>`
-          : `<p class="prodName">${safeName}</p>`;
-
-        const refLine = safeRef ? `Réf. ${safeRef}` : "";
-
-        grid.insertAdjacentHTML("beforeend", `
-          <div class="prodCard">
-            ${imgHtml}
-            <div class="prodBody">
-              ${titleHtml}
-              ${refLine ? `<div class="prodLine">${refLine}</div>` : ``}
-              ${safeResume ? `<div class="prodLine">${safeResume}</div>` : ``}
-              <div class="tag ${tagClass}">${tagLabel}</div>
-            </div>
-          </div>
-        `);
-      });
-    }
-
-    async function loadProducts(){
-      $("prodStatus").textContent = "chargement…";
-      $("prodMsg").textContent = "";
-      $("prodMsg").style.color = "var(--ml-muted)";
-
-      try{
-        const res = await fetch("./products_100.json", { cache:"no-store" });
-        if(!res.ok) throw new Error("HTTP " + res.status);
-        const data = await res.json();
-
-        if(Array.isArray(data)){
-          PRODUCTS = data.map(normalizeProduct);
-        } else if(data && Array.isArray(data.products)){
-          PRODUCTS = data.products.map(normalizeProduct);
-        } else {
-          PRODUCTS = [];
-        }
-
-        renderProducts();
-      }catch(e){
-        PRODUCTS = [];
-        $("prodCount").textContent = "0";
-        $("prodStatus").textContent = "erreur";
-        $("prodMsg").textContent = "Impossible de charger products_100.json. Vérifiez : (1) nom exact, (2) même dossier que index.html, (3) JSON valide.";
-        $("prodMsg").style.color = "var(--bad)";
-        renderProducts();
-      }
     }
 
     function bind(){
@@ -1538,20 +1491,292 @@
       $("demoBtn").addEventListener("click", fillDemo);
       $("copyBtn").addEventListener("click", copyCDC);
       $("downloadBtn").addEventListener("click", downloadCDC);
-      $("callBtn").addEventListener("click", ()=> alert("👉 Contact spécialiste : copiez le cahier des charges et envoyez-le au commercial."));
-
-      // AJOUT : reload produits
-      $("reloadProductsBtn").addEventListener("click", loadProducts);
+      $("callBtn").addEventListener("click", ()=> alert("👉 Contact spécialiste : copiez le cahier des charges et envoyez-le au commercial (ou demandez une validation technique)."));
     }
+
+    /* =========================
+       PRÉSELECTION PRODUITS (10)
+       + FILTRES TECHNIQUES
+       ========================= */
+
+    let PRODUCTS = [];
+    let LAST_TOP10 = [];
+
+    function norm(s){ return String(s ?? "").toLowerCase().trim(); }
+    function arr(v){ return Array.isArray(v) ? v : (v ? [v] : []); }
+
+    function getProductField(p, keys, fallback=""){
+      for(const k of keys){
+        if(p && p[k] !== undefined && p[k] !== null && String(p[k]).trim() !== "") return p[k];
+      }
+      return fallback;
+    }
+
+    function productBadges(p){
+      const fam = norm(p.family);
+      const cat = norm(p.catalog_category || "");
+      const tags = p.tags || {};
+      const atex = !!tags.atex;
+      const salineOk = !!tags.saline_ok;
+
+      // Badge couleur “catalogue” (approximation : tu ajusteras si tu veux une table exacte catégorie->couleur)
+      // Ici : accessoires (rouge) / palans (orange) / aimants (vert) / chantier (bleu clair) selon mots-clés.
+      let catClass = "tech";
+      if(cat.includes("aimant")) catClass = "aimant";
+      else if(cat.includes("palan")) catClass = "palan";
+      else if(cat.includes("chantier") || cat.includes("portique") || cat.includes("trépied")) catClass = "chantier";
+      else if(fam === "accessoire" || cat.includes("manille") || cat.includes("crochet") || cat.includes("élingue") || cat.includes("elingue")) catClass = "accessoire";
+
+      const badges = [];
+      if(p.catalog_category) badges.push({ txt: p.catalog_category, cls: catClass });
+      if(p.family) badges.push({ txt: "Famille : " + p.family, cls: "tech" });
+      if(atex) badges.push({ txt: "ATEX", cls: "tech" });
+      if(salineOk) badges.push({ txt: "Compatible salin", cls: "tech" });
+
+      return badges.slice(0,4);
+    }
+
+    function buildCategoryOptions(){
+      const sel = $("f_category");
+      const cats = Array.from(new Set(PRODUCTS.map(p=>String(p.catalog_category||"").trim()).filter(Boolean))).sort((a,b)=>a.localeCompare(b,"fr"));
+      // reset
+      sel.innerHTML = `<option value="">Toutes catégories</option>`;
+      cats.forEach(c=>{
+        const o = document.createElement("option");
+        o.value = c;
+        o.textContent = c;
+        sel.appendChild(o);
+      });
+    }
+
+    function readFilters(){
+      return {
+        search: norm($("f_search").value),
+        family: norm($("f_family").value),
+        category: $("f_category").value,
+        actions: norm($("f_actions").value),
+        atex: $("f_atex").value,     // "", "true", "false"
+        saline: $("f_saline").value  // "", "true", "false"
+      };
+    }
+
+    function passFilters(p, f){
+      const text = (norm(p.ref) + " " + norm(p.name) + " " + norm(p.catalog_category)).trim();
+      if(f.search && !text.includes(f.search)) return false;
+
+      if(f.family && norm(p.family) !== f.family) return false;
+      if(f.category && String(p.catalog_category||"") !== f.category) return false;
+
+      const tags = p.tags || {};
+      const acts = arr(tags.actions).map(norm);
+      if(f.actions && !acts.includes(f.actions)) return false;
+
+      if(f.atex === "true" && !tags.atex) return false;
+      if(f.atex === "false" && !!tags.atex) return false;
+
+      if(f.saline === "true" && !tags.saline_ok) return false;
+      if(f.saline === "false" && !!tags.saline_ok) return false;
+
+      return true;
+    }
+
+    function scoreProduct(p){
+      const tags = p.tags || {};
+      const acts = arr(tags.actions).map(norm);
+      const fam = norm(p.family);
+
+      let s = 0;
+
+      // A) Actions (poids forts)
+      const actions = arr(state.action).map(norm);
+      if(actions.includes("lift") && acts.includes("lift")) s += 30;
+      if(actions.includes("move") && acts.includes("move")) s += 20;
+      if(actions.includes("hook") && acts.includes("hook")) s += 30;
+      if(actions.includes("support") && acts.includes("support")) s += 30;
+
+      // Bonus famille vs action (cohérence métier)
+      if(actions.includes("hook") && fam === "accessoire") s += 10;
+      if((actions.includes("lift") || actions.includes("move")) && fam === "appareil") s += 10;
+      if(actions.includes("support") && fam === "support") s += 10;
+
+      // B) Environnement (ATEX filtre dur / salin semi-dur)
+      const env = arr(state.environment).map(norm);
+      if(env.includes("atex")){
+        if(tags.atex) s += 25;
+        else s -= 100;
+      }
+      if(env.includes("saline")){
+        if(tags.saline_ok) s += 15;
+        else s -= 25;
+      }
+
+      // C) Mouvement / complexité (pas de filtre dur V1)
+      const m = state.movementCombo || {};
+      if(m.flip) s += 3;
+      if(m.tip || m.tilt) s += 2;
+
+      // D) Variabilité / fréquence (plutôt indicatif pour prioriser des solutions “structurantes” si on a le tag un jour)
+      // On n’a pas encore de tags fiables -> neutre.
+
+      // E) Bonus catégorie “préférée” (soft)
+      // Table simple, non bloquante.
+      const cat = norm(p.catalog_category||"");
+      const prefer = [];
+      if(actions.includes("support")){
+        prefer.push("potence","portique","structure","rail","monorail","poutre");
+      }
+      if(actions.includes("hook")){
+        prefer.push("manille","crochet","anneau","élingue","elingue","aimant","pince","ventouse","palonnier");
+      }
+      if(actions.includes("lift") || actions.includes("move")){
+        prefer.push("palan","treuil","gerbeur","transpalette","table","équilibreur","equilibreur","chariot");
+      }
+      if(prefer.some(k=>cat.includes(k))) s += 8;
+
+      return s;
+    }
+
+    function pickTop10(baseFiltered){
+      // 1) scoring
+      const scored = baseFiltered
+        .map(p=>({ p, score: scoreProduct(p) }))
+        .sort((a,b)=> b.score - a.score);
+
+      // 2) top 10
+      const top = scored.slice(0,10).map(x=>x.p);
+
+      // 3) fallback si <10 (rare si base=100)
+      if(top.length < 10){
+        const rest = scored.slice(top.length).map(x=>x.p);
+        while(top.length < 10 && rest.length){
+          top.push(rest.shift());
+        }
+      }
+      return top;
+    }
+
+    function renderProducts(list){
+      const root = $("productList");
+      root.innerHTML = "";
+
+      list.forEach(p=>{
+        const name = getProductField(p, ["name","title","nom"], "Produit");
+        const ref  = getProductField(p, ["ref","reference","sku"], "");
+        const url  = getProductField(p, ["url","link","product_url"], "#");
+        const img  = getProductField(p, ["image","img","image_url","cover"], "");
+        const cat  = getProductField(p, ["catalog_category","category"], "");
+        const short = getProductField(p, ["short_50","short","resume_50"], "");
+
+        const badges = productBadges(p);
+        const badgesHtml = badges.map(b=>`<span class="badge ${esc(b.cls)}">${esc(b.txt)}</span>`).join("");
+
+        const safeUrl = (url && url !== "#") ? url : "#";
+        const safeImg = img || ""; // si vide, fallback en div
+        const alt = (ref ? (ref + " - ") : "") + name;
+
+        const card = document.createElement("div");
+        card.className = "pCard";
+        card.innerHTML = `
+          <div class="pImg" aria-hidden="true">
+            ${safeImg ? `<img src="${esc(safeImg)}" alt="${esc(alt)}" loading="lazy" />` : `<span style="color:var(--ml-muted);font-size:12px;font-weight:900">Image</span>`}
+          </div>
+          <div>
+            <p class="pTitle">${esc(name)}</p>
+            <p class="pMeta">${ref ? `<b>${esc(ref)}</b> — ` : ""}${esc(cat)}</p>
+            ${short ? `<p class="pMeta" style="margin-top:6px;color:#4b5563">${esc(short)}</p>` : ""}
+            <div class="pBadges">${badgesHtml}</div>
+            <div class="pLinks">
+              <a class="plink" href="${esc(safeUrl)}" ${safeUrl==="#" ? "aria-disabled='true'" : "target='_blank' rel='noopener'"}>Voir la fiche (maillage interne)</a>
+              <a class="plink secondary" href="#summaryCard">Comparer au cahier des charges</a>
+            </div>
+          </div>
+        `;
+        root.appendChild(card);
+      });
+
+      // JSON-LD ItemList (SEO + maillage)
+      const itemList = {
+        "@context":"https://schema.org",
+        "@type":"ItemList",
+        "name":"Présélection orientée métier (levage)",
+        "itemListElement": list
+          .map((p, idx)=>{
+            const name = getProductField(p, ["name","title","nom"], "Produit");
+            const url  = getProductField(p, ["url","link","product_url"], "");
+            const img  = getProductField(p, ["image","img","image_url","cover"], "");
+            const ref  = getProductField(p, ["ref","reference","sku"], "");
+            const item = { "@type":"ListItem", "position": idx+1, "name": name };
+            if(url) item.url = url;
+            if(img) item.image = img;
+            if(ref) item.identifier = ref;
+            return item;
+          })
+      };
+      $("itemListJsonLd").textContent = JSON.stringify(itemList);
+    }
+
+    function updatePreselection(){
+      if(!PRODUCTS.length) return;
+
+      // Base = 100 produits, puis filtres techniques
+      const f = readFilters();
+      const baseFiltered = PRODUCTS.filter(p=>passFilters(p,f));
+
+      $("p_loaded").textContent = String(PRODUCTS.length);
+      $("p_retained").textContent = String(baseFiltered.length);
+
+      // Top10 selon questionnaire (scoring) dans baseFiltered
+      const top10 = pickTop10(baseFiltered);
+      LAST_TOP10 = top10;
+
+      // Phrase métier : afficher pourquoi ça bouge
+      const score = precisionScore();
+      const st = statusFromScore(score);
+      const actionTxt = (state.action && state.action.length) ? state.action.join(", ") : "non renseigné";
+      $("psLine").innerHTML =
+        `Présélection mise à jour (précision <b>${score}%</b> — ${esc(st.txt)}). ` +
+        `Logique : actions (<b>${esc(actionTxt)}</b>), environnement, famille/catégorie, puis filtres techniques.`;
+
+      renderProducts(top10);
+    }
+
+    function bindFilters(){
+      const ids = ["f_search","f_family","f_category","f_actions","f_atex","f_saline"];
+      ids.forEach(id=>{
+        $(id).addEventListener("input", ()=> updatePreselection());
+        $(id).addEventListener("change", ()=> updatePreselection());
+      });
+    }
+
+    async function loadProducts(){
+      try{
+        const res = await fetch("products_100.json", { cache:"no-store" });
+        if(!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        PRODUCTS = Array.isArray(data) ? data : (data.products || []);
+        $("p_loaded").textContent = String(PRODUCTS.length);
+
+        buildCategoryOptions();
+        updatePreselection();
+      }catch(e){
+        $("psLine").innerHTML =
+          `<span style="color:var(--bad);font-weight:1000">Impossible de charger products_100.json</span> — ` +
+          `vérifie qu’il est bien à côté de index.html et accessible (GitHub Pages).`;
+      }
+    }
+
+    /* =========================
+       INIT
+       ========================= */
 
     buildVisibleSteps();
     bind();
+    bindFilters();
     renderCurrent();
     renderSummary();
-    window.addEventListener("load", ()=>{
-      setTimeout(focusQuestionBox, 50);
-      loadProducts(); // AJOUT : chargement immédiat de la base 100
-    });
+    loadProducts();
+
+    window.addEventListener("load", ()=> setTimeout(focusQuestionBox, 60));
   </script>
 </body>
 </html>
