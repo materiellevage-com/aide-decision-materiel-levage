@@ -1,0 +1,175 @@
+import pandas as pd
+import re, json
+from pathlib import Path
+
+# ==========
+# CONFIG
+# ==========
+CSV_PATH = "export_product.csv"          # renomme ton export PrestaShop ainsi (ou modifie ici)
+OUT_JSON = "products_100.json"
+N = 100                                  # taille de la base démo
+
+# ==========
+# HELPERS
+# ==========
+def strip_html(s: str) -> str:
+    if not isinstance(s, str):
+        return ""
+    s = re.sub(r"<(script|style)[^>]*>.*?</\\1>", " ", s, flags=re.S|re.I)
+    s = re.sub(r"<[^>]+>", " ", s)
+    s = s.replace("&nbsp;", " ").replace("&amp;", "&")
+    s = re.sub(r"\\s+", " ", s).strip()
+    return s
+
+def infer_family(category: str, name: str) -> str:
+    t = (f"{category} {name}").lower()
+    support_kw = ["potence","portique","poutre","rail","monorail","structure","support","console","murale","sur fût","sur fut"]
+    appareil_kw = ["palan","treuil","gerbeur","transpalette","tire-fort","tirfor","cric","palan électrique","palan electrique"]
+    accessoire_kw = ["manille","crochet","élingue","elingue","anneau","aimant","ventouse","pince","émerillon","mousqueton",
+                     "serre-câble","serre cable","cosse","tendeur","maillon","palonnier","poulie"]
+    if any(k in t for k in support_kw):
+        return "support"
+    if any(k in t for k in appareil_kw):
+        return "appareil"
+    if any(k in t for k in accessoire_kw):
+        return "accessoire"
+    if "epi" in t or "harnais" in t:
+        return "epi"
+    return "accessoire"
+
+def build_resume(row) -> str:
+    name = str(row.get("nom FR", "")).strip()
+    cat  = str(row.get("catégories FR", "")).strip()
+
+    base = (
+        strip_html(row.get("meta_description FR", "")) or
+        strip_html(row.get("description courte FR", "")) or
+        strip_html(row.get("description FR", ""))
+    )
+
+    words = base.split()
+    base_short = " ".join(words[:18]).rstrip(" ,;:.") if words else ""
+
+    family = infer_family(cat, name)
+    prefix = "Accessoire de levage"
+    if family == "support":
+        prefix = "Support de levage"
+    elif family == "appareil":
+        prefix = "Appareil de levage/manutention"
+
+    tail = "À sélectionner selon mouvements, mode de prise, stabilité (centre de gravité), environnement et fréquence d’exploitation."
+
+    txt = f"{prefix} : {name}. {base_short}".strip()
+    if not base_short:
+        txt = f"{prefix} : {name}."
+
+    if not txt.endswith("."):
+        txt += "."
+    txt += " " + tail
+
+    # 50 mots max
+    w = txt.split()
+    if len(w) > 50:
+        txt = " ".join(w[:50]).rstrip(" ,;:.") + "."
+
+    return txt
+
+def build_tags(row, family: str) -> dict:
+    tags = {}
+    if family == "support":
+        tags["actions"] = ["support"]
+    elif family == "appareil":
+        tags["actions"] = ["lift","move"]
+    else:
+        tags["actions"] = ["hook"]
+
+    # Détection simple dans les textes (démo)
+    text = (strip_html(row.get("meta_title FR","")) + " " +
+            strip_html(row.get("meta_description FR","")) + " " +
+            strip_html(row.get("description FR",""))).lower()
+
+    env = []
+    tags["atex"] = ("atex" in text)
+    if tags["atex"]:
+        env.append("atex")
+
+    tags["saline_ok"] = ("salin" in text or "bord de mer" in text or "marine" in text)
+    if tags["saline_ok"]:
+        env.append("saline")
+
+    tags["environment"] = env
+    return tags
+
+# ==========
+# MAIN
+# ==========
+def main():
+    # Export Store Commander souvent en ; + latin1
+    df = pd.read_csv(CSV_PATH, sep=";", encoding="latin1", engine="python", on_bad_lines="skip")
+
+    # Actifs uniquement si colonne dispo
+    if "actif" in df.columns:
+        df = df[df["actif"] == 1].copy()
+
+    if "catégories FR" not in df.columns:
+        df["catégories FR"] = "Autres"
+    df["cat"] = df["catégories FR"].fillna("Autres").astype(str)
+
+    # Échantillonnage stratifié par catégorie
+    cats = df["cat"].value_counts()
+    alloc = (cats / cats.sum() * N).round().astype(int)
+    alloc[alloc == 0] = 1
+
+    # Ajuster à N exact
+    while alloc.sum() > N:
+        i = alloc.idxmax()
+        if alloc[i] > 1:
+            alloc[i] -= 1
+        else:
+            break
+    while alloc.sum() < N:
+        i = alloc.idxmax()
+        alloc[i] += 1
+
+    parts = []
+    for c, k in alloc.items():
+        sub = df[df["cat"] == c]
+        if len(sub) == 0:
+            continue
+        parts.append(sub.sample(min(k, len(sub)), random_state=42))
+
+    sample = pd.concat(parts, ignore_index=True) if parts else df.sample(min(N, len(df)), random_state=42)
+
+    if len(sample) > N:
+        sample = sample.sample(N, random_state=42)
+
+    products = []
+    for _, row in sample.iterrows():
+        pid = int(row.get("id_product", 0))
+        name = str(row.get("nom FR","")).strip()
+        url  = str(row.get("link_to_product FR","")).strip()
+        img  = str(row.get("image_url (1 image) FR","")).strip()
+        cat  = str(row.get("catégories FR","")).strip()
+        ref  = str(row.get("référence Valeur produit","")).strip()
+
+        family = infer_family(cat, name)
+
+        products.append({
+            "id": pid,
+            "ref": ref,
+            "name": name,
+            "url": url,
+            "image": img,
+            "catalog_category": cat,
+            "family": family,
+            "resume_expert": build_resume(row),
+            "tags": build_tags(row, family)
+        })
+
+    with open(OUT_JSON, "w", encoding="utf-8") as f:
+        json.dump(products, f, ensure_ascii=False, indent=2)
+
+    print(f"OK -> {OUT_JSON} ({len(products)} produits)")
+
+if __name__ == "__main__":
+    main()
