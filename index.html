@@ -132,33 +132,157 @@
 
 <script>
   const $ = (id)=>document.getElementById(id);
+  function esc(s){ return String(s ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;"); }
+
+  window.addEventListener("error", (e) => {
+    console.log("Erreur JS:", e);
+  });
+
   let PRODUCTS = [];
+  let step = 0;
+  const state = {};
+
+  const flow = [
+    {
+      id:"action",
+      title:"Pour commencer : qu’avez-vous besoin de faire ?",
+      sub:"Vous pouvez choisir plusieurs actions.",
+      options:[
+        {id:"lift", label:"Lever la charge", help:"Soulever verticalement."},
+        {id:"move", label:"Déplacer la charge", help:"Déplacement vers une ou plusieurs positions."},
+        {id:"hook", label:"Accrocher / saisir la charge", help:"Mettre la charge en prise."},
+        {id:"support", label:"Prévoir une structure", help:"Potence, portique, support."}
+      ]
+    },
+    {
+      id:"environment",
+      title:"Dans quel environnement se fait la manutention ?",
+      sub:"Plusieurs réponses possibles.",
+      options:[
+        {id:"indoor", label:"Intérieur", help:"Atelier / entrepôt."},
+        {id:"outdoor", label:"Extérieur", help:"Exposition météo."},
+        {id:"saline", label:"Milieu salin", help:"Corrosion accélérée."},
+        {id:"atex", label:"Zone ATEX", help:"Contraintes réglementaires spécifiques."}
+      ]
+    }
+  ];
 
   async function loadProducts(){
-    try {
-      const r = await fetch("./products_100.json", { cache: "no-store" });
-      if (!r.ok) throw new Error("JSON non trouvé");
+    try{
+      const r = await fetch("./products_100.json", {cache:"no-store"});
+      if(!r.ok) throw new Error("products_100.json introuvable (HTTP "+r.status+")");
       PRODUCTS = await r.json();
       $("prodCount").textContent = PRODUCTS.length;
-    } catch (e) {
-      console.warn("⚠️ Produits non chargés :", e.message);
+    }catch(err){
       PRODUCTS = [];
       $("prodCount").textContent = "0";
+      console.warn(err.message);
     }
+    renderProducts();
   }
 
-  (async function init(){
-    // ⬇️ IMPORTANT : on n’attend PLUS le JSON pour lancer l’UI
-    loadProducts();
+  function renderStep(){
+    const q = flow[step];
+    $("ask").textContent = q.title;
+    $("askSub").textContent = q.sub || "";
+    const root = $("opts");
+    root.innerHTML = "";
 
-    $("resetBtn").addEventListener("click", resetAll);
-    $("validateBtn").addEventListener("click", validate);
-    $("dontKnowBtn").addEventListener("click", dontKnowBtn);
+    q.options.forEach(o=>{
+      const id = `opt_${q.id}_${o.id}`;
+      root.insertAdjacentHTML("beforeend", `
+        <div class="opt">
+          <input type="checkbox" id="${id}">
+          <label for="${id}">
+            <b>${esc(o.label)}</b>
+            <span class="small">${esc(o.help||"")}</span>
+          </label>
+        </div>
+      `);
+    });
+  }
 
-    renderStep();       // ✅ la question s’affiche TOUJOURS
-    renderProducts();  // s’adapte si PRODUCTS est vide
-  })();
+  function collect(){
+    const q = flow[step];
+    const out = [];
+    q.options.forEach(o=>{
+      const el = document.getElementById(`opt_${q.id}_${o.id}`);
+      if(el && el.checked) out.push(o.id);
+    });
+    return out;
+  }
+
+  function validate(){
+    const q = flow[step];
+    const ans = collect();
+    if(!ans.length){
+      $("msg").textContent = "Choisissez une réponse, ou « Je ne sais pas ».";
+      $("msg").style.color = "var(--bad)";
+      return;
+    }
+    state[q.id] = ans;
+    $("msg").textContent = "Réponse enregistrée ✅";
+    $("msg").style.color = "var(--good)";
+
+    if(step < flow.length-1){
+      step++;
+      renderStep();
+    }
+    renderProducts();
+  }
+
+  function dontKnow(){
+    $("msg").textContent = "D’accord — on continue.";
+    $("msg").style.color = "var(--warn)";
+    if(step < flow.length-1){
+      step++;
+      renderStep();
+    }
+    renderProducts();
+  }
+
+  function renderProducts(){
+    // si pas de produits -> message simple
+    if(!PRODUCTS.length){
+      $("matchCount").textContent = "—";
+      $("productResults").innerHTML = `<div class="mini">⚠️ Aucune donnée produit chargée. Vérifie le fichier <b>products_100.json</b> (nom exact + accessible).</div>`;
+      return;
+    }
+    $("matchCount").textContent = PRODUCTS.length;
+    const show = PRODUCTS.slice(0,12);
+
+    $("productResults").innerHTML = show.map(p=>`
+      <div class="prod">
+        <img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" onerror="this.style.display='none'">
+        <div>
+          <h3>${esc(p.name)}</h3>
+          <div class="meta">${esc(p.resume_expert || "")}</div>
+          <div class="badges">
+            <span class="badge ${esc(p.family)}">${esc(p.family)}</span>
+          </div>
+          <a href="${esc(p.url)}" target="_blank" rel="noopener">Voir la fiche produit</a>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function resetAll(){
+    step = 0;
+    for(const k in state) delete state[k];
+    $("msg").textContent = "";
+    renderStep();
+    renderProducts();
+  }
+
+  // INIT
+  document.getElementById("resetBtn").addEventListener("click", resetAll);
+  document.getElementById("validateBtn").addEventListener("click", validate);
+  document.getElementById("dontKnowBtn").addEventListener("click", dontKnow);
+
+  renderStep();     // ✅ question s'affiche quoi qu'il arrive
+  loadProducts();   // produits en arrière-plan
 </script>
+
 
 
 </body>
