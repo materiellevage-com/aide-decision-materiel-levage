@@ -1,4 +1,153 @@
- (async function init(){
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aide au choix — Levage | MATERIEL-LEVAGE</title>
+  <meta name="description" content="Aide au choix levage : qualifiez votre besoin comme avec un spécialiste. Conditions d’exploitation, responsabilités, restrictions d’usage, maintenance et conformité. Génération d’un cahier des charges et présélection de produits." />
+
+  <style>
+    :root{
+      --ml-blue:#2a2e86; --ml-blue-dark:#1f2268; --ml-yellow:#f2c200;
+      --ml-bg:#f5f6fb; --ml-card:#ffffff; --ml-text:#111827; --ml-muted:#6b7280;
+      --ml-line:#e5e7eb; --ml-shadow:0 10px 25px rgba(17,24,39,.10); --ml-radius:16px;
+
+      /* Couleurs catalogue (base) */
+      --cat-accessories:#b10f1b; /* rouge accessoires */
+      --cat-magnets:#22a35a;     /* vert aimants */
+      --cat-site:#2b77d9;        /* bleu clair chantier */
+      --cat-hoists:#f28c00;      /* orange palans */
+
+      --good:#16a34a; --warn:#f59e0b; --bad:#dc2626;
+      --font: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;}
+    body{margin:0;font-family:var(--font);color:var(--ml-text);background:var(--ml-bg)}
+    .wrap{max-width:1200px;margin:0 auto;padding:14px}
+
+    .topbar{background:#fff;border-bottom:4px solid var(--cat-accessories);box-shadow:0 6px 20px rgba(17,24,39,.08);position:sticky;top:0;z-index:50}
+    .topbar-inner{max-width:1200px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:18px;color:var(--ml-blue);white-space:nowrap}
+    .logo .dot{width:34px;height:34px;border-radius:10px;background:radial-gradient(circle at 30% 30%, var(--ml-yellow), #ffd84a);border:1px solid rgba(0,0,0,.08);display:grid;place-items:center;color:var(--ml-blue-dark);font-weight:1000}
+    .logo .site{display:flex;align-items:baseline;gap:2px}
+    .logo .com{color:var(--ml-yellow);font-weight:1000}
+    .subtitle{color:var(--ml-muted);font-size:12px;line-height:1.3}
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border-radius:999px;background:#fff;border:1px solid var(--ml-line);font-size:12px;font-weight:800;color:#111827}
+    .pill b{color:var(--ml-blue)}
+    .statusDot{width:10px;height:10px;border-radius:999px;background:var(--warn)}
+    .statusDot.good{background:var(--good)} .statusDot.warn{background:var(--warn)} .statusDot.bad{background:var(--bad)}
+
+    .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;margin-top:14px}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+
+    .card{background:var(--ml-card);border:1px solid var(--ml-line);border-radius:var(--ml-radius);box-shadow:var(--ml-shadow);overflow:hidden}
+    .card .hd{padding:12px 14px;border-bottom:1px solid var(--ml-line);display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#fff}
+    .card .hd h2{margin:0;font-size:14px;font-weight:1000;color:var(--ml-blue-dark)}
+    .card .hd p{margin:6px 0 0;color:var(--ml-muted);font-size:12px;line-height:1.4}
+    .card .bd{padding:14px}
+
+    .questionBox{border:1px solid var(--ml-line);border-radius:16px;padding:14px;background:#fff}
+    .ask{margin:0;font-size:14px;font-weight:1000;color:#111827;line-height:1.35}
+    .askSub{margin:6px 0 0;color:var(--ml-muted);font-size:12px;line-height:1.45}
+
+    .opts{display:grid;gap:10px;margin-top:12px}
+    .opt{display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:14px;border:1px solid var(--ml-line);background:#fff}
+    .opt:hover{border-color:#d1d5db;background:#fcfcff}
+    .opt input{margin-top:2px;transform:scale(1.08)}
+    .opt label{cursor:pointer;flex:1}
+    .opt b{display:block;font-size:14px}
+    .opt .small{display:block;color:var(--ml-muted);font-size:12px;margin-top:2px;line-height:1.35}
+
+    .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+    .btn{appearance:none;border:1px solid var(--ml-line);background:#fff;color:#111827;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:900;cursor:pointer}
+    .btn.core{border-color:rgba(42,46,134,.25);background:rgba(42,46,134,.08);color:var(--ml-blue-dark)}
+    .btn.neutral{border-color:rgba(107,114,128,.25);background:rgba(107,114,128,.07);color:#111827}
+
+    .mini{color:var(--ml-muted);font-size:12px;line-height:1.45;margin-top:8px}
+
+    .productsGrid{display:grid;gap:10px;margin-top:10px}
+    .prod{display:grid;grid-template-columns:78px 1fr;gap:10px;border:1px solid var(--ml-line);border-radius:16px;background:#fff;padding:10px}
+    .prod img{width:78px;height:78px;border-radius:12px;object-fit:cover;border:1px solid var(--ml-line);background:#fff}
+    .prod h3{margin:0;font-size:14px;font-weight:1000;color:#111827;line-height:1.25}
+    .prod .meta{margin-top:4px;color:var(--ml-muted);font-size:12px;line-height:1.35}
+    .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:1000;border:1px solid var(--ml-line);background:#fff;color:#111827}
+    .badge.accessoire{border-color:rgba(177,15,27,.35); background:rgba(177,15,27,.08); color:#7a0b12;}
+    .badge.appareil{border-color:rgba(242,140,0,.35); background:rgba(242,140,0,.10); color:#7a4a00;}
+    .badge.support{border-color:rgba(42,46,134,.25); background:rgba(42,46,134,.08); color:var(--ml-blue-dark);}
+
+    .prod a{display:inline-block;margin-top:8px;font-weight:1000;font-size:12px;color:var(--ml-blue-dark);text-decoration:none}
+    .prod a:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo"><div class="dot">ML</div><div class="site"><span>MATERIEL-LEVAGE</span><span class="com">.com</span></div></div>
+        <div>
+          <div style="font-weight:1000;color:var(--ml-blue-dark);font-size:18px;line-height:1.15">Aide au choix — Levage (démo 100 produits)</div>
+          <div class="subtitle">Questionnaire + présélection dynamique (images + résumé expert 50 mots).</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span class="pill"><span class="statusDot warn" id="dot"></span><span id="statusTxt">À compléter</span></span>
+        <span class="pill">Précision : <b id="clarityTxt">100%</b></span>
+        <button class="btn" id="resetBtn" type="button">Réinitialiser</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="grid">
+      <div class="card">
+        <div class="hd"><div><h2>Conversation guidée</h2><p>Après validation, on passe automatiquement à la question suivante.</p></div></div>
+        <div class="bd">
+          <div class="questionBox">
+            <p class="ask" id="ask">—</p>
+            <p class="askSub" id="askSub">—</p>
+            <div class="opts" id="opts"></div>
+            <div class="actions">
+              <button class="btn core" id="validateBtn" type="button">Valider ma réponse</button>
+              <button class="btn neutral" id="dontKnowBtn" type="button">Je ne sais pas</button>
+            </div>
+            <div class="mini" id="msg"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="hd"><div><h2>Présélection produits</h2><p>Résultats issus des réponses (base de démo).</p></div></div>
+        <div class="bd">
+          <div class="mini">Produits chargés : <b id="prodCount">—</b> • Correspondances : <b id="matchCount">—</b></div>
+          <div id="productResults" class="productsGrid"></div>
+          <div class="mini" style="margin-top:10px;">Fichier attendu : <b>products_100.json</b> à côté de <b>index.html</b>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const $ = (id)=>document.getElementById(id);
+  let PRODUCTS = [];
+
+  async function loadProducts(){
+    try {
+      const r = await fetch("./products_100.json", { cache: "no-store" });
+      if (!r.ok) throw new Error("JSON non trouvé");
+      PRODUCTS = await r.json();
+      $("prodCount").textContent = PRODUCTS.length;
+    } catch (e) {
+      console.warn("⚠️ Produits non chargés :", e.message);
+      PRODUCTS = [];
+      $("prodCount").textContent = "0";
+    }
+  }
+
+  (async function init(){
     // ⬇️ IMPORTANT : on n’attend PLUS le JSON pour lancer l’UI
     loadProducts();
 
@@ -9,3 +158,8 @@
     renderStep();       // ✅ la question s’affiche TOUJOURS
     renderProducts();  // s’adapte si PRODUCTS est vide
   })();
+</script>
+
+
+</body>
+</html>
