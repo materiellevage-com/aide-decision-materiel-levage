@@ -3,58 +3,143 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Aide au choix — Levage | MATERIEL-LEVAGE</title>
-  <meta name="description" content="Aide au choix levage : qualifiez votre besoin comme avec un spécialiste. Conditions d’exploitation, responsabilités, restrictions d’usage, maintenance et conformité. Génération d’un cahier des charges et présélection de produits." />
+  <title>Aide au choix — Levage | Spécialiste MATERIEL-LEVAGE</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Aide au choix levage : qualifiez votre besoin comme avec un spécialiste. Conditions d’exploitation, responsabilité des choix, restrictions d’usage, maintenance et conformité. Génération d’un cahier des charges." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://materiellevage-com.github.io/aide-decision-materiel-levage/" />
 
   <style>
     :root{
-      --ml-blue:#2a2e86; --ml-blue-dark:#1f2268; --ml-yellow:#f2c200;
-      --ml-bg:#f5f6fb; --ml-card:#ffffff; --ml-text:#111827; --ml-muted:#6b7280;
-      --ml-line:#e5e7eb; --ml-shadow:0 10px 25px rgba(17,24,39,.10); --ml-radius:16px;
+      --ml-blue:#2a2e86;
+      --ml-blue-dark:#1f2268;
+      --ml-yellow:#f2c200;
+      --ml-bg:#f5f6fb;
+      --ml-card:#ffffff;
+      --ml-text:#111827;
+      --ml-muted:#6b7280;
+      --ml-line:#e5e7eb;
+      --ml-shadow:0 10px 25px rgba(17,24,39,.10);
+      --ml-radius:16px;
 
-      /* Couleurs catalogue (base) */
-      --cat-accessories:#b10f1b; /* rouge accessoires */
-      --cat-magnets:#22a35a;     /* vert aimants */
-      --cat-site:#2b77d9;        /* bleu clair chantier */
-      --cat-hoists:#f28c00;      /* orange palans */
+      /* Couleurs catalogue (à respecter) */
+      --cat-accessories:#b10f1b;  /* rouge accessoires */
+      --cat-magnets:#22a35a;      /* vert aimants */
+      --cat-site:#2b77d9;         /* bleu clair chantier */
+      --cat-hoists:#f28c00;       /* orange palans */
 
-      --good:#16a34a; --warn:#f59e0b; --bad:#dc2626;
+      --good:#16a34a;
+      --warn:#f59e0b;
+      --bad:#dc2626;
       --font: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
+
     *{box-sizing:border-box}
     html{scroll-behavior:smooth;}
     body{margin:0;font-family:var(--font);color:var(--ml-text);background:var(--ml-bg)}
-    .wrap{max-width:1200px;margin:0 auto;padding:14px}
+    .wrap{max-width:1100px;margin:0 auto;padding:14px}
 
-    .topbar{background:#fff;border-bottom:4px solid var(--cat-accessories);box-shadow:0 6px 20px rgba(17,24,39,.08);position:sticky;top:0;z-index:50}
-    .topbar-inner{max-width:1200px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .topbar{
+      background:#fff;
+      border-bottom:4px solid var(--cat-accessories);
+      box-shadow: 0 6px 20px rgba(17,24,39,.08);
+      position:sticky;top:0;z-index:50;
+    }
+    .topbar-inner{
+      max-width:1100px;margin:0 auto;padding:10px 14px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    }
     .brand{display:flex;align-items:center;gap:12px}
-    .logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:18px;color:var(--ml-blue);white-space:nowrap}
-    .logo .dot{width:34px;height:34px;border-radius:10px;background:radial-gradient(circle at 30% 30%, var(--ml-yellow), #ffd84a);border:1px solid rgba(0,0,0,.08);display:grid;place-items:center;color:var(--ml-blue-dark);font-weight:1000}
+    .logo{
+      display:flex;align-items:center;gap:8px;
+      font-weight:900;font-size:18px;color:var(--ml-blue);
+      white-space:nowrap;
+    }
+    .logo .dot{
+      width:34px;height:34px;border-radius:10px;
+      background: radial-gradient(circle at 30% 30%, var(--ml-yellow), #ffd84a);
+      border:1px solid rgba(0,0,0,.08);
+      display:grid;place-items:center;
+      color:var(--ml-blue-dark);font-weight:1000;
+    }
     .logo .site{display:flex;align-items:baseline;gap:2px}
     .logo .com{color:var(--ml-yellow);font-weight:1000}
     .subtitle{color:var(--ml-muted);font-size:12px;line-height:1.3}
+
     .top-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-    .pill{display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border-radius:999px;background:#fff;border:1px solid var(--ml-line);font-size:12px;font-weight:800;color:#111827}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:7px 10px;border-radius:999px;background:#fff;border:1px solid var(--ml-line);
+      font-size:12px;font-weight:800;color:#111827;
+    }
     .pill b{color:var(--ml-blue)}
     .statusDot{width:10px;height:10px;border-radius:999px;background:var(--warn)}
-    .statusDot.good{background:var(--good)} .statusDot.warn{background:var(--warn)} .statusDot.bad{background:var(--bad)}
+    .statusDot.good{background:var(--good)}
+    .statusDot.warn{background:var(--warn)}
+    .statusDot.bad{background:var(--bad)}
 
     .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;margin-top:14px}
     @media (max-width:980px){.grid{grid-template-columns:1fr}}
 
-    .card{background:var(--ml-card);border:1px solid var(--ml-line);border-radius:var(--ml-radius);box-shadow:var(--ml-shadow);overflow:hidden}
-    .card .hd{padding:12px 14px;border-bottom:1px solid var(--ml-line);display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#fff}
+    .card{
+      background:var(--ml-card);
+      border:1px solid var(--ml-line);
+      border-radius:var(--ml-radius);
+      box-shadow:var(--ml-shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:12px 14px;border-bottom:1px solid var(--ml-line);
+      display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      background:#fff;
+    }
     .card .hd h2{margin:0;font-size:14px;font-weight:1000;color:var(--ml-blue-dark)}
     .card .hd p{margin:6px 0 0;color:var(--ml-muted);font-size:12px;line-height:1.4}
     .card .bd{padding:14px}
 
-    .questionBox{border:1px solid var(--ml-line);border-radius:16px;padding:14px;background:#fff}
+    .progressRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
+
+    .questionBox{
+      border:1px solid var(--ml-line);
+      border-radius:16px;
+      padding:14px;
+      background:#fff;
+      scroll-margin-top: 90px;
+      transition: box-shadow .25s, transform .25s;
+    }
+    .questionBox.flash{
+      box-shadow: 0 0 0 4px rgba(42,46,134,.10), var(--ml-shadow);
+      transform: translateY(-1px);
+    }
+
+    .askRow{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
     .ask{margin:0;font-size:14px;font-weight:1000;color:#111827;line-height:1.35}
     .askSub{margin:6px 0 0;color:var(--ml-muted);font-size:12px;line-height:1.45}
 
+    .tip{
+      position:relative;width:28px;height:28px;border-radius:999px;
+      border:1px solid var(--ml-line);background:#fff;
+      display:grid;place-items:center;font-weight:1000;color:var(--ml-blue-dark);
+      cursor:help;flex:0 0 auto;
+    }
+    .bubble{
+      position:absolute;right:0;top:calc(100% + 10px);
+      width:min(460px, calc(100vw - 40px));
+      background:#fff;border:1px solid var(--ml-line);
+      border-radius:14px;box-shadow:var(--ml-shadow);
+      padding:12px;display:none;z-index:60;
+    }
+    .tip:hover .bubble{display:block}
+    .bubble .t{margin:0 0 6px;font-size:12px;font-weight:1000;color:#111827}
+    .bubble .p{margin:0;color:var(--ml-muted);font-size:12px;line-height:1.45}
+
     .opts{display:grid;gap:10px;margin-top:12px}
-    .opt{display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:14px;border:1px solid var(--ml-line);background:#fff}
+    .opt{
+      display:flex;gap:10px;align-items:flex-start;
+      padding:12px;border-radius:14px;border:1px solid var(--ml-line);
+      background:#fff;transition:.12s;
+    }
     .opt:hover{border-color:#d1d5db;background:#fcfcff}
     .opt input{margin-top:2px;transform:scale(1.08)}
     .opt label{cursor:pointer;flex:1}
@@ -62,228 +147,1411 @@
     .opt .small{display:block;color:var(--ml-muted);font-size:12px;margin-top:2px;line-height:1.35}
 
     .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
-    .btn{appearance:none;border:1px solid var(--ml-line);background:#fff;color:#111827;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:900;cursor:pointer}
-    .btn.core{border-color:rgba(42,46,134,.25);background:rgba(42,46,134,.08);color:var(--ml-blue-dark)}
-    .btn.neutral{border-color:rgba(107,114,128,.25);background:rgba(107,114,128,.07);color:#111827}
+    .btn{
+      appearance:none;border:1px solid var(--ml-line);background:#fff;color:#111827;
+      border-radius:12px;padding:10px 12px;font-size:13px;font-weight:900;
+      cursor:pointer;transition:.12s;
+    }
+    .btn:hover{background:#f9fafb}
+    .btn.core{
+      border-color: rgba(42,46,134,.25);
+      background: rgba(42,46,134,.08);
+      color: var(--ml-blue-dark);
+    }
+    .btn.core:hover{background: rgba(42,46,134,.11)}
+    .btn.neutral{
+      border-color: rgba(107,114,128,.25);
+      background: rgba(107,114,128,.07);
+      color: #111827;
+    }
+    .btn.neutral:hover{background: rgba(107,114,128,.10)}
+    .btn.danger{
+      border-color: rgba(177,15,27,.40);
+      background: rgba(177,15,27,.10);
+      color: #7a0b12;
+    }
+    .btn.danger:hover{background: rgba(177,15,27,.14)}
 
     .mini{color:var(--ml-muted);font-size:12px;line-height:1.45;margin-top:8px}
 
-    .productsGrid{display:grid;gap:10px;margin-top:10px}
-    .prod{display:grid;grid-template-columns:78px 1fr;gap:10px;border:1px solid var(--ml-line);border-radius:16px;background:#fff;padding:10px}
-    .prod img{width:78px;height:78px;border-radius:12px;object-fit:cover;border:1px solid var(--ml-line);background:#fff}
-    .prod h3{margin:0;font-size:14px;font-weight:1000;color:#111827;line-height:1.25}
-    .prod .meta{margin-top:4px;color:var(--ml-muted);font-size:12px;line-height:1.35}
-    .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-    .badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:1000;border:1px solid var(--ml-line);background:#fff;color:#111827}
-    .badge.accessoire{border-color:rgba(177,15,27,.35); background:rgba(177,15,27,.08); color:#7a0b12;}
-    .badge.appareil{border-color:rgba(242,140,0,.35); background:rgba(242,140,0,.10); color:#7a4a00;}
-    .badge.support{border-color:rgba(42,46,134,.25); background:rgba(42,46,134,.08); color:var(--ml-blue-dark);}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid var(--ml-line);vertical-align:top}
+    th{font-size:12px;color:var(--ml-muted);text-align:left}
+    td{font-size:13px}
 
-    .prod a{display:inline-block;margin-top:8px;font-weight:1000;font-size:12px;color:var(--ml-blue-dark);text-decoration:none}
-    .prod a:hover{text-decoration:underline}
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size:12px;background:#fbfbff;border:1px solid var(--ml-line);
+      border-radius:14px;padding:12px;white-space:pre-wrap;color:#0f172a;
+    }
+
+    .seoBlock{
+      background:#fff;border:1px solid var(--ml-line);
+      border-radius:16px;box-shadow:var(--ml-shadow);
+      padding:14px;margin-top:14px;
+    }
+    .seoBlock h2{margin:0 0 8px;font-size:14px;font-weight:1000;color:var(--ml-blue-dark)}
+    .seoBlock p{margin:8px 0;color:var(--ml-muted);font-size:12px;line-height:1.6}
+    details{border:1px solid var(--ml-line);border-radius:14px;padding:10px 12px;background:#fff;margin-top:10px}
+    summary{cursor:pointer;font-weight:1000;color:#111827;font-size:13px}
+    details p{margin:8px 0 0}
+    .divider{height:1px;background:var(--ml-line);margin:12px 0}
+    ul{margin:10px 0 0;padding-left:18px;color:var(--ml-muted);font-size:12px;line-height:1.55}
+
+    .faqTitle{font-weight:1000;color:var(--ml-blue-dark);font-size:13px;margin-top:14px;}
+    .faqNote{color:var(--ml-muted);font-size:12px;line-height:1.45;margin-top:4px;}
+
+    /* =========================================================
+       AJOUT UNIQUEMENT : préselection produits (base 100)
+       ========================================================= */
+    .prodTopRow{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      margin-top:6px;
+    }
+    .prodMeta{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+      color:var(--ml-muted);font-size:12px;
+    }
+    .prodGrid{
+      display:grid;gap:10px;margin-top:12px;
+      grid-template-columns:1fr;
+    }
+    .prodCard{
+      border:1px solid var(--ml-line);
+      border-radius:14px;
+      overflow:hidden;
+      background:#fff;
+      display:grid;
+      grid-template-columns:84px 1fr;
+      min-height:84px;
+    }
+    .prodImg{
+      width:84px;height:84px;display:block;object-fit:cover;background:#f3f4f6;
+      border-right:1px solid var(--ml-line);
+    }
+    .prodBody{padding:10px}
+    .prodName{
+      margin:0;
+      font-weight:1000;
+      font-size:13px;
+      color:#111827;
+      line-height:1.2;
+    }
+    .prodLine{
+      margin:6px 0 0;
+      color:var(--ml-muted);
+      font-size:12px;
+      line-height:1.45;
+    }
+    .tag{
+      display:inline-flex;align-items:center;
+      padding:4px 8px;border-radius:999px;
+      font-size:11px;font-weight:1000;
+      border:1px solid rgba(0,0,0,.06);
+      margin-top:8px;
+      width:max-content;
+    }
+    .tag.accessories{background:rgba(177,15,27,.10); color:#7a0b12}
+    .tag.magnets{background:rgba(34,163,90,.10); color:#0b6b33}
+    .tag.site{background:rgba(43,119,217,.12); color:#144c9c}
+    .tag.hoists{background:rgba(242,140,0,.12); color:#8a4b00}
+    .tag.other{background:rgba(42,46,134,.08); color:var(--ml-blue-dark)}
+
+    .prodActions{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px;
+    }
+    .noteSmall{color:var(--ml-muted);font-size:12px;line-height:1.45;margin-top:6px;}
   </style>
 </head>
+
 <body>
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <div class="logo"><div class="dot">ML</div><div class="site"><span>MATERIEL-LEVAGE</span><span class="com">.com</span></div></div>
+        <div class="logo" aria-label="MATERIEL-LEVAGE.com">
+          <div class="dot">ML</div>
+          <div class="site"><span>MATERIEL-LEVAGE</span><span class="com">.com</span></div>
+        </div>
         <div>
-          <div style="font-weight:1000;color:var(--ml-blue-dark);font-size:18px;line-height:1.15">Aide au choix — Levage (démo 100 produits)</div>
-          <div class="subtitle">Questionnaire + présélection dynamique (images + résumé expert 50 mots).</div>
+          <div style="font-weight:1000;color:var(--ml-blue-dark);font-size:18px;line-height:1.15">
+            Aide au choix — Levage (approche spécialiste)
+          </div>
+          <div class="subtitle">Un échange guidé pour qualifier l’opération, la prise, la stabilité, l’environnement et la fréquence d’exploitation.</div>
         </div>
       </div>
+
       <div class="top-actions">
         <span class="pill"><span class="statusDot warn" id="dot"></span><span id="statusTxt">À compléter</span></span>
         <span class="pill">Précision : <b id="clarityTxt">100%</b></span>
         <button class="btn" id="resetBtn" type="button">Réinitialiser</button>
+        <button class="btn core" id="demoBtn" type="button">Préremplir démo</button>
       </div>
     </div>
   </div>
 
   <div class="wrap">
+    <section class="seoBlock" aria-label="Expertise levage">
+      <h2>Une méthode de spécialiste, pas un simple choix produit</h2>
+      <p>
+        Le levage engage des <b>choix techniques</b> et des <b>responsabilités</b> : type de mouvement, mode de prise, stabilité, variabilité, conditions d’exploitation.
+        Cette page transforme votre demande en <b>cahier des charges</b> clair pour l’arbitrage, l’usage, les restrictions, et l’orientation vers la bonne solution.
+      </p>
+    </section>
+
     <div class="grid">
       <div class="card">
-        <div class="hd"><div><h2>Conversation guidée</h2><p>Après validation, on passe automatiquement à la question suivante.</p></div></div>
+        <div class="hd">
+          <div>
+            <h2>Conversation guidée</h2>
+            <p>Après “Valider” ou “Je ne sais pas”, la question suivante s’affiche automatiquement.</p>
+          </div>
+        </div>
+
         <div class="bd">
-          <div class="questionBox">
-            <p class="ask" id="ask">—</p>
-            <p class="askSub" id="askSub">—</p>
+          <div class="questionBox" id="questionBox">
+            <div class="askRow">
+              <div>
+                <p class="ask" id="ask">—</p>
+                <p class="askSub" id="askSub">—</p>
+                <div class="progressRow">
+                  <span class="pill" id="stepPill"><b id="stepTxt">1</b> / 10</span>
+                  <span class="pill">Réponses données : <b id="answeredTxt">0</b></span>
+                </div>
+              </div>
+              <div class="tip">i
+                <div class="bubble">
+                  <p class="t" id="tipTitle">Aide</p>
+                  <p class="p" id="tipText">—</p>
+                </div>
+              </div>
+            </div>
+
             <div class="opts" id="opts"></div>
+
             <div class="actions">
               <button class="btn core" id="validateBtn" type="button">Valider ma réponse</button>
               <button class="btn neutral" id="dontKnowBtn" type="button">Je ne sais pas</button>
+              <button class="btn" id="backBtn" type="button">Retour</button>
+              <button class="btn" id="skipToSummaryBtn" type="button">Voir la synthèse</button>
             </div>
+
             <div class="mini" id="msg"></div>
+
+            <div class="faqTitle">Aide rapide — 5 questions que l’on se pose souvent</div>
+            <div class="faqNote">Ces réponses s’adaptent à la question affichée, comme un échange avec un spécialiste.</div>
+            <div id="faqDynamic"></div>
           </div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="hd"><div><h2>Présélection produits</h2><p>Résultats issus des réponses (base de démo).</p></div></div>
+      <div class="card" id="summaryCard">
+        <div class="hd">
+          <div>
+            <h2>Synthèse & Cahier des charges</h2>
+            <p>La précision baisse si certaines informations sont inconnues.</p>
+          </div>
+        </div>
         <div class="bd">
-          <div class="mini">Produits chargés : <b id="prodCount">—</b> • Correspondances : <b id="matchCount">—</b></div>
-          <div id="productResults" class="productsGrid"></div>
-          <div class="mini" style="margin-top:10px;">Fichier attendu : <b>products_100.json</b> à côté de <b>index.html</b>.</div>
+          <table>
+            <thead><tr><th>Élément</th><th>Votre réponse</th></tr></thead>
+            <tbody id="summary"></tbody>
+          </table>
+
+          <div class="divider"></div>
+
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center">
+            <div style="font-weight:1000;color:var(--ml-blue-dark)">Cahier des charges (copiable)</div>
+            <div class="mini" id="complexity">—</div>
+          </div>
+          <div class="mono" id="cdc">—</div>
+
+          <div class="actions" style="margin-top:12px">
+            <button class="btn core" id="copyBtn" type="button">Copier</button>
+            <button class="btn" id="downloadBtn" type="button">Télécharger (.txt)</button>
+            <button class="btn danger" id="callBtn" type="button">Contacter un spécialiste</button>
+          </div>
+
+          <ul id="alerts"></ul>
+
+          <!-- =========================================================
+               AJOUT UNIQUEMENT : préselection produits (base 100)
+               ========================================================= -->
+          <div class="divider"></div>
+
+          <div style="font-weight:1000;color:var(--ml-blue-dark);font-size:14px;">Préselection produits (base 100)</div>
+          <div class="noteSmall">Affichage de la base de démonstration chargée depuis <b>products_100.json</b>. (Aucun filtrage pour l’instant.)</div>
+
+          <div class="prodTopRow">
+            <div class="prodMeta">
+              <span>Produits chargés : <b id="prodCount">0</b></span>
+              <span>•</span>
+              <span>Statut : <b id="prodStatus">chargement…</b></span>
+            </div>
+            <div class="prodActions">
+              <button class="btn" id="reloadProductsBtn" type="button">Recharger</button>
+            </div>
+          </div>
+
+          <div class="mini" id="prodMsg" style="margin-top:8px;"></div>
+          <div class="prodGrid" id="prodGrid"></div>
         </div>
       </div>
     </div>
   </div>
 
-<script>
-  const $ = (id)=>document.getElementById(id);
-  function esc(s){ return String(s ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;"); }
+  <script id="faqJsonLd" type="application/ld+json">{}</script>
 
-  window.addEventListener("error", (e) => {
-    console.log("Erreur JS:", e);
-  });
+  <script>
+    const $ = (id)=>document.getElementById(id);
 
-  let PRODUCTS = [];
-  let step = 0;
-  const state = {};
+    function focusQuestionBox(){
+      const box = $("questionBox");
+      if(!box) return;
+      box.scrollIntoView({behavior:"smooth", block:"start"});
+      box.classList.remove("flash");
+      void box.offsetWidth;
+      box.classList.add("flash");
+      setTimeout(()=>box.classList.remove("flash"), 550);
+    }
+    function focusSummary(){
+      const el = $("summaryCard");
+      if(!el) return;
+      el.scrollIntoView({behavior:"smooth", block:"start"});
+    }
 
-  const flow = [
-    {
-      id:"action",
-      title:"Pour commencer : qu’avez-vous besoin de faire ?",
-      sub:"Vous pouvez choisir plusieurs actions.",
-      options:[
-        {id:"lift", label:"Lever la charge", help:"Soulever verticalement."},
-        {id:"move", label:"Déplacer la charge", help:"Déplacement vers une ou plusieurs positions."},
-        {id:"hook", label:"Accrocher / saisir la charge", help:"Mettre la charge en prise."},
-        {id:"support", label:"Prévoir une structure", help:"Potence, portique, support."}
+    const flow = [
+      {
+        id:"action",
+        title:"Pour commencer : qu’avez-vous besoin de faire avec la charge ?",
+        sub:"Vous pouvez choisir plusieurs actions si besoin.",
+        tipTitle:"Aide — Action",
+        tip:"On décrit ce que vous faites (pas un produit) : lever, déplacer, accrocher/saisir, ou prévoir une structure.",
+        type:"multi",
+        options:[
+          { id:"lift", label:"Lever la charge", help:"Soulever verticalement (montée / descente)." },
+          { id:"move", label:"Déplacer la charge", help:"Déplacer vers une ou plusieurs positions." },
+          { id:"hook", label:"Accrocher / saisir la charge", help:"Mettre la charge en prise pour la lever ou la maintenir." },
+          { id:"support", label:"Prévoir une structure", help:"Structure porteuse (potence, portique, etc.)." }
+        ]
+      },
+      {
+        id:"movement",
+        title:"Quel(s) mouvement(s) devez-vous réaliser ?",
+        sub:"Le déplacement horizontal est exclusif : une direction OU plusieurs directions.",
+        tipTitle:"Aide — Mouvements",
+        tip:"Inclinaison/basculement/retournement = complexité plus élevée → souvent besoin de validation technique.",
+        type:"movement_combo",
+        gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move"))
+      },
+      {
+        id:"location",
+        title:"Où se déroule l’opération ?",
+        sub:"Choisissez ce qui correspond le mieux, puis indiquez si c’est multi-sites.",
+        tipTitle:"Aide — Localisation",
+        tip:"La localisation influence l’installation, la mobilité, et la logique de support (fixe / mobile).",
+        type:"mixed",
+        gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move")),
+        optionsRadio:[
+          { id:"station", label:"Un poste de travail dédié", help:"Toujours au même endroit." },
+          { id:"zone", label:"Une zone de travail définie", help:"Déplacements sur plusieurs mètres." },
+          { id:"multi", label:"Plusieurs postes / zones", help:"Emplacements distincts." }
+        ],
+        optionCheck:{ id:"multisite", label:"Option : multi-sites", help:"Ateliers / bâtiments / sites différents." }
+      },
+      {
+        id:"anchorsPresence",
+        title:"La charge dispose-t-elle de points d’ancrage (anneaux, anses, points prévus) ?",
+        sub:"Si non : la prise se fait par pince, ventouse, aimant, etc.",
+        tipTitle:"Aide — Points d’ancrage",
+        tip:"S’il n’y a pas de points d’ancrage, la compatibilité dépend du principe de prise (surface, matière, géométrie).",
+        type:"mixed_yesno",
+        gate:(s)=> s.action?.includes("hook"),
+        yesLabel:"Oui, il y a des points d’ancrage",
+        noLabel:"Non, il n’y a pas de points d’ancrage",
+        extraCheck:{ id:"dedicated", label:"Option : points dédiés au levage", help:"Points prévus/validés par le fabricant ou la conception." }
+      },
+      {
+        id:"anchorOrGrip",
+        title:"Pour être sûr : comment la charge est-elle prise ?",
+        sub:"Selon la réponse précédente : nombre de points, ou méthode de prise.",
+        tipTitle:"Aide — Prise de charge",
+        tip:"Multipoints = répartition/angles. Sans ancrage = principe physique (serrage, dépression, magnétisme).",
+        type:"conditional_single",
+        gate:(s)=> s.action?.includes("hook"),
+        when:(s)=> s.anchorsPresence,
+        ifTrue:{
+          key:"anchorPoints",
+          title:"Combien de points d’ancrage utilisez-vous ?",
+          options:[
+            { id:"p1", label:"1 point", help:"Accrochage simple." },
+            { id:"p2", label:"2 points", help:"Répartition à vérifier." },
+            { id:"p3", label:"3 points", help:"Réglage souvent nécessaire." },
+            { id:"p4", label:"4 points", help:"Angles critiques : validation recommandée." }
+          ]
+        },
+        ifFalse:{
+          key:"gripMethod",
+          title:"Sans points d’ancrage : quelle méthode de prise est envisageable ?",
+          options:[
+            { id:"positive", label:"Prise positive", help:"Accrochage mécanique par forme/épaulement." },
+            { id:"clamp", label:"Serrage (pince)", help:"Maintien par pression." },
+            { id:"suction", label:"Ventouses", help:"Surface compatible, étanchéité." },
+            { id:"mag", label:"Aimants", help:"Uniquement ferromagnétique." }
+          ]
+        }
+      },
+      {
+        id:"cog",
+        title:"Comment est positionné le centre de gravité de la charge ?",
+        sub:"Même approximatif : cela détermine la stabilité, le ballant et le risque de basculement.",
+        tipTitle:"Aide — Centre de gravité",
+        tip:"Un centre de gravité excentré induit une tendance à pivoter/pencher. S’il est au-dessus des points d’ancrage/de prise, le risque de basculement augmente.",
+        type:"single",
+        gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move") || s.action?.includes("hook")),
+        options:[
+          { id:"center", label:"Centre de gravité centré", help:"La charge reste globalement stable si la prise est correcte." },
+          { id:"offset", label:"Centre de gravité excentré (décalé)", help:"Tendance à pivoter/pencher : équilibrage souvent nécessaire." },
+          { id:"above", label:"Centre de gravité au-dessus des points d’ancrage / de la zone de prise", help:"Risque de basculement/rotation non désirée : validation recommandée." }
+        ]
+      },
+      {
+        id:"loadVariability",
+        title:"Les charges à manutentionner sont-elles toujours similaires ?",
+        sub:"On parle de géométrie, poids et centre de gravité (sans les chiffrer ici).",
+        tipTitle:"Aide — Variabilité",
+        tip:"Plus la diversité est grande, plus la solution doit être polyvalente et l’exploitation doit être encadrée (procédure, réglages, contrôles).",
+        type:"single",
+        gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move") || s.action?.includes("hook")),
+        options:[
+          { id:"unique", label:"Charge unique ou très proche", help:"Caractéristiques très similaires d’un cas à l’autre." },
+          { id:"variation", label:"Variations maîtrisées", help:"Quelques variations, dans un cadre prévisible." },
+          { id:"diverse", label:"Grande diversité", help:"Charges très différentes selon les cas." }
+        ]
+      },
+      {
+        id:"handlingMode",
+        title:"Quel est le mode de manutention attendu ?",
+        sub:"Sécuritaire = une inclinaison peut être acceptable si l’opération reste sûre.",
+        tipTitle:"Aide — Mode de manutention",
+        tip:"On traduit l’exigence en contraintes d’usage : maîtrise du ballant, stabilité/inclinaison et maintien horizontal par maîtrise du CG.",
+        type:"single",
+        gate:(s)=> (s.action?.includes("lift") || s.action?.includes("move") || s.action?.includes("hook")),
+        options:[
+          { id:"safe", label:"Sécuritaire", help:"Inclinaison possible si la manutention reste sûre." },
+          { id:"precise", label:"Précise de positionnement", help:"Contrôle fin, peu d’à-coups, ballant limité." },
+          { id:"hold_horizontal_cg", label:"Maintien horizontal par maîtrise du centre de gravité", help:"Garder la charge horizontale (niveau/planéité) en maîtrisant le CG." }
+        ]
+      },
+      {
+        id:"environment",
+        title:"Dans quel environnement cette manutention sera-t-elle réalisée ?",
+        sub:"Plusieurs réponses possibles si nécessaire.",
+        tipTitle:"Aide — Environnement",
+        tip:"L’environnement influence les matériaux, protections, restrictions d’usage et exigences de maintenance, indépendamment du poids ou de la hauteur.",
+        type:"multi",
+        options:[
+          { id:"indoor", label:"Intérieur (atelier, entrepôt)", help:"Environnement contrôlé." },
+          { id:"outdoor", label:"Extérieur", help:"Exposition aux intempéries." },
+          { id:"humid", label:"Milieu humide / exposé à l’eau", help:"Risque de corrosion, glissance." },
+          { id:"saline", label:"Milieu salin (bord de mer)", help:"Corrosion accélérée." },
+          { id:"dust", label:"Chantier / environnement poussiéreux", help:"Encrassement, abrasion." },
+          { id:"atex", label:"Zone à risque (ATEX / atmosphère explosive)", help:"Contraintes réglementaires spécifiques." },
+          { id:"hot", label:"Températures élevées / charge chaude", help:"Contraintes thermiques." }
+        ]
+      },
+      {
+        id:"frequency",
+        title:"À quelle fréquence cette manutention sera-t-elle réalisée ?",
+        sub:"Cela permet d’évaluer le niveau d’engagement et d’exploitation dans le temps.",
+        tipTitle:"Aide — Fréquence",
+        tip:"Une manutention répétée impose souvent plus de rigueur dans le choix de la solution, son exploitation et son suivi.",
+        type:"single",
+        options:[
+          { id:"occasional", label:"Occasionnelle (ponctuelle)", help:"Utilisation rare." },
+          { id:"regular", label:"Régulière (quelques fois par mois)", help:"Usage récurrent mais non quotidien." },
+          { id:"frequent", label:"Fréquente (chaque semaine)", help:"Usage installé." },
+          { id:"daily", label:"Quotidienne", help:"Usage structurant." },
+          { id:"continuous", label:"En continu / production", help:"Usage critique et permanent." }
+        ]
+      }
+    ];
+
+    const state = {};
+    const dontKnowCount = { total:0, byId:{} };
+    let stepIndex = 0;
+    const visibleSteps = [];
+
+    const faqByQuestion = {
+      action: [
+        { q:"Pourquoi me demande-t-on l’action plutôt que le produit ?", a:"Parce qu’en levage, le produit découle de l’opération : lever, déplacer, saisir, supporter. Une bonne définition d’usage évite les erreurs de sélection."},
+        { q:"Puis-je choisir plusieurs actions ?", a:"Oui. Par exemple : lever + déplacer + saisir. Cela permet ensuite d’assembler une solution cohérente."},
+        { q:"Que signifie « prévoir une structure » ?", a:"Cela concerne un support de type potence, portique, structure mobile. La structure conditionne l’installation et l’exploitation."},
+        { q:"Si je ne sais pas encore, je fais comment ?", a:"Utilisez « Je ne sais pas ». On avance, mais la précision baisse et un échange spécialiste peut être recommandé."},
+        { q:"À quoi sert le cahier des charges final ?", a:"À formuler une demande exploitable : contexte, mouvements, prise de charge, stabilité, variabilité et conditions d’exploitation."}
+      ],
+      movement: [
+        { q:"Pourquoi le déplacement horizontal est-il exclusif (une OU plusieurs directions) ?", a:"Parce que l’exigence n’est pas la même : un axe simple n’implique pas les mêmes contraintes qu’une zone multi-directionnelle."},
+        { q:"Incliner/basculer/retourner : pourquoi c’est sensible ?", a:"Ces mouvements augmentent l’instabilité et les efforts : la prise de charge et la procédure deviennent déterminantes."},
+        { q:"Que veut dire « plusieurs directions » ?", a:"La charge doit être déplacée vers différentes positions dans une zone, pas seulement le long d’un axe."},
+        { q:"Et si c’est occasionnel ?", a:"Cochez quand même : une contrainte occasionnelle peut imposer une validation et des limites d’usage."},
+        { q:"Je ne sais pas décrire le mouvement", a:"Choisissez “Je ne sais pas” et continuez : la synthèse mettra en avant ce point à confirmer."}
+      ],
+      location: [
+        { q:"Pourquoi la localisation compte ?", a:"Elle conditionne l’installation (fixe/mobile), la mobilité et le cadre d’exploitation."},
+        { q:"C’est quoi une « zone définie » ?", a:"Une zone de quelques mètres où la charge doit être déplacée, sans changer d’atelier."},
+        { q:"Multi-sites : qu’est-ce que ça change ?", a:"Transport, montage/démontage, contrôles et réglages à chaque déplacement."},
+        { q:"Poste dédié vs plusieurs postes ?", a:"Plusieurs postes augmentent les scénarios d’usage : on vise souvent plus de polyvalence et d’encadrement."},
+        { q:"Je ne suis pas sûr", a:"Choisissez l’option la plus probable et continuez ; la synthèse indiquera les points à valider."}
+      ],
+      anchorsPresence: [
+        { q:"Que sont des « points d’ancrage » ?", a:"Des points conçus pour accrocher la charge : anneaux, anses, oreilles de levage, etc."},
+        { q:"Points dédiés au levage : pourquoi c’est important ?", a:"Parce qu’un point dédié est prévu/validé pour lever. Sinon, il peut ne pas être adapté."},
+        { q:"Si je n’ai aucun point d’ancrage, c’est bloquant ?", a:"Non, mais la prise dépendra du principe (pince/ventouse/aimant/prise positive) et des caractéristiques de la charge."},
+        { q:"Puis-je ajouter des points d’ancrage ?", a:"Parfois oui, mais cela relève souvent d’une validation technique et d’un cadre d’exploitation."},
+        { q:"Pourquoi cette question arrive tôt ?", a:"Le mode de prise est un discriminant majeur : sécurité, compatibilité matière/surface, stabilité et procédure."}
+      ],
+      anchorOrGrip: [
+        { q:"Multipoints : qu’est-ce qu’on veut vérifier ?", a:"La répartition et les angles. Plus il y a de points, plus l’équilibrage devient sensible."},
+        { q:"Prise positive : c’est quoi ?", a:"Une prise par forme/épaulement (accrochage mécanique) sans dépendre d’un serrage ou d’une dépression."},
+        { q:"Ventouse : de quoi dépend la compatibilité ?", a:"De la surface (planéité, porosité), de l’étanchéité et de l’état de surface."},
+        { q:"Aimant : quel est le point clé ?", a:"La matière doit être ferromagnétique ; l’état de surface et l’épaisseur influencent la tenue."},
+        { q:"Pince/serrage : risque typique ?", a:"Perte de prise si la géométrie/surface change, ou si les à-coups dépassent ce que la prise peut tolérer."}
+      ],
+      cog: [
+        { q:"Pourquoi le centre de gravité est critique ?", a:"Parce qu’il dicte la stabilité : il peut provoquer rotation, inclinaison ou basculement."},
+        { q:"Excentré : que se passe-t-il ?", a:"La charge a tendance à pivoter/pencher. Un réglage d’équilibrage peut être nécessaire."},
+        { q:"Pourquoi “au-dessus des points d’ancrage / de prise” ?", a:"Quand le CG est au-dessus, la charge peut chercher une position d’équilibre en basculant/rotant."},
+        { q:"Je ne connais pas le CG : comment estimer ?", a:"Repérez la zone la plus lourde et observez où la charge penche naturellement."},
+        { q:"Que faire si c’est “au-dessus” ?", a:"Prévoir validation et limites d’usage (répartition, stabilité, procédure)." }
+      ],
+      loadVariability: [
+        { q:"Pourquoi la variabilité change la solution ?", a:"Plus il y a de diversité, plus il faut de polyvalence, de réglages, et une procédure fiable."},
+        { q:"Charge unique : quel avantage ?", a:"On peut optimiser la solution et simplifier l’usage."},
+        { q:"Variations maîtrisées : ça veut dire quoi ?", a:"Quelques écarts connus qui restent dans un cadre prévisible."},
+        { q:"Grande diversité : risque typique ?", a:"Inadéquation ponctuelle si l’on applique la même méthode à des charges trop différentes."},
+        { q:"Comment sécuriser une grande diversité ?", a:"Par des limites d’usage, des réglages repérés, des contrôles, et souvent un accompagnement."}
+      ],
+      handlingMode: [
+        { q:"Sécuritaire : ça veut dire quoi ?", a:"L’opération reste sûre, même si une inclinaison est acceptable." },
+        { q:"Précise de positionnement : qu’est-ce qu’on vise ?", a:"Contrôle fin, limitation des à-coups et du ballant." },
+        { q:"Maintien horizontal par maîtrise du CG : c’est quoi ?", a:"Garder la charge horizontale en maîtrisant le centre de gravité pendant l’opération." },
+        { q:"Pourquoi ce choix influence la solution ?", a:"Parce qu’il change les contraintes d’exploitation : stabilité, réglages, contrôles, procédure." },
+        { q:"Et si je veux “sécuritaire” + “horizontal” ?", a:"Choisissez l’exigence la plus forte (maintien horizontal)." }
+      ],
+      environment: [
+        { q:"Pourquoi l’environnement est-il important ?", a:"Parce qu’il conditionne les matériaux, protections, restrictions d’usage et exigences de maintenance." },
+        { q:"Puis-je sélectionner plusieurs environnements ?", a:"Oui, si la manutention est réalisée dans des contextes différents ou évolutifs." },
+        { q:"Qu’est-ce qu’un environnement salin ?", a:"Un milieu exposé à l’air marin ou aux embruns, accélérant fortement la corrosion." },
+        { q:"Pourquoi parler d’ATEX ici ?", a:"Parce qu’une zone ATEX impose des choix spécifiques et des restrictions d’usage." },
+        { q:"Et si je ne suis pas sûr ?", a:"Choisissez l’environnement le plus contraignant, ou utilisez « Je ne sais pas »." }
+      ],
+      frequency: [
+        { q:"Pourquoi la fréquence est-elle importante ?", a:"Parce qu’un usage répété impose plus de fiabilité, de rigueur et de suivi." },
+        { q:"Occasionnelle : est-ce moins exigeant ?", a:"Elle peut tolérer plus de souplesse, mais reste soumise aux règles de sécurité." },
+        { q:"Quotidienne : qu’est-ce que cela implique ?", a:"Une solution simple à exploiter, avec des procédures claires." },
+        { q:"Production continue : qu’est-ce que ça change ?", a:"La manutention devient critique : arrêt, panne ou erreur ont un impact immédiat." },
+        { q:"Si la fréquence évolue ?", a:"Anticipez le scénario le plus engageant." }
       ]
-    },
-    {
-      id:"environment",
-      title:"Dans quel environnement se fait la manutention ?",
-      sub:"Plusieurs réponses possibles.",
-      options:[
-        {id:"indoor", label:"Intérieur", help:"Atelier / entrepôt."},
-        {id:"outdoor", label:"Extérieur", help:"Exposition météo."},
-        {id:"saline", label:"Milieu salin", help:"Corrosion accélérée."},
-        {id:"atex", label:"Zone ATEX", help:"Contraintes réglementaires spécifiques."}
-      ]
+    };
+
+    function renderFAQ(qid){
+      const list = faqByQuestion[qid] || [];
+      const root = $("faqDynamic");
+      root.innerHTML = "";
+      list.slice(0,5).forEach((item)=>{
+        const d = document.createElement("details");
+        const s = document.createElement("summary");
+        s.textContent = item.q;
+        const p = document.createElement("p");
+        p.textContent = item.a;
+        d.appendChild(s);
+        d.appendChild(p);
+        root.appendChild(d);
+      });
+
+      const json = {
+        "@context":"https://schema.org",
+        "@type":"FAQPage",
+        "mainEntity": list.slice(0,5).map(x=>({
+          "@type":"Question",
+          "name": x.q,
+          "acceptedAnswer": { "@type":"Answer", "text": x.a }
+        }))
+      };
+      $("faqJsonLd").textContent = JSON.stringify(json);
     }
-  ];
 
-  async function loadProducts(){
-    try{
-      const r = await fetch("./products_100.json", {cache:"no-store"});
-      if(!r.ok) throw new Error("products_100.json introuvable (HTTP "+r.status+")");
-      PRODUCTS = await r.json();
-      $("prodCount").textContent = PRODUCTS.length;
-    }catch(err){
-      PRODUCTS = [];
-      $("prodCount").textContent = "0";
-      console.warn(err.message);
+    function buildVisibleSteps(){
+      visibleSteps.length = 0;
+      flow.forEach((q, idx)=>{
+        const ok = q.gate ? !!q.gate(state) : true;
+        if(ok) visibleSteps.push(idx);
+      });
+      if(stepIndex >= visibleSteps.length) stepIndex = visibleSteps.length - 1;
+      if(stepIndex < 0) stepIndex = 0;
     }
-    renderProducts();
-  }
 
-  function renderStep(){
-    const q = flow[step];
-    $("ask").textContent = q.title;
-    $("askSub").textContent = q.sub || "";
-    const root = $("opts");
-    root.innerHTML = "";
-
-    q.options.forEach(o=>{
-      const id = `opt_${q.id}_${o.id}`;
-      root.insertAdjacentHTML("beforeend", `
-        <div class="opt">
-          <input type="checkbox" id="${id}">
-          <label for="${id}">
-            <b>${esc(o.label)}</b>
-            <span class="small">${esc(o.help||"")}</span>
-          </label>
-        </div>
-      `);
-    });
-  }
-
-  function collect(){
-    const q = flow[step];
-    const out = [];
-    q.options.forEach(o=>{
-      const el = document.getElementById(`opt_${q.id}_${o.id}`);
-      if(el && el.checked) out.push(o.id);
-    });
-    return out;
-  }
-
-  function validate(){
-    const q = flow[step];
-    const ans = collect();
-    if(!ans.length){
-      $("msg").textContent = "Choisissez une réponse, ou « Je ne sais pas ».";
-      $("msg").style.color = "var(--bad)";
-      return;
+    function answeredCount(){
+      let n = 0;
+      for(const k of Object.keys(state)){
+        if(state[k] !== null && state[k] !== undefined) n++;
+      }
+      return n;
     }
-    state[q.id] = ans;
-    $("msg").textContent = "Réponse enregistrée ✅";
-    $("msg").style.color = "var(--good)";
 
-    if(step < flow.length-1){
-      step++;
-      renderStep();
+    function precisionScore(){
+      let score = 100;
+      score -= dontKnowCount.total * 10;
+
+      if(!state.action || state.action.length===0) score -= 40;
+
+      if((state.action?.includes("lift") || state.action?.includes("move"))){
+        const mc = state.movementCombo || {};
+        const anyMove = !!(mc.vertical || (mc.horizontal && mc.horizontal !== "none") || mc.tilt || mc.tip || mc.flip);
+        if(!anyMove) score -= 12;
+        if(!state.location) score -= 10;
+      }
+
+      if(state.action?.includes("hook")){
+        if(state.anchorsPresence === undefined || state.anchorsPresence === null) score -= 10;
+        if(state.anchorsPresence === true && !state.anchorPoints) score -= 10;
+        if(state.anchorsPresence === false && !state.gripMethod) score -= 10;
+      }
+
+      if(!state.cog) score -= 8;
+      if(!state.loadVariability) score -= 6;
+      if(!state.handlingMode) score -= 8;
+
+      if(!state.environment || state.environment.length===0) score -= 6;
+      if(!state.frequency) score -= 6;
+
+      score = Math.max(0, Math.min(100, Math.round(score)));
+      return score;
     }
-    renderProducts();
-  }
 
-  function dontKnow(){
-    $("msg").textContent = "D’accord — on continue.";
-    $("msg").style.color = "var(--warn)";
-    if(step < flow.length-1){
-      step++;
-      renderStep();
+    function statusFromScore(score){
+      if(score >= 85) return { txt:"Demande bien qualifiée", dot:"good" };
+      if(score >= 65) return { txt:"Demande à préciser", dot:"warn" };
+      return { txt:"Besoin à cadrer", dot:"bad" };
     }
-    renderProducts();
-  }
 
-  function renderProducts(){
-    // si pas de produits -> message simple
-    if(!PRODUCTS.length){
-      $("matchCount").textContent = "—";
-      $("productResults").innerHTML = `<div class="mini">⚠️ Aucune donnée produit chargée. Vérifie le fichier <b>products_100.json</b> (nom exact + accessible).</div>`;
-      return;
+    function complexity(){
+      const m = state.movementCombo || {};
+      if(m.flip) return "Complexité : Hors standard";
+      if(m.tip || m.tilt || state.handlingMode === "hold_horizontal_cg" || state.handlingMode === "precise") return "Complexité : Élevée";
+      return "Complexité : Modérée";
     }
-    $("matchCount").textContent = PRODUCTS.length;
-    const show = PRODUCTS.slice(0,12);
 
-    $("productResults").innerHTML = show.map(p=>`
-      <div class="prod">
-        <img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" onerror="this.style.display='none'">
-        <div>
-          <h3>${esc(p.name)}</h3>
-          <div class="meta">${esc(p.resume_expert || "")}</div>
-          <div class="badges">
-            <span class="badge ${esc(p.family)}">${esc(p.family)}</span>
+    function esc(s){
+      return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+    }
+
+    function setHeader(){
+      const score = precisionScore();
+      const st = statusFromScore(score);
+      $("clarityTxt").textContent = score + "%";
+      $("statusTxt").textContent = st.txt;
+      $("dot").className = "statusDot " + st.dot;
+    }
+
+    function setStepPills(){
+      $("stepPill").innerHTML = `<b>${stepIndex + 1}</b> / ${visibleSteps.length}`;
+      $("answeredTxt").textContent = String(answeredCount());
+    }
+
+    function renderCurrent(){
+      buildVisibleSteps();
+      setHeader();
+      setStepPills();
+      $("msg").textContent = "";
+
+      const q = flow[ visibleSteps[stepIndex] ];
+      $("ask").textContent = q.title;
+      $("askSub").textContent = q.sub || "";
+      $("tipTitle").textContent = q.tipTitle || "Aide";
+      $("tipText").textContent = q.tip || "";
+
+      $("opts").innerHTML = "";
+      renderFAQ(q.id);
+
+      const opts = $("opts");
+
+      if(q.type === "multi"){
+        (q.options||[]).forEach(o=>{
+          const id = `opt_${q.id}_${o.id}`;
+          const checked = (state[q.id] || []).includes(o.id);
+          opts.insertAdjacentHTML("beforeend", `
+            <div class="opt">
+              <input type="checkbox" id="${id}" ${checked ? "checked":""}>
+              <label for="${id}">
+                <b>${esc(o.label)}</b>
+                <span class="small">${esc(o.help || "")}</span>
+              </label>
+            </div>
+          `);
+        });
+      }
+
+      if(q.type === "movement_combo"){
+        const m = state.movementCombo || { vertical:false, horizontal:"none", tilt:false, tip:false, flip:false };
+
+        opts.insertAdjacentHTML("beforeend", `
+          <div class="opt">
+            <input type="checkbox" id="mv_vertical" ${m.vertical ? "checked":""}>
+            <label for="mv_vertical">
+              <b>Lever / descendre (vertical)</b>
+              <span class="small">Montée/descente.</span>
+            </label>
           </div>
-          <a href="${esc(p.url)}" target="_blank" rel="noopener">Voir la fiche produit</a>
-        </div>
-      </div>
-    `).join("");
-  }
+        `);
 
-  function resetAll(){
-    step = 0;
-    for(const k in state) delete state[k];
-    $("msg").textContent = "";
-    renderStep();
-    renderProducts();
-  }
+        opts.insertAdjacentHTML("beforeend", `
+          <div class="opt" style="border-style:dashed;background:#fbfbff">
+            <div style="font-weight:1000">Déplacement horizontal (choix exclusif)</div>
+            <div class="small" style="margin-top:4px;color:var(--ml-muted)">Une direction OU plusieurs directions. Si aucun déplacement horizontal, laissez sur “Aucun”.</div>
+          </div>
+        `);
 
-  // INIT
-  document.getElementById("resetBtn").addEventListener("click", resetAll);
-  document.getElementById("validateBtn").addEventListener("click", validate);
-  document.getElementById("dontKnowBtn").addEventListener("click", dontKnow);
+        const radios = [
+          { id:"none", label:"Aucun", help:"Pas de déplacement horizontal requis." },
+          { id:"one", label:"Une direction", help:"Translation sur un axe (aller/retour)." },
+          { id:"multi", label:"Plusieurs directions", help:"Plusieurs directions/positions dans une zone." }
+        ];
+        radios.forEach(r=>{
+          const rid = `mv_h_${r.id}`;
+          opts.insertAdjacentHTML("beforeend", `
+            <div class="opt">
+              <input type="radio" name="mv_horizontal" id="${rid}" ${m.horizontal === r.id ? "checked":""}>
+              <label for="${rid}">
+                <b>${esc(r.label)}</b>
+                <span class="small">${esc(r.help)}</span>
+              </label>
+            </div>
+          `);
+        });
 
-  renderStep();     // ✅ question s'affiche quoi qu'il arrive
-  loadProducts();   // produits en arrière-plan
-</script>
+        const extras = [
+          { key:"tilt", id:"mv_tilt", label:"Incliner la charge", help:"Modifier l’angle (mise à niveau/positionnement)." },
+          { key:"tip",  id:"mv_tip",  label:"Basculer la charge", help:"Passage contrôlé d’une position à une autre." },
+          { key:"flip", id:"mv_flip", label:"Retourner la charge (180°)", help:"Retournement complet." }
+        ];
+        extras.forEach(e=>{
+          opts.insertAdjacentHTML("beforeend", `
+            <div class="opt">
+              <input type="checkbox" id="${e.id}" ${m[e.key] ? "checked":""}>
+              <label for="${e.id}">
+                <b>${esc(e.label)}</b>
+                <span class="small">${esc(e.help)}</span>
+              </label>
+            </div>
+          `);
+        });
+      }
 
+      if(q.type === "mixed"){
+        (q.optionsRadio||[]).forEach(o=>{
+          const id = `opt_${q.id}_${o.id}`;
+          const checked = (state[q.id] === o.id);
+          opts.insertAdjacentHTML("beforeend", `
+            <div class="opt">
+              <input type="radio" name="radio_${q.id}" id="${id}" ${checked ? "checked":""}>
+              <label for="${id}">
+                <b>${esc(o.label)}</b>
+                <span class="small">${esc(o.help || "")}</span>
+              </label>
+            </div>
+          `);
+        });
+        const oc = q.optionCheck;
+        if(oc){
+          const cid = `opt_${q.id}_${oc.id}`;
+          const cchecked = !!state[`${q.id}_${oc.id}`];
+          opts.insertAdjacentHTML("beforeend", `
+            <div class="opt">
+              <input type="checkbox" id="${cid}" ${cchecked ? "checked":""}>
+              <label for="${cid}">
+                <b>${esc(oc.label)}</b>
+                <span class="small">${esc(oc.help || "")}</span>
+              </label>
+            </div>
+          `);
+        }
+      }
 
+      if(q.type === "mixed_yesno"){
+        const yesId = `opt_${q.id}_yes`;
+        const noId  = `opt_${q.id}_no`;
+        const val = state[q.id];
+        opts.insertAdjacentHTML("beforeend", `
+          <div class="opt">
+            <input type="radio" name="radio_${q.id}" id="${yesId}" ${val === true ? "checked":""}>
+            <label for="${yesId}">
+              <b>${esc(q.yesLabel)}</b>
+              <span class="small">La charge possède des points d’ancrage utilisables.</span>
+            </label>
+          </div>
+          <div class="opt">
+            <input type="radio" name="radio_${q.id}" id="${noId}" ${val === false ? "checked":""}>
+            <label for="${noId}">
+              <b>${esc(q.noLabel)}</b>
+              <span class="small">La prise doit se faire autrement (pince, ventouse, aimant…).</span>
+            </label>
+          </div>
+        `);
 
+        const ex = q.extraCheck;
+        if(ex){
+          const cid = `opt_${q.id}_${ex.id}`;
+          const cchecked = !!state[`${q.id}_${ex.id}`];
+          opts.insertAdjacentHTML("beforeend", `
+            <div class="opt">
+              <input type="checkbox" id="${cid}" ${cchecked ? "checked":""}>
+              <label for="${cid}">
+                <b>${esc(ex.label)}</b>
+                <span class="small">${esc(ex.help || "")}</span>
+              </label>
+            </div>
+          `);
+        }
+      }
+
+      if(q.type === "conditional_single"){
+        const cond = q.when(state);
+        const payload = cond ? q.ifTrue : q.ifFalse;
+
+        opts.insertAdjacentHTML("beforeend", `
+          <div class="opt" style="border-style:dashed;background:#fbfbff">
+            <div style="font-weight:1000">${esc(payload.title)}</div>
+          </div>
+        `);
+
+        (payload.options||[]).forEach(o=>{
+          const id = `opt_${q.id}_${payload.key}_${o.id}`;
+          const checked = (state[payload.key] === o.id);
+          opts.insertAdjacentHTML("beforeend", `
+            <div class="opt">
+              <input type="radio" name="radio_${q.id}_${payload.key}" id="${id}" ${checked ? "checked":""}>
+              <label for="${id}">
+                <b>${esc(o.label)}</b>
+                <span class="small">${esc(o.help || "")}</span>
+              </label>
+            </div>
+          `);
+        });
+      }
+
+      if(q.type === "single"){
+        (q.options||[]).forEach(o=>{
+          const id = `opt_${q.id}_${o.id}`;
+          const checked = (state[q.id] === o.id);
+          opts.insertAdjacentHTML("beforeend", `
+            <div class="opt">
+              <input type="radio" name="radio_${q.id}" id="${id}" ${checked ? "checked":""}>
+              <label for="${id}">
+                <b>${esc(o.label)}</b>
+                <span class="small">${esc(o.help || "")}</span>
+              </label>
+            </div>
+          `);
+        });
+      }
+
+      $("backBtn").style.display = (stepIndex === 0) ? "none" : "inline-block";
+    }
+
+    function collectCurrentAnswer(){
+      const q = flow[ visibleSteps[stepIndex] ];
+
+      if(q.type === "multi"){
+        const selected = [];
+        (q.options||[]).forEach(o=>{
+          const el = $(`opt_${q.id}_${o.id}`);
+          if(el && el.checked) selected.push(o.id);
+        });
+        return selected;
+      }
+
+      if(q.type === "movement_combo"){
+        const vertical = $("mv_vertical")?.checked || false;
+        let horizontal = "none";
+        if($("mv_h_none")?.checked) horizontal = "none";
+        if($("mv_h_one")?.checked) horizontal = "one";
+        if($("mv_h_multi")?.checked) horizontal = "multi";
+        const tilt = $("mv_tilt")?.checked || false;
+        const tip  = $("mv_tip")?.checked || false;
+        const flip = $("mv_flip")?.checked || false;
+        return { vertical, horizontal, tilt, tip, flip };
+      }
+
+      if(q.type === "single"){
+        let picked = null;
+        (q.options||[]).forEach(o=>{
+          const el = $(`opt_${q.id}_${o.id}`);
+          if(el && el.checked) picked = o.id;
+        });
+        return picked;
+      }
+
+      if(q.type === "mixed"){
+        let picked = null;
+        (q.optionsRadio||[]).forEach(o=>{
+          const el = $(`opt_${q.id}_${o.id}`);
+          if(el && el.checked) picked = o.id;
+        });
+        const oc = q.optionCheck;
+        const ck = oc ? ($(`opt_${q.id}_${oc.id}`)?.checked || false) : false;
+        return { radio:picked, check:ck };
+      }
+
+      if(q.type === "mixed_yesno"){
+        const yes = $(`opt_${q.id}_yes`)?.checked || false;
+        const no  = $(`opt_${q.id}_no`)?.checked  || false;
+        let picked = null;
+        if(yes) picked = true;
+        if(no) picked = false;
+        const ex = q.extraCheck;
+        const ck = ex ? ($(`opt_${q.id}_${ex.id}`)?.checked || false) : false;
+        return { yn:picked, extra:ck };
+      }
+
+      if(q.type === "conditional_single"){
+        const cond = q.when(state);
+        const payload = cond ? q.ifTrue : q.ifFalse;
+        let picked = null;
+        (payload.options||[]).forEach(o=>{
+          const el = $(`opt_${q.id}_${payload.key}_${o.id}`);
+          if(el && el.checked) picked = o.id;
+        });
+        return { key: payload.key, value: picked };
+      }
+
+      return null;
+    }
+
+    function saveAnswer(answer, isDontKnow=false){
+      const q = flow[ visibleSteps[stepIndex] ];
+
+      if(isDontKnow){
+        dontKnowCount.total += 1;
+        dontKnowCount.byId[q.id] = (dontKnowCount.byId[q.id] || 0) + 1;
+        if(state[q.id] === undefined) state[q.id] = null;
+        return true;
+      }
+
+      if(q.type === "mixed"){
+        state[q.id] = answer.radio;
+        state[`${q.id}_${q.optionCheck.id}`] = !!answer.check;
+        return true;
+      }
+
+      if(q.type === "movement_combo"){
+        state.movementCombo = answer;
+        return true;
+      }
+
+      if(q.type === "mixed_yesno"){
+        state[q.id] = answer.yn;
+        if(q.extraCheck){
+          state[`${q.id}_${q.extraCheck.id}`] = !!answer.extra;
+        }
+        if(answer.yn === true){
+          delete state.gripMethod;
+        }
+        if(answer.yn === false){
+          delete state.anchorPoints;
+          state[`${q.id}_dedicated`] = false;
+        }
+        return true;
+      }
+
+      if(q.type === "conditional_single"){
+        state[answer.key] = answer.value;
+        return true;
+      }
+
+      state[q.id] = answer;
+      return true;
+    }
+
+    function next(){
+      buildVisibleSteps();
+      if(stepIndex < visibleSteps.length - 1){
+        stepIndex += 1;
+        renderCurrent();
+        renderSummary();
+        focusQuestionBox();
+      } else {
+        renderSummary(true);
+        $("msg").textContent = "Fin des questions — la synthèse est à droite ✅";
+        focusSummary();
+      }
+      setHeader();
+      setStepPills();
+    }
+
+    function back(){
+      if(stepIndex > 0){
+        stepIndex -= 1;
+        renderCurrent();
+        renderSummary();
+        focusQuestionBox();
+      }
+      setHeader();
+      setStepPills();
+    }
+
+    function validate(){
+      $("msg").textContent = "";
+      const q = flow[ visibleSteps[stepIndex] ];
+      const ans = collectCurrentAnswer();
+
+      let ok = true;
+      if(q.type === "multi") ok = ans.length > 0;
+      if(q.type === "single") ok = !!ans;
+      if(q.type === "mixed") ok = !!ans.radio;
+      if(q.type === "mixed_yesno") ok = (ans.yn === true || ans.yn === false);
+      if(q.type === "conditional_single") ok = !!ans.value;
+      if(q.type === "movement_combo"){
+        ok = (ans.vertical || ans.horizontal !== "none" || ans.tilt || ans.tip || ans.flip);
+      }
+
+      if(!ok){
+        $("msg").textContent = "Veuillez sélectionner une réponse, ou utilisez « Je ne sais pas ».";
+        $("msg").style.color = "var(--bad)";
+        return;
+      }
+
+      saveAnswer(ans, false);
+      buildVisibleSteps();
+
+      $("msg").textContent = "Réponse enregistrée ✅";
+      $("msg").style.color = "var(--good)";
+      next();
+    }
+
+    function dontKnow(){
+      $("msg").textContent = "";
+      saveAnswer(null, true);
+
+      $("msg").textContent = "D’accord — on continue. (La précision de la demande baisse)";
+      $("msg").style.color = "var(--warn)";
+      next();
+    }
+
+    function renderSummary(forceFocus=false){
+      const tb = $("summary");
+      tb.innerHTML = "";
+
+      const score = precisionScore();
+      $("complexity").textContent = complexity();
+
+      const rows = [];
+
+      const actMap = { lift:"Lever", move:"Déplacer", hook:"Accrocher/saisir", support:"Prévoir une structure" };
+      const act = state.action?.length ? state.action.map(x=>actMap[x]||x).join(", ") : "—";
+      rows.push(["Action sur la charge", act]);
+
+      if(state.action?.includes("lift") || state.action?.includes("move")){
+        const m = state.movementCombo || {};
+        const parts = [];
+        if(m.vertical) parts.push("Lever/descendre (vertical)");
+        if(m.horizontal === "one") parts.push("Horizontal — une direction");
+        if(m.horizontal === "multi") parts.push("Horizontal — plusieurs directions");
+        if(m.tilt) parts.push("Incliner");
+        if(m.tip) parts.push("Basculer");
+        if(m.flip) parts.push("Retourner (180°)");
+        rows.push(["Mouvements", parts.length ? parts.join(", ") : "—"]);
+      }
+
+      if(state.action?.includes("lift") || state.action?.includes("move")){
+        const locMap = { station:"Un poste dédié", zone:"Une zone définie", multi:"Plusieurs postes/zones" };
+        const loc = state.location ? (locMap[state.location]||state.location) : "—";
+        const ms = state["location_multisite"] ? " + multi-sites" : "";
+        rows.push(["Localisation", loc + ms]);
+      }
+
+      if(state.action?.includes("hook")){
+        const ap = state.anchorsPresence;
+        if(ap === true){
+          rows.push(["Points d’ancrage", "Oui"]);
+          rows.push(["Points dédiés au levage", state["anchorsPresence_dedicated"] ? "Oui" : "Non / inconnu"]);
+          const ptsMap = { p1:"1 point", p2:"2 points", p3:"3 points", p4:"4 points" };
+          rows.push(["Nombre de points", state.anchorPoints ? (ptsMap[state.anchorPoints]||state.anchorPoints) : "—"]);
+        } else if(ap === false){
+          rows.push(["Points d’ancrage", "Non"]);
+          const gripMap = { positive:"Prise positive", clamp:"Serrage (pince)", suction:"Ventouses", mag:"Aimants" };
+          rows.push(["Méthode de prise", state.gripMethod ? (gripMap[state.gripMethod]||state.gripMethod) : "—"]);
+        } else {
+          rows.push(["Points d’ancrage", "—"]);
+        }
+      }
+
+      const cgMap = { center:"Centré", offset:"Excentré", above:"Au-dessus des points / de la prise" };
+      rows.push(["Centre de gravité", state.cog ? (cgMap[state.cog]||state.cog) : "—"]);
+
+      const varMap = { unique:"Unique / proche", variation:"Variations maîtrisées", diverse:"Grande diversité" };
+      rows.push(["Variabilité des charges", state.loadVariability ? (varMap[state.loadVariability]||state.loadVariability) : "—"]);
+
+      const hmMap = { safe:"Sécuritaire", precise:"Précise de positionnement", hold_horizontal_cg:"Maintien horizontal par maîtrise du CG" };
+      rows.push(["Mode de manutention", state.handlingMode ? (hmMap[state.handlingMode]||state.handlingMode) : "—"]);
+
+      const envMap = {
+        indoor:"Intérieur",
+        outdoor:"Extérieur",
+        humid:"Milieu humide",
+        saline:"Milieu salin",
+        dust:"Chantier / poussiéreux",
+        atex:"Zone ATEX",
+        hot:"Températures élevées / charge chaude"
+      };
+      rows.push(["Environnement", state.environment?.length ? state.environment.map(e=>envMap[e]||e).join(", ") : "—"]);
+
+      const freqMap = {
+        occasional:"Occasionnelle",
+        regular:"Régulière",
+        frequent:"Fréquente",
+        daily:"Quotidienne",
+        continuous:"En continu / production"
+      };
+      rows.push(["Fréquence d’utilisation", state.frequency ? (freqMap[state.frequency]||state.frequency) : "—"]);
+
+      rows.forEach(([a,b])=>{
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${esc(a)}</td><td>${esc(b)}</td>`;
+        tb.appendChild(tr);
+      });
+
+      const alerts = [];
+      const m = state.movementCombo || {};
+      if(m.flip) alerts.push("Retourner une charge : validation technique recommandée (stabilité, efforts, mode de prise).");
+      if(m.tip || m.tilt) alerts.push("Incliner/basculer : préciser l’angle et la stabilité attendus.");
+      if(state.anchorPoints === "p3" || state.anchorPoints === "p4") alerts.push("Accrochage multipoints : préciser les angles et la répartition.");
+      if(state.cog === "above") alerts.push("Centre de gravité au-dessus des points/prise : risque de basculement/rotation non désirée.");
+      if(state.cog === "offset") alerts.push("Centre de gravité excentré : prévoir équilibrage/réglage et vérifier la stabilité pendant la manutention.");
+      if(state.loadVariability === "diverse") alerts.push("Grande diversité : solution polyvalente + procédure d’exploitation recommandée.");
+      if(state.handlingMode === "precise") alerts.push("Précision : privilégier maîtrise du ballant/à-coups et contrôle fin.");
+      if(state.handlingMode === "hold_horizontal_cg") alerts.push("Maintien horizontal : préciser tolérance de planéité, mise à niveau et contrôle du CG.");
+      if(state["location_multisite"]) alerts.push("Multi-sites : préciser mobilité, montage/démontage, transport.");
+      if(state.environment?.includes("saline")) alerts.push("Environnement salin : vigilance sur les matériaux, protections et maintenance.");
+      if(state.environment?.includes("atex")) alerts.push("Zone ATEX : solution soumise à des exigences réglementaires spécifiques.");
+      if(state.frequency === "daily" || state.frequency === "continuous") alerts.push("Usage fréquent ou continu : solution structurante, procédures et suivi recommandés.");
+      if(dontKnowCount.total>0) alerts.push("Certaines réponses sont inconnues : la précision du cahier des charges est réduite.");
+
+      const ul = $("alerts");
+      ul.innerHTML = "";
+      if(alerts.length===0){
+        const li = document.createElement("li");
+        li.textContent = "Aucune alerte à ce stade.";
+        ul.appendChild(li);
+      } else {
+        alerts.forEach(a=>{
+          const li = document.createElement("li");
+          li.textContent = a;
+          ul.appendChild(li);
+        });
+      }
+
+      const cdcLines = [];
+      cdcLines.push("CAHIER DES CHARGES — PRÉ-QUALIFICATION (LEVAGE)");
+      cdcLines.push("");
+      cdcLines.push(`Précision : ${score}%`);
+      cdcLines.push(complexity());
+      cdcLines.push("");
+      cdcLines.push("1) Opération");
+      cdcLines.push(`- Actions : ${act}`);
+
+      if(state.action?.includes("lift") || state.action?.includes("move")){
+        const parts = [];
+        if(m.vertical) parts.push("Lever/descendre (vertical)");
+        if(m.horizontal === "one") parts.push("Horizontal — une direction");
+        if(m.horizontal === "multi") parts.push("Horizontal — plusieurs directions");
+        if(m.tilt) parts.push("Incliner");
+        if(m.tip) parts.push("Basculer");
+        if(m.flip) parts.push("Retourner (180°)");
+        cdcLines.push("");
+        cdcLines.push("2) Mouvements");
+        cdcLines.push(`- ${parts.length ? parts.join(", ") : "Non renseigné"}`);
+      }
+
+      if(state.action?.includes("lift") || state.action?.includes("move")){
+        const locMap = { station:"Un poste dédié", zone:"Une zone définie", multi:"Plusieurs postes/zones" };
+        cdcLines.push("");
+        cdcLines.push("3) Organisation / lieu");
+        cdcLines.push(`- ${state.location ? (locMap[state.location]||state.location) : "Non renseigné"}${state["location_multisite"] ? " (+ multi-sites)" : ""}`);
+      }
+
+      if(state.action?.includes("hook")){
+        cdcLines.push("");
+        cdcLines.push("4) Prise de charge");
+        if(state.anchorsPresence === true){
+          const ptsMap = { p1:"1", p2:"2", p3:"3", p4:"4" };
+          cdcLines.push("- Points d’ancrage : Oui");
+          cdcLines.push(`- Points dédiés au levage : ${state["anchorsPresence_dedicated"] ? "Oui" : "Non / inconnu"}`);
+          cdcLines.push(`- Nombre de points utilisés : ${state.anchorPoints ? (ptsMap[state.anchorPoints]||"?") : "Non renseigné"}`);
+        } else if(state.anchorsPresence === false){
+          const gripMap = { positive:"Prise positive", clamp:"Serrage (pince)", suction:"Ventouses", mag:"Aimants" };
+          cdcLines.push("- Points d’ancrage : Non");
+          cdcLines.push(`- Méthode de prise : ${state.gripMethod ? (gripMap[state.gripMethod]||state.gripMethod) : "Non renseigné"}`);
+        } else {
+          cdcLines.push("- Non renseigné");
+        }
+      }
+
+      const cgMap2 = { center:"Centré", offset:"Excentré", above:"Au-dessus des points / de la prise (risque basculement)" };
+      cdcLines.push("");
+      cdcLines.push("5) Centre de gravité");
+      cdcLines.push(`- ${state.cog ? (cgMap2[state.cog]||state.cog) : "Non renseigné"}`);
+
+      const varMap2 = { unique:"Unique / proche", variation:"Variations maîtrisées", diverse:"Grande diversité" };
+      cdcLines.push("");
+      cdcLines.push("6) Variabilité des charges");
+      cdcLines.push(`- ${state.loadVariability ? (varMap2[state.loadVariability]||state.loadVariability) : "Non renseigné"}`);
+
+      const hmMap2 = { safe:"Sécuritaire (inclinaison acceptable si sûr)", precise:"Précise de positionnement", hold_horizontal_cg:"Maintien horizontal par maîtrise du CG" };
+      cdcLines.push("");
+      cdcLines.push("7) Mode de manutention attendu");
+      cdcLines.push(`- ${state.handlingMode ? (hmMap2[state.handlingMode]||state.handlingMode) : "Non renseigné"}`);
+
+      const envMap2 = {
+        indoor:"Intérieur",
+        outdoor:"Extérieur",
+        humid:"Milieu humide / eau",
+        saline:"Milieu salin (air marin)",
+        dust:"Chantier / poussières",
+        atex:"Zone à risque (ATEX)",
+        hot:"Températures élevées / charge chaude"
+      };
+      cdcLines.push("");
+      cdcLines.push("8) Environnement d’utilisation");
+      cdcLines.push(`- ${state.environment?.length ? state.environment.map(e=>envMap2[e]||e).join(", ") : "Non renseigné"}`);
+
+      const freqMap2 = {
+        occasional:"Occasionnelle (ponctuelle)",
+        regular:"Régulière (mois)",
+        frequent:"Fréquente (semaine)",
+        daily:"Quotidienne",
+        continuous:"En continu / production"
+      };
+      cdcLines.push("");
+      cdcLines.push("9) Fréquence d’exploitation");
+      cdcLines.push(`- ${state.frequency ? (freqMap2[state.frequency]||state.frequency) : "Non renseigné"}`);
+
+      cdcLines.push("");
+      cdcLines.push("Remarques / points à valider");
+      if(alerts.length) alerts.forEach(a=>cdcLines.push(`- ${a}`));
+      else cdcLines.push("- Aucun point bloquant détecté à ce stade.");
+
+      $("cdc").textContent = cdcLines.join("\n");
+
+      setHeader();
+      setStepPills();
+      if(forceFocus && window.innerWidth < 980) focusSummary();
+    }
+
+    async function copyCDC(){
+      const txt = $("cdc").textContent || "";
+      $("msg").textContent = "";
+      try{
+        if(navigator.clipboard && window.isSecureContext){
+          await navigator.clipboard.writeText(txt);
+        } else {
+          const ta=document.createElement("textarea");
+          ta.value=txt; ta.style.position="fixed"; ta.style.left="-9999px";
+          document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove();
+        }
+        $("msg").textContent = "Cahier des charges copié ✅";
+        $("msg").style.color = "var(--good)";
+        focusQuestionBox();
+      }catch(e){
+        $("msg").textContent = "Copie impossible : sélectionnez manuellement le texte.";
+        $("msg").style.color = "var(--bad)";
+      }
+    }
+
+    function downloadCDC(){
+      const txt = $("cdc").textContent || "";
+      const blob = new Blob([txt], {type:"text/plain;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href=url; a.download="cahier-des-charges-levage.txt";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 1500);
+    }
+
+    function resetAll(){
+      for(const k of Object.keys(state)) delete state[k];
+      dontKnowCount.total = 0;
+      dontKnowCount.byId = {};
+      stepIndex = 0;
+      buildVisibleSteps();
+      renderCurrent();
+      renderSummary();
+      focusQuestionBox();
+    }
+
+    function fillDemo(){
+      resetAll();
+      state.action = ["lift","move","hook","support"];
+      state.movementCombo = { vertical:true, horizontal:"multi", tilt:true, tip:false, flip:false };
+      state.location = "multi";
+      state["location_multisite"] = true;
+      state.anchorsPresence = true;
+      state["anchorsPresence_dedicated"] = true;
+      state.anchorPoints = "p4";
+      state.cog = "above";
+      state.loadVariability = "variation";
+      state.handlingMode = "safe";
+      state.environment = ["outdoor","saline"];
+      state.frequency = "daily";
+      buildVisibleSteps();
+      renderCurrent();
+      renderSummary();
+      focusQuestionBox();
+    }
+
+    /* =========================================================
+       AJOUT UNIQUEMENT : chargement + rendu préselection produits
+       (pas de filtrage à ce stade)
+       ========================================================= */
+    let PRODUCTS = [];
+
+    function pick(obj, keys, fallback=null){
+      for(const k of keys){
+        if(obj && obj[k] !== undefined && obj[k] !== null && String(obj[k]).trim() !== "") return obj[k];
+      }
+      return fallback;
+    }
+
+    function normalizeProduct(p){
+      const name = pick(p, ["name","nom","title","libelle","product_name","Nom FR","nom_fr","designation"], "Produit");
+      const url  = pick(p, ["url","link","product_url","product_link","url_produit","lien","permalink"], "");
+      const image= pick(p, ["image","img","image_url","cover","cover_url","photo","thumbnail","thumb","Image URL","image_link"], "");
+      const resume = pick(p, ["resume_expert","resume","summary","short","description_short","meta_description","meta_description_fr","description_courte","description_courte_fr"], "");
+
+      const category = pick(p, ["category","categorie","categories","cat","family","famille","famille_inferree","category_family","univers"], "");
+      const ref = pick(p, ["ref","reference","sku","id","id_product","product_id","Ref","Référence","reference_fournisseur"], "");
+
+      // tag famille/couleur (robuste)
+      const familyRaw = String(category || "").toLowerCase();
+      let fam = "other";
+      if(familyRaw.includes("access") || familyRaw.includes("acs") || familyRaw.includes("elingue") || familyRaw.includes("manille") || familyRaw.includes("crochet") || familyRaw.includes("anneau")) fam = "accessories";
+      else if(familyRaw.includes("aimant") || familyRaw.includes("magnet")) fam = "magnets";
+      else if(familyRaw.includes("chantier") || familyRaw.includes("site")) fam = "site";
+      else if(familyRaw.includes("palan") || familyRaw.includes("hoist") || familyRaw.includes("treuil")) fam = "hoists";
+
+      // libellé tag (visible)
+      let famLabel = category || "";
+      if(!famLabel){
+        if(fam==="accessories") famLabel = "Accessoires";
+        else if(fam==="magnets") famLabel = "Aimants";
+        else if(fam==="site") famLabel = "Chantier";
+        else if(fam==="hoists") famLabel = "Palans";
+        else famLabel = "Sélection";
+      }
+
+      return { name:String(name), url:String(url||""), image:String(image||""), resume:String(resume||""), category:String(category||""), fam, famLabel, ref:String(ref||"") };
+    }
+
+    function renderProducts(){
+      $("prodCount").textContent = String(PRODUCTS.length || 0);
+
+      const grid = $("prodGrid");
+      grid.innerHTML = "";
+
+      if(!PRODUCTS.length){
+        $("prodStatus").textContent = "aucune donnée";
+        $("prodMsg").textContent = "Aucune donnée produit chargée. Vérifiez que products_100.json est bien à côté de index.html.";
+        $("prodMsg").style.color = "var(--bad)";
+        return;
+      }
+
+      $("prodStatus").textContent = "ok";
+      $("prodMsg").textContent = "";
+
+      // Affichage simple : les 100 (ou moins) – sans filtrage
+      PRODUCTS.slice(0, 100).forEach((p)=>{
+        const safeName = esc(p.name);
+        const safeResume = esc(p.resume || "");
+        const safeRef = esc(p.ref || "");
+        const tagClass = p.fam || "other";
+        const tagLabel = esc(p.famLabel || "Sélection");
+
+        const imgHtml = p.image
+          ? `<img class="prodImg" src="${esc(p.image)}" alt="${safeName}" loading="lazy" />`
+          : `<div class="prodImg" aria-hidden="true"></div>`;
+
+        const titleHtml = p.url
+          ? `<a href="${esc(p.url)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit"><p class="prodName">${safeName}</p></a>`
+          : `<p class="prodName">${safeName}</p>`;
+
+        const refLine = safeRef ? `Réf. ${safeRef}` : "";
+
+        grid.insertAdjacentHTML("beforeend", `
+          <div class="prodCard">
+            ${imgHtml}
+            <div class="prodBody">
+              ${titleHtml}
+              ${refLine ? `<div class="prodLine">${refLine}</div>` : ``}
+              ${safeResume ? `<div class="prodLine">${safeResume}</div>` : ``}
+              <div class="tag ${tagClass}">${tagLabel}</div>
+            </div>
+          </div>
+        `);
+      });
+    }
+
+    async function loadProducts(){
+      $("prodStatus").textContent = "chargement…";
+      $("prodMsg").textContent = "";
+      $("prodMsg").style.color = "var(--ml-muted)";
+
+      try{
+        const res = await fetch("./products_100.json", { cache:"no-store" });
+        if(!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+
+        if(Array.isArray(data)){
+          PRODUCTS = data.map(normalizeProduct);
+        } else if(data && Array.isArray(data.products)){
+          PRODUCTS = data.products.map(normalizeProduct);
+        } else {
+          PRODUCTS = [];
+        }
+
+        renderProducts();
+      }catch(e){
+        PRODUCTS = [];
+        $("prodCount").textContent = "0";
+        $("prodStatus").textContent = "erreur";
+        $("prodMsg").textContent = "Impossible de charger products_100.json. Vérifiez : (1) nom exact, (2) même dossier que index.html, (3) JSON valide.";
+        $("prodMsg").style.color = "var(--bad)";
+        renderProducts();
+      }
+    }
+
+    function bind(){
+      $("validateBtn").addEventListener("click", validate);
+      $("dontKnowBtn").addEventListener("click", dontKnow);
+      $("backBtn").addEventListener("click", back);
+      $("skipToSummaryBtn").addEventListener("click", ()=>{ renderSummary(true); focusSummary(); });
+      $("resetBtn").addEventListener("click", resetAll);
+      $("demoBtn").addEventListener("click", fillDemo);
+      $("copyBtn").addEventListener("click", copyCDC);
+      $("downloadBtn").addEventListener("click", downloadCDC);
+      $("callBtn").addEventListener("click", ()=> alert("👉 Contact spécialiste : copiez le cahier des charges et envoyez-le au commercial."));
+
+      // AJOUT : reload produits
+      $("reloadProductsBtn").addEventListener("click", loadProducts);
+    }
+
+    buildVisibleSteps();
+    bind();
+    renderCurrent();
+    renderSummary();
+    window.addEventListener("load", ()=>{
+      setTimeout(focusQuestionBox, 50);
+      loadProducts(); // AJOUT : chargement immédiat de la base 100
+    });
+  </script>
 </body>
 </html>
